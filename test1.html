@@ -6,6 +6,76 @@
     <title>SLST Mathematics Quiz</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        },
+                        success: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        },
+                        warning: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                            800: '#92400e',
+                            900: '#78350f',
+                        },
+                        danger: {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            200: '#fecaca',
+                            300: '#fca5a5',
+                            400: '#f87171',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c',
+                            800: '#991b1b',
+                            900: '#7f1d1d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <!-- MathJax Configuration (before MathJax script) -->
     <script>
         window.MathJax = {
@@ -20,93 +90,264 @@
     <!-- MathJax CDN for LaTeX rendering -->
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
         body {
             font-family: "Inter", sans-serif;
-            background-color: #f0f4f8; /* Light blue-gray background */
+            background-color: #f8fafc;
         }
-        /* Custom styles for better aesthetics */
+        
         .quiz-container {
             max-width: 800px;
             margin: 2rem auto;
-            padding: 1.5rem;
-            background-color: #ffffff;
-            border-radius: 1rem; /* More rounded corners */
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Softer shadow */
+            padding: 2rem;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
         }
+        
         .question-card {
-            background-color: #f8fafc; /* Lighter background for question cards */
+            background-color: white;
             border: 1px solid #e2e8f0;
-            padding: 1.25rem;
+            padding: 1.5rem;
             margin-bottom: 1.5rem;
-            border-radius: 0.75rem; /* Rounded corners for cards */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow for cards */
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+            transition: all 0.2s ease;
         }
+        
+        .question-card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+        }
+        
         .option-label {
-            display: block;
+            display: flex;
+            align-items: center;
             padding: 0.75rem 1rem;
-            margin-bottom: 0.5rem;
-            background-color: #ffffff;
-            border: 1px solid #cbd5e1;
-            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s ease-in-out;
+            transition: all 0.2s ease;
         }
+        
         .option-label:hover {
-            background-color: #eff6ff; /* Light blue on hover */
-            border-color: #93c5fd; /* Blue border on hover */
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
         }
-        .option-label input[type="radio"]:checked + span {
-            background-color: #dbeafe; /* Lighter blue for selected */
-            border-color: #3b82f6; /* Stronger blue border for selected */
+        
+        .option-label.selected {
+            background-color: #e0f2fe;
+            border-color: #7dd3fc;
         }
+        
+        .option-label.correct {
+            background-color: #dcfce7;
+            border-color: #86efac;
+        }
+        
+        .option-label.incorrect {
+            background-color: #fee2e2;
+            border-color: #fca5a5;
+        }
+        
+        .custom-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .custom-radio-inner {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: transparent;
+            transition: all 0.2s ease;
+            transform: scale(0);
+        }
+        
+        .option-label.selected .custom-radio {
+            border-color: #0ea5e9;
+        }
+        
+        .option-label.selected .custom-radio-inner {
+            background-color: #0ea5e9;
+            transform: scale(1);
+        }
+        
+        .option-label.correct .custom-radio {
+            border-color: #22c55e;
+        }
+        
+        .option-label.correct .custom-radio-inner {
+            background-color: #22c55e;
+            transform: scale(1);
+        }
+        
+        .option-label.incorrect .custom-radio {
+            border-color: #ef4444;
+        }
+        
+        .option-label.incorrect .custom-radio-inner {
+            background-color: #ef4444;
+            transform: scale(1);
+        }
+        
         .rationale-box {
-            background-color: #ecfdf5; /* Light green for rationale */
-            border-left: 4px solid #10b981; /* Green left border */
-            padding: 0.75rem 1rem;
+            padding: 1rem;
             margin-top: 1rem;
-            border-radius: 0.5rem;
-            color: #065f46; /* Dark green text */
+            border-radius: 8px;
             font-size: 0.9rem;
-            display: none; /* Hidden by default */
+            display: none;
         }
+        
+        .rationale-correct {
+            background-color: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            color: #166534;
+        }
+        
+        .rationale-incorrect {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
+        }
+        
+        .rationale-missing {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            color: #92400e;
+        }
+        
         .submit-quiz-btn {
-            background-color: #3b82f6; /* Blue button */
+            background-color: #0ea5e9;
             color: white;
-            padding: 0.6rem 1.2rem;
-            border-radius: 0.5rem;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.2s ease-in-out;
-            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.2);
-            display: block; /* Make it a block element */
-            margin-top: 2rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(14, 165, 233, 0.2);
+            display: block;
+            margin: 2rem auto 0;
             width: fit-content;
-            margin-left: auto;
-            margin-right: auto;
         }
+        
         .submit-quiz-btn:hover {
-            background-color: #2563eb; /* Darker blue on hover */
+            background-color: #0284c7;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 8px rgba(14, 165, 233, 0.3);
         }
+        
+        .submit-quiz-btn:active {
+            transform: translateY(0);
+        }
+        
+        .submit-quiz-btn:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
         .timer-display {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #ef4444; /* Red color for timer */
+            font-size: 1.25rem;
+            font-weight: 600;
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            background-color: #f8fafc;
         }
-        .timer-display.warning {
-            color: #f59e0b; /* Orange for warning */
+        
+        .timer-normal {
+            color: #0ea5e9;
         }
-        .timer-display.critical {
-            color: #dc2626; /* Darker red for critical */
+        
+        .timer-warning {
+            color: #f59e0b;
+            animation: pulse 1s infinite;
+        }
+        
+        .timer-critical {
+            color: #ef4444;
+            animation: pulse 0.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background-color: #e2e8f0;
+            border-radius: 3px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #0ea5e9;
+            transition: width 0.3s ease;
+        }
+        
+        .hint-text {
+            background-color: #f8fafc;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #64748b;
+            border-left: 3px solid #cbd5e1;
+        }
+        
+        .score-display {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border-radius: 12px;
+            background-color: #f8fafc;
+        }
+        
+        .score-good {
+            color: #22c55e;
+            border: 2px solid #86efac;
+        }
+        
+        .score-average {
+            color: #f59e0b;
+            border: 2px solid #fde68a;
+        }
+        
+        .score-poor {
+            color: #ef4444;
+            border: 2px solid #fca5a5;
         }
     </style>
 </head>
-<body class="p-4">
+<body class="bg-gray-50">
     <div class="quiz-container">
-        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">SLST Mathematics Quiz (Classes 9-10)</h1>
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-primary-800 mb-2">SLST Mathematics Quiz</h1>
+            <p class="text-gray-600">Test your knowledge of Class 9-10 Mathematics concepts</p>
+        </div>
 
-        <div id="timer-display" class="timer-display"></div>
+        <div id="timer-display" class="timer-display timer-normal"></div>
+        <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+        </div>
 
         <div id="quiz-questions">
             <!-- Questions will be loaded here by JavaScript -->
@@ -385,6 +626,7 @@
             const quizQuestionsDiv = document.getElementById('quiz-questions');
             const timerDisplay = document.getElementById('timer-display');
             const submitQuizBtn = document.getElementById('submit-quiz-btn');
+            const progressFill = document.getElementById('progress-fill');
 
             let timeLeft = 300; // 5 minutes in seconds
             let timerInterval;
@@ -397,11 +639,18 @@
 
             function updateTimer() {
                 timerDisplay.textContent = `Time Left: ${formatTime(timeLeft)}`;
-                if (timeLeft <= 60) { // Warning for last minute
-                    timerDisplay.classList.add('warning');
+                
+                // Update progress bar
+                const progressPercentage = (timeLeft / 300) * 100;
+                progressFill.style.width = `${progressPercentage}%`;
+                
+                // Update timer colors and effects
+                timerDisplay.className = 'timer-display timer-normal';
+                if (timeLeft <= 60) {
+                    timerDisplay.className = 'timer-display timer-warning';
                 }
-                if (timeLeft <= 10) { // Critical for last 10 seconds
-                    timerDisplay.classList.add('critical');
+                if (timeLeft <= 10) {
+                    timerDisplay.className = 'timer-display timer-critical';
                 }
 
                 if (timeLeft <= 0) {
@@ -420,9 +669,10 @@
                 let correctAnswersCount = 0;
                 quizData.questions.forEach((q, index) => {
                     const questionCard = quizQuestionsDiv.children[index];
-                    const optionsContainer = questionCard.querySelector('.space-y-3');
+                    const optionsContainer = questionCard.querySelector('.options-container');
                     const radioInputs = optionsContainer.querySelectorAll('input[type="radio"]');
                     const rationaleBox = questionCard.querySelector('.rationale-box');
+                    const optionLabels = questionCard.querySelectorAll('.option-label');
 
                     rationaleBox.style.display = 'block'; // Show rationale
 
@@ -431,6 +681,16 @@
                         input.disabled = true; // Disable all options after submit
                         if (input.checked) {
                             selectedOptionIndex = optIndex;
+                            optionLabels[optIndex].classList.add('selected');
+                        }
+                    });
+
+                    // Mark correct and incorrect answers
+                    q.answerOptions.forEach((option, optIndex) => {
+                        if (option.isCorrect) {
+                            optionLabels[optIndex].classList.add('correct');
+                        } else if (selectedOptionIndex === optIndex) {
+                            optionLabels[optIndex].classList.add('incorrect');
                         }
                     });
 
@@ -438,35 +698,44 @@
                     if (selectedOptionIndex !== -1) {
                         const selectedOption = q.answerOptions[selectedOptionIndex];
                         if (selectedOption.isCorrect) {
-                            rationaleContent = `Correct! ${selectedOption.rationale}`;
-                            rationaleBox.style.backgroundColor = '#ecfdf5'; /* Light green */
-                            rationaleBox.style.borderColor = '#10b981'; /* Green border */
-                            rationaleBox.style.color = '#065f46'; /* Dark green text */
+                            rationaleContent = `<strong class="text-success-700">Correct!</strong> ${selectedOption.rationale}`;
+                            rationaleBox.className = 'rationale-box rationale-correct';
                             correctAnswersCount++;
                         } else {
                             const correctOption = q.answerOptions.find(opt => opt.isCorrect);
-                            rationaleContent = `Incorrect. ${selectedOption.rationale} The correct answer is: ${correctOption.text}. ${correctOption.rationale}`;
-                            rationaleBox.style.backgroundColor = '#fee2e2'; /* Light red */
-                            rationaleBox.style.borderColor = '#ef4444'; /* Red border */
-                            rationaleBox.style.color = '#991b1b'; /* Dark red text */
+                            rationaleContent = `<strong class="text-danger-700">Incorrect.</strong> ${selectedOption.rationale} <br><br><strong class="text-success-700">Correct answer:</strong> ${correctOption.text}. ${correctOption.rationale}`;
+                            rationaleBox.className = 'rationale-box rationale-incorrect';
                         }
                     } else {
                         const correctOption = q.answerOptions.find(opt => opt.isCorrect);
-                        rationaleContent = `You did not select an answer. The correct answer is: ${correctOption.text}. ${correctOption.rationale}`;
-                        rationaleBox.style.backgroundColor = '#fffbeb'; /* Light yellow */
-                        rationaleBox.style.borderColor = '#f59e0b'; /* Yellow border */
-                        rationaleBox.style.color = '#92400e'; /* Dark yellow text */
+                        rationaleContent = `<strong class="text-warning-700">You did not select an answer.</strong> <br><br><strong class="text-success-700">Correct answer:</strong> ${correctOption.text}. ${correctOption.rationale}`;
+                        rationaleBox.className = 'rationale-box rationale-missing';
                     }
                     rationaleBox.innerHTML = rationaleContent;
+                    
                     // Ensure MathJax typesets the rationale content after it's set
                     if (typeof MathJax !== 'undefined') {
                         MathJax.typesetPromise([rationaleBox]);
                     }
                 });
 
-                const scoreDisplay = document.createElement('h2');
-                scoreDisplay.className = 'text-2xl font-bold text-center mt-6';
-                scoreDisplay.textContent = `You scored ${correctAnswersCount} out of ${quizData.questions.length}!`;
+                const scorePercentage = Math.round((correctAnswersCount / quizData.questions.length) * 100);
+                const scoreDisplay = document.createElement('div');
+                scoreDisplay.className = 'score-display';
+                
+                if (scorePercentage >= 70) {
+                    scoreDisplay.classList.add('score-good');
+                } else if (scorePercentage >= 40) {
+                    scoreDisplay.classList.add('score-average');
+                } else {
+                    scoreDisplay.classList.add('score-poor');
+                }
+                
+                scoreDisplay.innerHTML = `
+                    <div class="text-2xl font-bold">Your Score: ${correctAnswersCount}/${quizData.questions.length}</div>
+                    <div class="text-lg">${scorePercentage}% Correct</div>
+                `;
+                
                 quizQuestionsDiv.prepend(scoreDisplay); // Add score at the top
             }
 
@@ -476,12 +745,12 @@
                 questionCard.className = 'question-card';
 
                 const questionText = document.createElement('p');
-                questionText.className = 'text-lg font-semibold text-gray-900 mb-4';
-                questionText.innerHTML = `${index + 1}. ${q.question}`;
+                questionText.className = 'text-lg font-semibold text-gray-800 mb-4';
+                questionText.innerHTML = `<span class="text-primary-600 font-bold">Question ${index + 1}:</span> ${q.question}`;
                 questionCard.appendChild(questionText);
 
                 const optionsContainer = document.createElement('div');
-                optionsContainer.className = 'space-y-3';
+                optionsContainer.className = 'options-container space-y-3';
 
                 q.answerOptions.forEach((option, optionIndex) => {
                     const optionDiv = document.createElement('div');
@@ -493,36 +762,40 @@
 
                     const label = document.createElement('label');
                     label.htmlFor = `q${index}-option${optionIndex}`;
-                    label.className = 'option-label flex items-center';
+                    label.className = 'option-label';
 
-                    const customRadio = document.createElement('span');
-                    customRadio.className = 'w-5 h-5 border-2 border-blue-400 rounded-full flex items-center justify-center mr-3 transition-all duration-200 ease-in-out';
-                    customRadio.innerHTML = '<span class="w-3 h-3 bg-blue-600 rounded-full opacity-0 scale-0 transition-all duration-200 ease-in-out"></span>'; // Inner circle for checked state
-
-                    radioInput.addEventListener('change', () => {
-                        document.querySelectorAll(`input[name="question-${index}"]`).forEach(input => {
-                            input.nextElementSibling.querySelector('span').classList.remove('opacity-100', 'scale-100');
-                            input.nextElementSibling.querySelector('span').classList.add('opacity-0', 'scale-0');
-                        });
-                        if (radioInput.checked) {
-                            customRadio.querySelector('span').classList.remove('opacity-0', 'scale-0');
-                            customRadio.querySelector('span').classList.add('opacity-100', 'scale-100');
-                        }
-                    });
+                    const customRadio = document.createElement('div');
+                    customRadio.className = 'custom-radio';
+                    customRadio.innerHTML = '<div class="custom-radio-inner"></div>';
 
                     const optionText = document.createElement('span');
+                    optionText.className = 'text-gray-800';
                     optionText.innerHTML = option.text;
 
                     label.appendChild(radioInput);
                     label.appendChild(customRadio);
                     label.appendChild(optionText);
                     optionsContainer.appendChild(label);
+
+                    // Add event listener to update styling when option is selected
+                    radioInput.addEventListener('change', function() {
+                        // Remove selected class from all options in this question
+                        const allOptions = optionsContainer.querySelectorAll('.option-label');
+                        allOptions.forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+
+                        // Add selected class to the clicked option
+                        if (this.checked) {
+                            label.classList.add('selected');
+                        }
+                    });
                 });
                 questionCard.appendChild(optionsContainer);
 
-                const hintText = document.createElement('p');
-                hintText.className = 'text-sm text-gray-600 mt-4 italic';
-                hintText.textContent = `Hint: ${q.hint}`;
+                const hintText = document.createElement('div');
+                hintText.className = 'hint-text';
+                hintText.innerHTML = `<strong>Hint:</strong> ${q.hint}`;
                 questionCard.appendChild(hintText);
 
                 // Rationale box for each question (initially hidden)
@@ -541,7 +814,6 @@
             submitQuizBtn.addEventListener('click', () => submitQuiz(false));
 
             // Initial MathJax typesetting for all questions after they are added
-            // This is crucial to ensure equations are rendered when the page first loads
             if (typeof MathJax !== 'undefined') {
                 MathJax.typesetPromise();
             } else {
