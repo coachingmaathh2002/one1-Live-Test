@@ -117,209 +117,437 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Wait for MathJax to be ready before proceeding
-            if (typeof MathJax !== 'undefined' && MathJax.startup && MathJax.startup.promise) {
-                MathJax.startup.promise.then(function () {
-                    const quizData = {
-                        "questions": [
+            const quizData = {
+                "questions": [
+                    {
+                        "question": "If $x = \\cos \\theta + i \\sin \\theta$, what is the value of $x^n + \\frac{1}{x^n}$?",
+                        "answerOptions": [
                             {
-                                "question": "If $x = \\cos \\theta + i \\sin \\theta$, what is the value of $x^n + \\frac{1}{x^n}$?",
-                                "answerOptions": [
-                                    {
-                                        "text": "$2 \\cos n\\theta$",
-                                        "rationale": "Using De Moivre's theorem, $x^n = \\cos n\\theta + i \\sin n\\theta$ and $\\frac{1}{x^n} = x^{-n} = \\cos n\\theta - i \\sin n\\theta$. Adding these two expressions yields the result.",
-                                        "isCorrect": true
-                                    },
-                                    {
-                                        "text": "$2i \\sin n\\theta$",
-                                        "rationale": "This would be the result of subtracting $1/x^n$ from $x^n$, not adding them.",
-                                        "isCorrect": false
-                                    },
-                                    {
-                                        "text": "$\\cos n\\theta$",
-                                        "rationale": "This answer incorrectly omits the factor of 2 that results from combining the real parts of the two complex numbers.",
-                                        "isCorrect": false
-                                    },
-                                    {
-                                        "text": "$0$",
-                                        "rationale": "This would only be true if the two expressions were additive inverses, which they are not.",
-                                        "isCorrect": false
-                                    }
-                                ],
-                                "hint": "Apply De Moivre's theorem to both $x^n$ and $x^{-n}$, and then add the resulting expressions."
+                                "text": "$2 \\cos n\\theta$",
+                                "rationale": "Using De Moivre's theorem, $x^n = \\cos n\\theta + i \\sin n\\theta$ and $\\frac{1}{x^n} = x^{-n} = \\cos n\\theta - i \\sin n\\theta$. Adding these two expressions yields the result.",
+                                "isCorrect": true
                             },
                             {
-                                "question": "What are the eigenvalues of the matrix $A = \\begin{pmatrix} 1 & -3 & 3 \\\\ 3 & -5 & 3 \\\\ 6 & -6 & 4 \\end{pmatrix}$?",
-                                "answerOptions": [
-                                    {
-                                        "text": "2, 2, -1",
-                                        "rationale": "This set of eigenvalues is incorrect. The characteristic equation must be solved accurately to find the correct roots.",
-                                        "isCorrect": false
-                                    },
-                                    {
-                                        "text": "4, -2, -2",
-                                        "rationale": "This is the correct set of eigenvalues, obtained by finding the roots of the characteristic equation, $\\det(A - \\lambda I) = 0$.",
-                                        "isCorrect": true
-                                    },
-                                    {
-                                        "text": "1, -5, 4",
-                                        "rationale": "These are the diagonal elements of the matrix, which are not necessarily the eigenvalues unless the matrix is triangular.",
-                                        "isCorrect": false
-                                    },
-                                    {
-                                        "text": "4, 2, 1",
-                                        "rationale": "This set contains incorrect values, likely resulting from an error in calculating the determinant for the characteristic equation.",
-                                        "isCorrect": false
-                                    }
-                                ],
-                                "hint": "Find the characteristic equation by solving $\\det(A - \\lambda I) = 0$ for $\\lambda$."
+                                "text": "$2i \\sin n\\theta$",
+                                "rationale": "This would be the result of subtracting $1/x^n$ from $x^n$, not adding them.",
+                                "isCorrect": false
                             },
                             {
-                                "question": "Which of the following subgroups is a normal subgroup of the symmetric group $S_3$?",
-                                "answerOptions": [
-                                    {
-                                        "text": "The alternating group $A_3$",
-                                        "rationale": "The alternating group $A_n$ is always a normal subgroup of the symmetric group $S_n$. For $n=3$, $A_3$ has an index of 2, which guarantees it is a normal subgroup.",
-                                        "isCorrect": true
-                                    },
-                                    {
-                                        "text": "The subgroup generated by a single transposition, e.g., $\\{(1), (1 2)\\}$",
-                                        "rationale": "A subgroup generated by a single transposition is not normal because its left and right cosets are not equal for all elements in $S_3$.",
-                                        "isCorrect": false
-                                    },
-                                    {
-                                        "text": "The trivial subgroup containing only the identity element",
-                                        "rationale": "While the trivial subgroup is always normal, the question asks for a non-trivial normal subgroup, and $A_3$ is a more specific and significant example for $S_3$.",
-                                        "isCorrect": false
-                                    },
-                                    {
-                                        "text": "$S_3$ itself",
-                                        "rationale": "While a group is always a normal subgroup of itself, this is considered a trivial normal subgroup. The alternating group is the only non-trivial proper normal subgroup of $S_3$.",
-                                        "isCorrect": false
-                                    }
-                                ],
-                                "hint": "Recall that a subgroup H of G is normal if its index [G:H] is 2. The alternating group consists of all even permutations."
+                                "text": "$\\cos n\\theta$",
+                                "rationale": "This answer incorrectly omits the factor of 2 that results from combining the real parts of the two complex numbers.",
+                                "isCorrect": false
                             },
                             {
-                                "question": "What is the angle between the pair of straight lines represented by the equation $x^2 - y^2 = 0$?",
-                                "answerOptions": [
-                                    {
-                                        "text": "$45^\\circ$",
-                                        "rationale": "The formula for the angle between lines $ax^2 + 2hxy + by^2 = 0$ would yield $45^\\circ$ if the coefficients were different.",
-                                        "isCorrect": false
-                                    },
-                                    {
-                                        "text": "$60^\\circ$",
-                                        "rationale": "This angle does not correspond to the given equation, which represents a pair of perpendicular lines.",
-                                        "isCorrect": false
-                                    },
-                                    {
-                                        "text": "$90^\\circ$",
-                                        "rationale": "The equation can be factored into $(x-y)(x+y)=0$, which represents the lines $y=x$ and $y=-x$. The condition for perpendicularity, $a+b=0$, is met since $1+(-1)=0$.",
-                                        "isCorrect": true
-                                    },
-                                    {
-                                        "text": "$180^\\circ$",
-                                        "rationale": "An angle of 180 degrees would imply the lines are coincident, which is not the case here.",
-                                        "isCorrect": false
-                                    }
-                                ],
-                                "hint": "Consider the condition for perpendicularity for a pair of straight lines given by a homogeneous second-degree equation, which is that the sum of the coefficients of $x^2$ and $y^2$ is zero."
+                                "text": "$0$",
+                                "rationale": "This would only be true if the two expressions were additive inverses, which they are not.",
+                                "isCorrect": false
+                            }
+                        ],
+                        "hint": "Apply De Moivre's theorem to both $x^n$ and $x^{-n}$, and then add the resulting expressions."
+                    },
+                    {
+                        "question": "What are the eigenvalues of the matrix $A = \\begin{pmatrix} 1 & -3 & 3 \\\\ 3 & -5 & 3 \\\\ 6 & -6 & 4 \\end{pmatrix}$?",
+                        "answerOptions": [
+                            {
+                                "text": "2, 2, -1",
+                                "rationale": "This set of eigenvalues is incorrect. The characteristic equation must be solved accurately to find the correct roots.",
+                                "isCorrect": false
                             },
                             {
-                                "question": "Find the equation of the plane that passes through the point (1, -2, 4) and is perpendicular to the line joining the points (3, 2, 1) and (5, 4, 3).",
-                                "answerOptions": [
-                                    {
-                                        "text": "$x + y + z = 3$",
-                                        "rationale": "The direction ratios of the normal to the plane are $(5-3, 4-2, 3-1)=(2,2,2)$, or simplified to $(1,1,1)$. Substituting the point (1,-2,4) into the plane equation $1(x-1)+1(y+2)+1(z-4)=0$ gives the correct result.",
-                                        "isCorrect": true
-                                    },
-                                    {
-                                        "text": "$2x + 2y + 2z = 5$",
-                                        "rationale": "This equation has the correct direction ratios for the normal, but it does not pass through the given point (1, -2, 4).",
-                                        "isCorrect": false
-                                    },
-                                    {
-                                        "text": "$x + y - z = -5$",
-                                        "rationale": "This option contains a sign error in the direction ratios of the normal vector.",
-                                        "isCorrect": false
-                                    },
-                                    {
-                                        "text": "$x - y + z = 7$",
-                                        "rationale": "This equation does not use the correct direction ratios for the normal vector derived from the two points.",
-                                        "isCorrect": false
-                                    }
-                                ],
-                                "hint": "The direction ratios of the line will be the direction ratios of the normal vector to the plane. Use the point-normal form of the plane equation."
+                                "text": "4, -2, -2",
+                                "rationale": "This is the correct set of eigenvalues, obtained by finding the roots of the characteristic equation, $\\det(A - \\lambda I) = 0$.",
+                                "isCorrect": true
                             },
                             {
-                                "question": "For which value of 'k' does Rolle's theorem apply to the function $f(x) = x^2 + 3x + k$ on the interval [-2, -1]?",
-                                "answerOptions": [
-                                    {
-                                        "text": "-2",
-                                        "rationale": "This value does not satisfy the condition $f(-2) = f(-1)$ for Rolle's theorem.",
-                                        "isCorrect": false
-                                    },
-                                    {
-                                        "text": "0",
-                                        "rationale": "This is another value for which the condition $f(a) = f(b)$ is not met.",
-                                        "isCorrect": false
-                                    },
-                                    {
-                                        "text": "2",
-                                        "rationale": "This value results from a calculation error when setting $f(-2)$ equal to $f(-1)$.",
-                                        "isCorrect": false
-                                    },
-                                    {
-                                        "text": "No specific value of k is needed",
-                                        "rationale": "For Rolle's Theorem to apply, we need $f(-2) = f(-1)$. Evaluating this gives $4-6+k = 1-3+k$, which simplifies to $-2 = -2$. This identity is true for any value of k.",
-                                        "isCorrect": true
-                                    }
-                                ],
-                                "hint": "Rolle's theorem requires three conditions: continuity on the closed interval, differentiability on the open interval, and equality of the function values at the endpoints. Check the third condition, $f(a) = f(b)$."
+                                "text": "1, -5, 4",
+                                "rationale": "These are the diagonal elements of the matrix, which are not necessarily the eigenvalues unless the matrix is triangular.",
+                                "isCorrect": false
                             },
                             {
-                                "question": "What is the value of the integral $\\int_{0}^{\\pi/2} \\sin^4 x \\, dx$?",
-                                "answerOptions": [
-                                    {
-                                        "text": "$\\frac{3\\pi}{16}$",
-                                        "rationale": "Using the reduction formula for $\\int \\sin^n x \\, dx$, which is based on integration by parts, leads to this correct result.",
-                                        "isCorrect": true
-                                    },
-                                    {
-                                        "text": "$\\frac{3\\pi}{8}$",
-                                        "rationale": "This answer suggests an error in applying the reduction formula, possibly by a factor of 2.",
-                                        "isCorrect": false
-                                    },
-                                    {
-                                        "text": "$\\frac{\\pi}{16}$",
-                                        "rationale": "This result might come from miscalculating the coefficients in the reduction formula.",
-                                        "isCorrect": false
-                                    },
-                                    {
-                                        "text": "$\\frac{3}{16}$",
-                                        "rationale": "This answer is missing the factor of $\\pi$ that arises from evaluating the integral at its limits.",
-                                        "isCorrect": false
-                                    }
-                                ],
-                                "hint": "Apply the reduction formula for $\\int \\sin^n x \\, dx$, or use Walli's formula for definite integrals of this type."
+                                "text": "4, 2, 1",
+                                "rationale": "This set contains incorrect values, likely resulting from an error in calculating the determinant for the characteristic equation.",
+                                "isCorrect": false
+                            }
+                        ],
+                        "hint": "Find the characteristic equation by solving $\\det(A - \\lambda I) = 0$ for $\\lambda$."
+                    },
+                    {
+                        "question": "Which of the following subgroups is a normal subgroup of the symmetric group $S_3$?",
+                        "answerOptions": [
+                            {
+                                "text": "The alternating group $A_3$",
+                                "rationale": "The alternating group $A_n$ is always a normal subgroup of the symmetric group $S_n$. For $n=3$, $A_3$ has an index of 2, which guarantees it is a normal subgroup.",
+                                "isCorrect": true
                             },
                             {
-                                "question": "Three vectors $\\vec{a} = \\hat{i} + \\hat{j} + \\hat{k}$, $\\vec{b} = 2\\hat{i} - 4\\hat{k}$, and $\\vec{c} = \\hat{i} + \\lambda\\hat{j} + 3\\hat{k}$ are coplanar. What is the value of $\\lambda$?",
-                                "answerOptions": [
-                                    {
-                                        "text": "5/3",
-                                        "rationale": "This value would result from a sign error in the determinant calculation.",
-                                        "isCorrect": false
-                                    },
-                                    {
-                                        "text": "7/3",
-                                        "rationale": "This is another possible result if an arithmetic mistake is made while solving for lambda.",
-                                        "isCorrect": false
-                                    },
-                                    {
-                                        "text": "5",
-                                        "rationale": "This answer comes from an incorrect expansion of the determinant used to check for coplanarity.",
-                                        "isCorrect": false
-                                    },
-      
+                                "text": "The subgroup generated by a single transposition, e.g., $\\{(1), (1 2)\\}$",
+                                "rationale": "A subgroup generated by a single transposition is not normal because its left and right cosets are not equal for all elements in $S_3$.",
+                                "isCorrect": false
+                            },
+                            {
+                                "text": "The trivial subgroup containing only the identity element",
+                                "rationale": "While the trivial subgroup is always normal, the question asks for a non-trivial normal subgroup, and $A_3$ is a more specific and significant example for $S_3$.",
+                                "isCorrect": false
+                            },
+                            {
+                                "text": "$S_3$ itself",
+                                "rationale": "While a group is always a normal subgroup of itself, this is considered a trivial normal subgroup. The alternating group is the only non-trivial proper normal subgroup of $S_3$.",
+                                "isCorrect": false
+                            }
+                        ],
+                        "hint": "Recall that a subgroup H of G is normal if its index [G:H] is 2. The alternating group consists of all even permutations."
+                    },
+                    {
+                        "question": "What is the angle between the pair of straight lines represented by the equation $x^2 - y^2 = 0$?",
+                        "answerOptions": [
+                            {
+                                "text": "$45^\\circ$",
+                                "rationale": "The formula for the angle between lines $ax^2 + 2hxy + by^2 = 0$ would yield $45^\\circ$ if the coefficients were different.",
+                                "isCorrect": false
+                            },
+                            {
+                                "text": "$60^\\circ$",
+                                "rationale": "This angle does not correspond to the given equation, which represents a pair of perpendicular lines.",
+                                "isCorrect": false
+                            },
+                            {
+                                "text": "$90^\\circ$",
+                                "rationale": "The equation can be factored into $(x-y)(x+y)=0$, which represents the lines $y=x$ and $y=-x$. The condition for perpendicularity, $a+b=0$, is met since $1+(-1)=0$.",
+                                "isCorrect": true
+                            },
+                            {
+                                "text": "$180^\\circ$",
+                                "rationale": "An angle of 180 degrees would imply the lines are coincident, which is not the case here.",
+                                "isCorrect": false
+                            }
+                        ],
+                        "hint": "Consider the condition for perpendicularity for a pair of straight lines given by a homogeneous second-degree equation, which is that the sum of the coefficients of $x^2$ and $y^2$ is zero."
+                            },
+                    {
+                        "question": "Find the equation of the plane that passes through the point (1, -2, 4) and is perpendicular to the line joining the points (3, 2, 1) and (5, 4, 3).",
+                        "answerOptions": [
+                            {
+                                "text": "$x + y + z = 3$",
+                                "rationale": "The direction ratios of the normal to the plane are $(5-3, 4-2, 3-1)=(2,2,2)$, or simplified to $(1,1,1)$. Substituting the point (1,-2,4) into the plane equation $1(x-1)+1(y+2)+1(z-4)=0$ gives the correct result.",
+                                "isCorrect": true
+                            },
+                            {
+                                "text": "$2x + 2y + 2z = 5$",
+                                "rationale": "This equation has the correct direction ratios for the normal, but it does not pass through the given point (1, -2, 4).",
+                                "isCorrect": false
+                            },
+                            {
+                                "text": "$x + y - z = -5$",
+                                "rationale": "This option contains a sign error in the direction ratios of the normal vector.",
+                                "isCorrect": false
+                            },
+                            {
+                                "text": "$x - y + z = 7$",
+                                "rationale": "This equation does not use the correct direction ratios for the normal vector derived from the two points.",
+                                "isCorrect": false
+                            }
+                        ],
+                        "hint": "The direction ratios of the line will be the direction ratios of the normal vector to the plane. Use the point-normal form of the plane equation."
+                    },
+                    {
+                        "question": "For which value of 'k' does Rolle's theorem apply to the function $f(x) = x^2 + 3x + k$ on the interval [-2, -1]?",
+                        "answerOptions": [
+                            {
+                                "text": "-2",
+                                "rationale": "This value does not satisfy the condition $f(-2) = f(-1)$ for Rolle's theorem.",
+                                "isCorrect": false
+                            },
+                            {
+                                "text": "0",
+                                "rationale": "This is another value for which the condition $f(a) = f(b)$ is not met.",
+                                "isCorrect": false
+                            },
+                            {
+                                "text": "2",
+                                "rationale": "This value results from a calculation error when setting $f(-2)$ equal to $f(-1)$.",
+                                "isCorrect": false
+                            },
+                            {
+                                "text": "No specific value of k is needed",
+                                "rationale": "For Rolle's Theorem to apply, we need $f(-2) = f(-1)$. Evaluating this gives $4-6+k = 1-3+k$, which simplifies to $-2 = -2$. This identity is true for any value of k.",
+                                "isCorrect": true
+                            }
+                        ],
+                        "hint": "Rolle's theorem requires three conditions: continuity on the closed interval, differentiability on the open interval, and equality of the function values at the endpoints. Check the third condition, $f(a) = f(b)$."
+                    },
+                    {
+                        "question": "What is the value of the integral $\\int_{0}^{\\pi/2} \\sin^4 x \\, dx$?",
+                        "answerOptions": [
+                            {
+                                "text": "$\\frac{3\\pi}{16}$",
+                                "rationale": "Using the reduction formula for $\\int \\sin^n x \\, dx$, which is based on integration by parts, leads to this correct result.",
+                                "isCorrect": true
+                            },
+                            {
+                                "text": "$\\frac{3\\pi}{8}$",
+                                "rationale": "This answer suggests an error in applying the reduction formula, possibly by a factor of 2.",
+                                "isCorrect": false
+                            },
+                            {
+                                "text": "$\\frac{\\pi}{16}$",
+                                "rationale": "This result might come from miscalculating the coefficients in the reduction formula.",
+                                "isCorrect": false
+                            },
+                            {
+                                "text": "$\\frac{3}{16}$",
+                                "rationale": "This answer is missing the factor of $\\pi$ that arises from evaluating the integral at its limits.",
+                                "isCorrect": false
+                            }
+                        ],
+                        "hint": "Apply the reduction formula for $\\int \\sin^n x \\, dx$, or use Walli's formula for definite integrals of this type."
+                    },
+                    {
+                        "question": "Three vectors $\\vec{a} = \\hat{i} + \\hat{j} + \\hat{k}$, $\\vec{b} = 2\\hat{i} - 4\\hat{k}$, and $\\vec{c} = \\hat{i} + \\lambda\\hat{j} + 3\\hat{k}$ are coplanar. What is the value of $\\lambda$?",
+                        "answerOptions": [
+                            {
+                                "text": "5/3",
+                                "rationale": "This value would result from a sign error in the determinant calculation.",
+                                "isCorrect": false
+                            },
+                            {
+                                "text": "7/3",
+                                "rationale": "This is another possible result if an arithmetic mistake is made while solving for lambda.",
+                                "isCorrect": false
+                            },
+                            {
+                                "text": "5",
+                                "rationale": "This answer comes from an incorrect expansion of the determinant used to check for coplanarity.",
+                                "isCorrect": false
+                            },
+                            {
+                                "text": "7",
+                                "rationale": "For the vectors to be coplanar, their scalar triple product must be zero. Setting the determinant of the matrix formed by the vectors to zero and solving for $\\lambda$ gives this result.",
+                                "isCorrect": true
+                            }
+                        ],
+                        "hint": "Three vectors are coplanar if and only if their scalar triple product, $[\\vec{a} \\vec{b} \\vec{c}]$, is equal to zero."
+                    },
+                    {
+                        "question": "A particle is projected with a velocity of 20 m/s at an angle of $60^\\circ$ with the horizontal. What is its velocity at the highest point of its trajectory?",
+                        "answerOptions": [
+                            {
+                                "text": "0 m/s",
+                                "rationale": "The vertical component of velocity is zero at the highest point, but the horizontal component remains constant.",
+                                "isCorrect": false
+                            },
+                            {
+                                "text": "10 m/s",
+                                "rationale": "At the highest point, only the horizontal component of the initial velocity, $v \\cos \\theta$, remains. Here, it is $20 \\cos 60^\\circ$.",
+                                "isCorrect": true
+                            },
+                            {
+                                "text": "$10\\sqrt{3}$ m/s",
+                                "rationale": "This is the initial vertical component of the velocity, $v \\sin \\theta$, which becomes zero at the highest point.",
+                                "isCorrect": false
+                            },
+                            {
+                                "text": "20 m/s",
+                                "rationale": "The velocity is only equal to the initial velocity at the moment of projection and, in magnitude, at the point of landing.",
+                                "isCorrect": false
+                            }
+                        ],
+                        "hint": "In projectile motion, the horizontal component of velocity is constant throughout the flight, while the vertical component is affected by gravity."
+                    },
+                    {
+                        "question": "What is the standard deviation of the data set: 2, 4, 5, 6, 8?",
+                        "answerOptions": [
+                            {
+                                "text": "5",
+                                "rationale": "This is the mean of the data set, not the standard deviation.",
+                                "isCorrect": false
+                            },
+                            {
+                                "text": "4",
+                                "rationale": "This is the variance of the data set, which is the square of the standard deviation.",
+                                "isCorrect": false
+                            },
+                            {
+                                "text": "2",
+                                "rationale": "The variance is calculated as the average of the squared differences from the mean, and the standard deviation is its square root.",
+                                "isCorrect": true
+                            },
+                            {
+                                "text": "2.5",
+                                "rationale": "This result likely stems from an arithmetic error during the calculation of the variance.",
+                                "isCorrect": false
+                            }
+                        ],
+                        "hint": "First, calculate the mean of the data. Then, find the variance by averaging the squared differences from the mean. The standard deviation is the square root of the variance."
+                    }
+                ]
+            };
+
+            const quizQuestionsDiv = document.getElementById('quiz-questions');
+            const timerDisplay = document.getElementById('timer-display');
+            const submitQuizBtn = document.getElementById('submit-quiz-btn');
+
+            let timeLeft = 300; // 5 minutes in seconds
+            let timerInterval;
+
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+                return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+            }
+
+            function updateTimer() {
+                timerDisplay.textContent = `Time Left: ${formatTime(timeLeft)}`;
+                if (timeLeft <= 60) { // Warning for last minute
+                    timerDisplay.classList.add('warning');
+                }
+                if (timeLeft <= 10) { // Critical for last 10 seconds
+                    timerDisplay.classList.add('critical');
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz(true); // Auto-submit
+                } else {
+                    timeLeft--;
+                }
+            }
+
+            function submitQuiz(autoSubmitted = false) {
+                clearInterval(timerInterval);
+                submitQuizBtn.disabled = true;
+                submitQuizBtn.textContent = autoSubmitted ? 'Time Up! Quiz Submitted' : 'Quiz Submitted';
+
+                let correctAnswersCount = 0;
+                quizData.questions.forEach((q, index) => {
+                    const questionCard = quizQuestionsDiv.children[index];
+                    const optionsContainer = questionCard.querySelector('.space-y-3');
+                    const radioInputs = optionsContainer.querySelectorAll('input[type="radio"]');
+                    const rationaleBox = questionCard.querySelector('.rationale-box');
+
+                    rationaleBox.style.display = 'block'; // Show rationale
+
+                    let selectedOptionIndex = -1;
+                    radioInputs.forEach((input, optIndex) => {
+                        input.disabled = true; // Disable all options after submit
+                        if (input.checked) {
+                            selectedOptionIndex = optIndex;
+                        }
+                    });
+
+                    let rationaleContent = '';
+                    if (selectedOptionIndex !== -1) {
+                        const selectedOption = q.answerOptions[selectedOptionIndex];
+                        if (selectedOption.isCorrect) {
+                            rationaleContent = `Correct! ${selectedOption.rationale}`;
+                            rationaleBox.style.backgroundColor = '#ecfdf5'; /* Light green */
+                            rationaleBox.style.borderColor = '#10b981'; /* Green border */
+                            rationaleBox.style.color = '#065f46'; /* Dark green text */
+                            correctAnswersCount++;
+                        } else {
+                            const correctOption = q.answerOptions.find(opt => opt.isCorrect);
+                            rationaleContent = `Incorrect. ${selectedOption.rationale} The correct answer is: ${correctOption.text}. ${correctOption.rationale}`;
+                            rationaleBox.style.backgroundColor = '#fee2e2'; /* Light red */
+                            rationaleBox.style.borderColor = '#ef4444'; /* Red border */
+                            rationaleBox.style.color = '#991b1b'; /* Dark red text */
+                        }
+                    } else {
+                        const correctOption = q.answerOptions.find(opt => opt.isCorrect);
+                        rationaleContent = `You did not select an answer. The correct answer is: ${correctOption.text}. ${correctOption.rationale}`;
+                        rationaleBox.style.backgroundColor = '#fffbeb'; /* Light yellow */
+                        rationaleBox.style.borderColor = '#f59e0b'; /* Yellow border */
+                        rationaleBox.style.color = '#92400e'; /* Dark yellow text */
+                    }
+                    rationaleBox.innerHTML = rationaleContent;
+                    // Ensure MathJax typesets the rationale content after it's set
+                    if (typeof MathJax !== 'undefined') {
+                        MathJax.typesetPromise([rationaleBox]);
+                    }
+                });
+
+                const scoreDisplay = document.createElement('h2');
+                scoreDisplay.className = 'text-2xl font-bold text-center mt-6';
+                scoreDisplay.textContent = `You scored ${correctAnswersCount} out of ${quizData.questions.length}!`;
+                quizQuestionsDiv.prepend(scoreDisplay); // Add score at the top
+            }
+
+            // Populate quiz questions
+            quizData.questions.forEach((q, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-card';
+
+                const questionText = document.createElement('p');
+                questionText.className = 'text-lg font-semibold text-gray-900 mb-4';
+                questionText.innerHTML = `${index + 1}. ${q.question}`;
+                questionCard.appendChild(questionText);
+
+                const optionsContainer = document.createElement('div');
+                optionsContainer.className = 'space-y-3';
+
+                q.answerOptions.forEach((option, optionIndex) => {
+                    const optionDiv = document.createElement('div');
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+                    radioInput.name = `question-${index}`;
+                    radioInput.id = `q${index}-option${optionIndex}`;
+                    radioInput.className = 'hidden'; // Hide default radio button
+
+                    const label = document.createElement('label');
+                    label.htmlFor = `q${index}-option${optionIndex}`;
+                    label.className = 'option-label flex items-center';
+
+                    const customRadio = document.createElement('span');
+                    customRadio.className = 'w-5 h-5 border-2 border-blue-400 rounded-full flex items-center justify-center mr-3 transition-all duration-200 ease-in-out';
+                    customRadio.innerHTML = '<span class="w-3 h-3 bg-blue-600 rounded-full opacity-0 scale-0 transition-all duration-200 ease-in-out"></span>'; // Inner circle for checked state
+
+                    radioInput.addEventListener('change', () => {
+                        document.querySelectorAll(`input[name="question-${index}"]`).forEach(input => {
+                            input.nextElementSibling.querySelector('span').classList.remove('opacity-100', 'scale-100');
+                            input.nextElementSibling.querySelector('span').classList.add('opacity-0', 'scale-0');
+                        });
+                        if (radioInput.checked) {
+                            customRadio.querySelector('span').classList.remove('opacity-0', 'scale-0');
+                            customRadio.querySelector('span').classList.add('opacity-100', 'scale-100');
+                        }
+                    });
+
+                    const optionText = document.createElement('span');
+                    optionText.innerHTML = option.text;
+
+                    label.appendChild(radioInput);
+                    label.appendChild(customRadio);
+                    label.appendChild(optionText);
+                    optionsContainer.appendChild(label);
+                });
+                questionCard.appendChild(optionsContainer);
+
+                const hintText = document.createElement('p');
+                hintText.className = 'text-sm text-gray-600 mt-4 italic';
+                hintText.textContent = `Hint: ${q.hint}`;
+                questionCard.appendChild(hintText);
+
+                // Rationale box for each question (initially hidden)
+                const rationaleBox = document.createElement('div');
+                rationaleBox.className = 'rationale-box';
+                questionCard.appendChild(rationaleBox);
+
+                quizQuestionsDiv.appendChild(questionCard);
+            });
+
+            // Start timer
+            timerInterval = setInterval(updateTimer, 1000);
+            updateTimer(); // Initial call to display time immediately
+
+            // Submit button event listener
+            submitQuizBtn.addEventListener('click', () => submitQuiz(false));
+
+            // Initial MathJax typesetting for all questions after they are added
+            // This is crucial to ensure equations are rendered when the page first loads
+            if (typeof MathJax !== 'undefined') {
+                MathJax.typesetPromise();
+            } else {
+                console.error("MathJax was not defined after quiz population.");
+            }
+        });
+    </script>
+</body>
+</html>
