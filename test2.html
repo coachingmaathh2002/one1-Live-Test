@@ -1,50 +1,911 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Math Mock Test 1</title>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="assets/style.css">
-</head>
-<body>
-  <h2>Mock Test 1 - Algebra</h2>
-
-  <form id="quizForm">
-    <div class="question">
-      <p>1. Solve: \( 2x + 3 = 11 \)</p>
-      <input type="radio" name="q1" value="a"> 3<br>
-      <input type="radio" name="q1" value="b"> 4<br>
-      <input type="radio" name="q1" value="c"> 5<br>
-    </div>
-
-    <div class="question">
-      <p>2. If \( x^2 = 25 \), then x = ?</p>
-      <input type="radio" name="q2" value="a"> ±5<br>
-      <input type="radio" name="q2" value="b"> 5<br>
-      <input type="radio" name="q2" value="c"> 0<br>
-    </div>
-
-    <button type="submit">Submit</button>
-  </form>
-
-  <div id="result"></div>
-
-  <script>
-    document.getElementById('quizForm').onsubmit = function(e) {
-      e.preventDefault();
-      let score = 0;
-      const answers = { q1: 'b', q2: 'a' };
-
-      for (let q in answers) {
-        const radios = document.getElementsByName(q);
-        for (let i = 0; i < radios.length; i++) {
-          if (radios[i].checked && radios[i].value === answers[q]) {
-            score++;
-          }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLST Mathematics Quiz (55 Questions)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration (before MathJax script) -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <!-- MathJax CDN for LaTeX rendering -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #f0f4f8; /* Light blue-gray background */
         }
-      }
+        /* Custom styles for better aesthetics */
+        .quiz-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 1rem; /* More rounded corners */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Softer shadow */
+        }
+        .question-card {
+            background-color: #f8fafc; /* Lighter background for question cards */
+            border: 1px solid #e2e8f0;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.75rem; /* Rounded corners for cards */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow for cards */
+        }
+        .option-label {
+            display: block;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .option-label:hover {
+            background-color: #eff6ff; /* Light blue on hover */
+            border-color: #93c5fd; /* Blue border on hover */
+        }
+        .option-label input[type="radio"]:checked + span {
+            background-color: #dbeafe; /* Lighter blue for selected */
+            border-color: #3b82f6; /* Stronger blue border for selected */
+        }
+        .rationale-box {
+            background-color: #ecfdf5; /* Light green for rationale */
+            border-left: 4px solid #10b981; /* Green left border */
+            padding: 0.75rem 1rem;
+            margin-top: 1rem;
+            border-radius: 0.5rem;
+            color: #065f46; /* Dark green text */
+            font-size: 0.9rem;
+            display: none; /* Hidden by default */
+        }
+        .submit-quiz-btn {
+            background-color: #3b82f6; /* Blue button */
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.2);
+            display: block; /* Make it a block element */
+            margin-top: 2rem;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .submit-quiz-btn:hover {
+            background-color: #2563eb; /* Darker blue on hover */
+        }
+        .timer-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ef4444; /* Red color for timer */
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .timer-display.warning {
+            color: #f59e0b; /* Orange for warning */
+        }
+        .timer-display.critical {
+            color: #dc2626; /* Darker red for critical */
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="quiz-container">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">SLST Mathematics Quiz (55 Questions)</h1>
 
-      document.getElementById('result').innerHTML = "<h3>Your Score: " + score + " / 2</h3>";
-    };
-  </script>
+        <div id="timer-display" class="timer-display"></div>
+
+        <div id="quiz-questions">
+            <!-- Questions will be loaded here by JavaScript -->
+        </div>
+
+        <button id="submit-quiz-btn" class="submit-quiz-btn">Submit Quiz</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait for MathJax to be ready before proceeding
+            if (typeof MathJax !== 'undefined' && MathJax.startup && MathJax.startup.promise) {
+                MathJax.startup.promise.then(function () {
+                    const quizData = {
+                        "questions": [
+                            // 1. Classical Algebra: Complex Numbers
+                            {
+                                "question": "If $z = 1 + i\\sqrt{3}$, what is the principal amplitude of $z$?",
+                                "answerOptions": [
+                                    { "text": "$\\pi/6$", "rationale": "The argument is $\\arctan(\\sqrt{3}/1) = \\pi/3$, but this option is incorrect.", "isCorrect": false },
+                                    { "text": "$\\pi/4$", "rationale": "This is the argument for $1+i$, not $1+i\\sqrt{3}$.", "isCorrect": false },
+                                    { "text": "$\\pi/3$", "rationale": "The principal amplitude is $\\arctan(y/x)$ for $x>0$. Here, $\\arctan(\\sqrt{3}/1) = \\pi/3$.", "isCorrect": true },
+                                    { "text": "$2\\pi/3$", "rationale": "This would be the argument if the real part was negative and the imaginary part positive.", "isCorrect": false }
+                                ],
+                                "hint": "The principal amplitude of a complex number $x+iy$ is $\\arctan(y/x)$ when $x > 0$."
+                            },
+                            // 2. Classical Algebra: De Moivre's Theorem
+                            {
+                                "question": "Using De Moivre's theorem, what is the simplified value of $(\\cos \\theta + i \\sin \\theta)^6$?",
+                                "answerOptions": [
+                                    { "text": "$\\cos 6\\theta + i \\sin 6\\theta$", "rationale": "De Moivre's theorem states that $(\\cos \\theta + i \\sin \\theta)^n = \\cos n\\theta + i \\sin n\\theta$.", "isCorrect": true },
+                                    { "text": "$\\cos \\theta + i \\sin \\theta$", "rationale": "This is the original expression, not the simplified form after applying the power.", "isCorrect": false },
+                                    { "text": "$6\\cos \\theta + 6i \\sin \\theta$", "rationale": "This incorrectly multiplies the terms by the power instead of applying the theorem.", "isCorrect": false },
+                                    { "text": "$\\cos^6 \\theta + i \\sin^6 \\theta$", "rationale": "This incorrectly applies the power to the trigonometric functions directly, ignoring the theorem.", "isCorrect": false }
+                                ],
+                                "hint": "Remember the direct application of De Moivre's theorem for powers of complex numbers in polar form."
+                            },
+                            // 3. Classical Algebra: Polynomials (Roots)
+                            {
+                                "question": "If $2+i$ is a root of the polynomial equation $x^3 - 7x^2 + 17x - 15 = 0$, what are the other roots?",
+                                "answerOptions": [
+                                    { "text": "$2-i, 3$", "rationale": "Since coefficients are real, complex roots appear in conjugate pairs. If $2+i$ is a root, $2-i$ must also be a root. Then, factor the polynomial or use sum/product of roots to find the third root.", "isCorrect": true },
+                                    { "text": "$2-i, 5$", "rationale": "While $2-i$ is a root, $5$ is not the correct third root.", "isCorrect": false },
+                                    { "text": "$3, 5$", "rationale": "This option does not include the conjugate complex root.", "isCorrect": false },
+                                    { "text": "$-2+i, 3$", "rationale": "The conjugate of $2+i$ is $2-i$, not $-2+i$.", "isCorrect": false }
+                                ],
+                                "hint": "For polynomials with real coefficients, complex roots always occur in conjugate pairs. Use the sum or product of roots to find the remaining real root."
+                            },
+                            // 4. Classical Algebra: Polynomials (Descartes' Rule)
+                            {
+                                "question": "According to Descartes' Rule of Signs, what is the maximum number of positive real roots of the polynomial $P(x) = x^4 - 3x^3 + x^2 + 5x - 2$?",
+                                "answerOptions": [
+                                    { "text": "1", "rationale": "The number of sign changes in P(x) is 3 (from +x^4 to -3x^3, from -3x^3 to +x^2, from +5x to -2). So, the maximum positive real roots can be 3.", "isCorrect": false },
+                                    { "text": "2", "rationale": "The number of sign changes in P(x) is 3. The possible number of positive real roots are 3 or 1.", "isCorrect": false },
+                                    { "text": "3", "rationale": "The sign changes in $P(x)$ are from $(+x^4)$ to $(-3x^3)$, from $(-3x^3)$ to $(+x^2)$, and from $(+5x)$ to $(-2)$. This gives 3 sign changes, so the maximum number of positive real roots is 3.", "isCorrect": true },
+                                    { "text": "4", "rationale": "The maximum number of positive real roots is limited by the number of sign changes in P(x).", "isCorrect": false }
+                                ],
+                                "hint": "Count the number of sign changes in the coefficients of $P(x)$ when written in descending powers of $x$."
+                            },
+                            // 5. Classical Algebra: Matrices (Determinants)
+                            {
+                                "question": "What is the determinant of the matrix $A = \\begin{pmatrix} 1 & 2 & 3 \\\\ 0 & 4 & 5 \\\\ 0 & 0 & 6 \\end{pmatrix}$?",
+                                "answerOptions": [
+                                    { "text": "0", "rationale": "The determinant of a triangular matrix is the product of its diagonal elements, which is not zero here.", "isCorrect": false },
+                                    { "text": "10", "rationale": "This might result from incorrectly summing elements or applying a wrong formula.", "isCorrect": false },
+                                    { "text": "24", "rationale": "For a triangular matrix (upper or lower), the determinant is the product of its diagonal elements: $1 \\times 4 \\times 6 = 24$.", "isCorrect": true },
+                                    { "text": "120", "rationale": "This value is too large and suggests an error in calculation.", "isCorrect": false }
+                                ],
+                                "hint": "Remember the property of determinants for triangular matrices."
+                            },
+                            // 6. Classical Algebra: Matrices (Rank)
+                            {
+                                "question": "What is the rank of the matrix $A = \\begin{pmatrix} 1 & 2 & 3 \\\\ 2 & 4 & 6 \\\\ 1 & 1 & 1 \\end{pmatrix}$?",
+                                "answerOptions": [
+                                    { "text": "0", "rationale": "The rank is 0 only for a null matrix.", "isCorrect": false },
+                                    { "text": "1", "rationale": "The first two rows are linearly dependent ($R_2 = 2R_1$), but the third row is linearly independent of the first. Thus, there are two linearly independent rows.", "isCorrect": false },
+                                    { "text": "2", "rationale": "The first two rows are linearly dependent ($R_2 = 2R_1$), but the third row is not a multiple of the first. Therefore, there are two linearly independent rows, making the rank 2.", "isCorrect": true },
+                                    { "text": "3", "rationale": "The determinant of this matrix is 0, so its rank cannot be 3.", "isCorrect": false }
+                                ],
+                                "hint": "Perform row operations to find the number of non-zero rows in the row-echelon form, or check for linear dependence between rows/columns."
+                            },
+                            // 7. Modern Algebra: Sets
+                            {
+                                "question": "If $A = \\{1, 2, 3, 4\\}$ and $B = \\{3, 4, 5, 6\\}$, what is the symmetric difference $A \\Delta B$?",
+                                "answerOptions": [
+                                    { "text": "$\\emptyset$", "rationale": "The symmetric difference is not empty unless the sets are identical.", "isCorrect": false },
+                                    { "text": "$\\left\\{3, 4\\right\\}$", "rationale": "This represents the intersection of A and B, not the symmetric difference.", "isCorrect": false },
+                                    { "text": "$\\left\\{1, 2, 5, 6\\right\\}$", "rationale": "The symmetric difference $A \\Delta B = (A \\setminus B) \\cup (B \\setminus A) = \\{1, 2\\} \\cup \\{5, 6\\} = \\{1, 2, 5, 6\\}$.", "isCorrect": true },
+                                    { "text": "$\\left\\{1, 2, 3, 4, 5, 6\\right\\}$", "rationale": "This represents the union of A and B, not the symmetric difference.", "isCorrect": false }
+                                ],
+                                "hint": "The symmetric difference of two sets includes elements that are in either set, but not in their intersection."
+                            },
+                            // 8. Modern Algebra: Equivalence Relation
+                            {
+                                "question": "Which of the following properties is NOT required for a binary relation to be an equivalence relation?",
+                                "answerOptions": [
+                                    { "text": "Reflexivity", "rationale": "Reflexivity (aRa) is a necessary property for an equivalence relation.", "isCorrect": false },
+                                    { "text": "Symmetry", "rationale": "Symmetry (if aRb then bRa) is a necessary property for an equivalence relation.", "isCorrect": false },
+                                    { "text": "Transitivity", "rationale": "Transitivity (if aRb and bRc then aRc) is a necessary property for an equivalence relation.", "isCorrect": false },
+                                    { "text": "Asymmetry", "rationale": "Asymmetry (if aRb then not bRa) is contradictory to symmetry, which is required for an equivalence relation.", "isCorrect": true }
+                                ],
+                                "hint": "Recall the three fundamental properties that define an equivalence relation."
+                            },
+                            // 9. Modern Algebra: Group Theory (Order of Element)
+                            {
+                                "question": "In the additive group $(\\mathbb{Z}_6, +_6)$, what is the order of the element 2?",
+                                "answerOptions": [
+                                    { "text": "1", "rationale": "The order is 1 only for the identity element (0 in this group).", "isCorrect": false },
+                                    { "text": "2", "rationale": "This would mean $2+2 = 0 \\pmod 6$, which is $4 \\ne 0$.", "isCorrect": false },
+                                    { "text": "3", "rationale": "The order is the smallest positive integer $n$ such that $n \\cdot 2 \\equiv 0 \\pmod 6$. Here, $1 \\cdot 2 = 2$, $2 \\cdot 2 = 4$, $3 \\cdot 2 = 6 \\equiv 0 \\pmod 6$.", "isCorrect": true },
+                                    { "text": "6", "rationale": "This is the order of the group itself, but not necessarily of every element.", "isCorrect": false }
+                                ],
+                                "hint": "The order of an element 'a' in an additive group is the smallest positive integer 'n' such that $n \\cdot a$ equals the identity element."
+                            },
+                            // 10. Modern Algebra: Group Theory (Lagrange's Theorem)
+                            {
+                                "question": "If a group $G$ has order 15, which of the following cannot be the order of a subgroup of $G$?",
+                                "answerOptions": [
+                                    { "text": "1", "rationale": "A subgroup of order 1 is always the trivial subgroup.", "isCorrect": false },
+                                    { "text": "3", "rationale": "3 is a divisor of 15, so a subgroup of order 3 can exist by Lagrange's theorem.", "isCorrect": false },
+                                    { "text": "5", "rationale": "5 is a divisor of 15, so a subgroup of order 5 can exist by Lagrange's theorem.", "isCorrect": false },
+                                    { "text": "7", "rationale": "According to Lagrange's Theorem, the order of a subgroup must divide the order of the group. 7 does not divide 15.", "isCorrect": true }
+                                ],
+                                "hint": "Recall Lagrange's Theorem, which states a fundamental relationship between the order of a subgroup and the order of the group."
+                            },
+                            // 11. Modern Algebra: Rings and Fields
+                            {
+                                "question": "Which of the following is an example of an integral domain but NOT a field?",
+                                "answerOptions": [
+                                    { "text": "$\\mathbb{Z}$ (Integers)", "rationale": "$\\mathbb{Z}$ is an integral domain (commutative ring with unity and no zero divisors) but not a field because not every non-zero element has a multiplicative inverse (e.g., 2 has no inverse in $\\mathbb{Z}$).", "isCorrect": true },
+                                    { "text": "$\\mathbb{R}$ (Real Numbers)", "rationale": "$\\mathbb{R}$ is a field, as every non-zero element has a multiplicative inverse.", "isCorrect": false },
+                                    { "text": "$\\mathbb{Q}$ (Rational Numbers)", "rationale": "$\\mathbb{Q}$ is a field, as every non-zero element has a multiplicative inverse.", "isCorrect": false },
+                                    { "text": "$\\mathbb{Z}_5$ (Integers modulo 5)", "rationale": "$\\mathbb{Z}_5$ is a field because 5 is a prime number, ensuring every non-zero element has an inverse.", "isCorrect": false }
+                                ],
+                                "hint": "An integral domain is a commutative ring with unity and no zero divisors. A field is an integral domain where every non-zero element has a multiplicative inverse."
+                            },
+                            // 12. Modern Algebra: Vector Space Basis
+                            {
+                                "question": "Which of the following sets of vectors forms a basis for $\\mathbb{R}^2$?",
+                                "answerOptions": [
+                                    { "text": "$\\{(1, 0), (2, 0)\\}$", "rationale": "These vectors are linearly dependent, as $(2,0) = 2(1,0)$, so they cannot form a basis.", "isCorrect": false },
+                                    { "text": "$\\{(1, 1), (0, 0)\\}$", "rationale": "The zero vector can never be part of a basis, as any set containing it is linearly dependent.", "isCorrect": false },
+                                    { "text": "$\\{(1, 1), (1, -1)\\}$", "rationale": "These two vectors are linearly independent and span $\\mathbb{R}^2$. The determinant of the matrix formed by these vectors is non-zero.", "isCorrect": true },
+                                    { "text": "$\\{(1, 0), (0, 1), (1, 1)\\}$", "rationale": "This set contains three vectors, which is more than the dimension of $\\mathbb{R}^2$, so they must be linearly dependent and cannot form a basis.", "isCorrect": false }
+                                ],
+                                "hint": "A basis for a vector space must be linearly independent and span the entire space. For $\\mathbb{R}^2$, a basis must consist of exactly two linearly independent vectors."
+                            },
+                            // 13. Classical Algebra: Eigenvalues/Eigenvectors
+                            {
+                                "question": "If $\\lambda$ is an eigenvalue of a matrix $A$, and $X$ is its corresponding eigenvector, which equation holds true?",
+                                "answerOptions": [
+                                    { "text": "$AX = \\lambda$", "rationale": "This equation is dimensionally incorrect; A multiplies a vector to produce a vector, not a scalar.", "isCorrect": false },
+                                    { "text": "$AX = \\lambda X$", "rationale": "This is the fundamental definition of an eigenvalue $\\lambda$ and its corresponding eigenvector $X$ for a matrix $A$.", "isCorrect": true },
+                                    { "text": "$A + X = \\lambda$", "rationale": "Eigenvalue problems involve multiplication, not addition, between the matrix and vector.", "isCorrect": false },
+                                    { "text": "$A - \\lambda I = X$", "rationale": "This equation is part of finding eigenvalues, but it doesn't define the relationship between A, X, and $\\lambda$.", "isCorrect": false }
+                                ],
+                                "hint": "Recall the defining equation that relates a matrix, its eigenvalue, and its eigenvector."
+                            },
+                            // 14. Geometry: 2D Transformations
+                            {
+                                "question": "If a point $(x, y)$ is rotated by $90^\\circ$ counter-clockwise about the origin, what are its new coordinates?",
+                                "answerOptions": [
+                                    { "text": "$(-x, y)$", "rationale": "This is a reflection across the y-axis, not a 90-degree rotation.", "isCorrect": false },
+                                    { "text": "$(x, -y)$", "rationale": "This is a reflection across the x-axis, not a 90-degree rotation.", "isCorrect": false },
+                                    { "text": "$(-y, x)$", "rationale": "The transformation matrix for a $90^\\circ$ counter-clockwise rotation is $\\begin{pmatrix} 0 & -1 \\\\ 1 & 0 \\end{pmatrix}$, which transforms $(x,y)$ to $(-y,x)$.", "isCorrect": true },
+                                    { "text": "$(y, -x)$", "rationale": "This is a 90-degree clockwise rotation, not counter-clockwise.", "isCorrect": false }
+                                ],
+                                "hint": "Consider the effect of a $90^\\circ$ counter-clockwise rotation on the coordinates of a point in the Cartesian plane."
+                            },
+                            // 15. Geometry: 2D General Equation of Second Degree
+                            {
+                                "question": "The equation $x^2 + y^2 - 4x + 6y - 12 = 0$ represents a:",
+                                "answerOptions": [
+                                    { "text": "Parabola", "rationale": "A parabola has only one squared term (either $x^2$ or $y^2$).", "isCorrect": false },
+                                    { "text": "Ellipse", "rationale": "For an ellipse, the coefficients of $x^2$ and $y^2$ must be positive and different, or equal but with a non-zero $xy$ term.", "isCorrect": false },
+                                    { "text": "Circle", "rationale": "The coefficients of $x^2$ and $y^2$ are equal (both 1) and there is no $xy$ term, which are characteristics of a circle.", "isCorrect": true },
+                                    { "text": "Hyperbola", "rationale": "For a hyperbola, the coefficients of $x^2$ and $y^2$ must have opposite signs.", "isCorrect": false }
+                                ],
+                                "hint": "Examine the coefficients of the $x^2$ and $y^2$ terms and the presence of an $xy$ term to identify the conic section."
+                            },
+                            // 16. Geometry: 2D Pairs of Straight Lines
+                            {
+                                "question": "The equation $x^2 - 5xy + 6y^2 = 0$ represents a pair of straight lines. What are the equations of these lines?",
+                                "answerOptions": [
+                                    { "text": "$x-2y=0, x-3y=0$", "rationale": "Factoring the quadratic expression $x^2 - 5xy + 6y^2 = (x-2y)(x-3y)$, which yields the given lines.", "isCorrect": true },
+                                    { "text": "$x+2y=0, x+3y=0$", "rationale": "This option would result from a sign error in the factorization.", "isCorrect": false },
+                                    { "text": "$x-y=0, x-6y=0$", "rationale": "This factorization does not yield the original equation.", "isCorrect": false },
+                                    { "text": "$2x-y=0, 3x-y=0$", "rationale": "This factorization does not yield the original equation.", "isCorrect": false }
+                                ],
+                                "hint": "Factor the quadratic homogeneous equation into two linear factors."
+                            },
+                            // 17. Geometry: 2D Conics (Parabola)
+                            {
+                                "question": "What is the equation of the tangent to the parabola $y^2 = 8x$ at the point $(2, 4)$?",
+                                "answerOptions": [
+                                    { "text": "$y = x + 2$", "rationale": "The equation of the tangent to $y^2=4ax$ at $(x_1,y_1)$ is $yy_1 = 2a(x+x_1)$. For $y^2=8x$, $4a=8 \\implies a=2$. So, $y(4) = 2(2)(x+2) \\implies 4y = 4(x+2) \\implies y = x+2$.", "isCorrect": true },
+                                    { "text": "$y = 2x$", "rationale": "This line passes through the origin and (2,4) but is not the tangent.", "isCorrect": false },
+                                    { "text": "$x + y = 6$", "rationale": "This equation is incorrect and does not represent the tangent.", "isCorrect": false },
+                                    { "text": "$y = x + 4$", "rationale": "This has a correct slope but incorrect y-intercept for the tangent.", "isCorrect": false }
+                                ],
+                                "hint": "Use the standard formula for the tangent to a parabola $y^2=4ax$ at a given point $(x_1, y_1)$."
+                            },
+                            // 18. Geometry: 2D Polar Equations
+                            {
+                                "question": "The polar equation $r = a \\cos \\theta$ represents a:",
+                                "answerOptions": [
+                                    { "text": "Straight line", "rationale": "A straight line in polar coordinates typically has the form $r \\cos(\\theta - \\alpha) = p$.", "isCorrect": false },
+                                    { "text": "Parabola", "rationale": "A parabola in polar coordinates with focus at the pole has a form like $r = \\frac{l}{1+e\\cos\\theta}$.", "isCorrect": false },
+                                    { "text": "Circle", "rationale": "Multiplying by $r$ gives $r^2 = ar \\cos \\theta$, which translates to $x^2+y^2 = ax$ in Cartesian coordinates, representing a circle passing through the origin.", "isCorrect": true },
+                                    { "text": "Hyperbola", "rationale": "A hyperbola in polar coordinates with focus at the pole has a form like $r = \\frac{l}{1+e\\cos\\theta}$ where $e>1$.", "isCorrect": false }
+                                ],
+                                "hint": "Convert the polar equation to Cartesian coordinates using $x = r \\cos \\theta$ and $y = r \\sin \\theta$, and $r^2 = x^2 + y^2$."
+                            },
+                            // 19. Geometry: 3D Rectangular Cartesian Coordinates
+                            {
+                                "question": "What are the direction cosines of the vector $\\vec{v} = 3\\hat{i} - 4\\hat{j} + 5\\hat{k}$?",
+                                "answerOptions": [
+                                    { "text": "$(\\frac{3}{\\sqrt{50}}, \\frac{-4}{\\sqrt{50}}, \\frac{5}{\\sqrt{50}})$", "rationale": "The magnitude of the vector is $\\sqrt{3^2 + (-4)^2 + 5^2} = \\sqrt{9+16+25} = \\sqrt{50}$. The direction cosines are the components divided by the magnitude.", "isCorrect": true },
+                                    { "text": "$(3, -4, 5)$", "rationale": "These are the direction ratios, not the direction cosines.", "isCorrect": false },
+                                    { "text": "$(\\frac{3}{12}, \\frac{-4}{12}, \\frac{5}{12})$", "rationale": "This uses an incorrect magnitude for normalization.", "isCorrect": false },
+                                    { "text": "$(\\frac{1}{\\sqrt{2}}, \\frac{-1}{\\sqrt{2}}, \\frac{1}{\\sqrt{2}})$", "rationale": "This is an incorrect normalization and simplification.", "isCorrect": false }
+                                ],
+                                "hint": "To find the direction cosines, divide each component of the vector by its magnitude."
+                            },
+                            // 20. Geometry: 3D Equation of Plane
+                            {
+                                "question": "The equation of a plane is $2x - 3y + 6z = 14$. What is the length of the perpendicular from the origin to this plane?",
+                                "answerOptions": [
+                                    { "text": "1", "rationale": "The length of the perpendicular from the origin $(0,0,0)$ to the plane $Ax+By+Cz=D$ is $|D| / \\sqrt{A^2+B^2+C^2}$. Here, $14 / \\sqrt{2^2+(-3)^2+6^2} = 14 / \\sqrt{4+9+36} = 14/\\sqrt{49} = 14/7 = 2$.", "isCorrect": false },
+                                    { "text": "2", "rationale": "The length of the perpendicular from the origin $(0,0,0)$ to the plane $Ax+By+Cz=D$ is $|D| / \\sqrt{A^2+B^2+C^2}$. Here, $14 / \\sqrt{2^2+(-3)^2+6^2} = 14 / \\sqrt{4+9+36} = 14/\\sqrt{49} = 14/7 = 2$.", "isCorrect": true },
+                                    { "text": "7", "rationale": "This is the magnitude of the normal vector, not the perpendicular distance.", "isCorrect": false },
+                                    { "text": "14", "rationale": "This is the constant term, not the perpendicular distance.", "isCorrect": false }
+                                ],
+                                "hint": "Use the formula for the perpendicular distance from the origin to a plane $Ax+By+Cz=D$."
+                            },
+                            // 21. Geometry: 3D Straight Lines in Space
+                            {
+                                "question": "What is the angle between the lines $\\frac{x-1}{2} = \\frac{y-2}{1} = \\frac{z-3}{-2}$ and $\\frac{x+1}{1} = \\frac{y}{2} = \\frac{z-1}{2}$?",
+                                "answerOptions": [
+                                    { "text": "$0^\\circ$", "rationale": "The lines are not parallel as their direction ratios are not proportional.", "isCorrect": false },
+                                    { "text": "$30^\\circ$", "rationale": "This angle is incorrect. Calculate the dot product of the direction vectors.", "isCorrect": false },
+                                    { "text": "$60^\\circ$", "rationale": "The cosine of the angle is $\\frac{|(2)(1) + (1)(2) + (-2)(2)|}{\\sqrt{2^2+1^2+(-2)^2}\\sqrt{1^2+2^2+2^2}} = \\frac{|2+2-4|}{\\sqrt{9}\\sqrt{9}} = \\frac{0}{9} = 0$. Thus, the angle is $90^\\circ$.", "isCorrect": false },
+                                    { "text": "$90^\\circ$", "rationale": "The dot product of their direction vectors $(2, 1, -2)$ and $(1, 2, 2)$ is $2(1) + 1(2) + (-2)(2) = 2 + 2 - 4 = 0$. Since the dot product is zero, the lines are perpendicular.", "isCorrect": true }
+                                ],
+                                "hint": "The cosine of the angle between two lines with direction ratios $(l_1, m_1, n_1)$ and $(l_2, m_2, n_2)$ is given by $\\frac{|l_1 l_2 + m_1 m_2 + n_1 n_2|}{\\sqrt{l_1^2+m_1^2+n_1^2}\\sqrt{l_2^2+m_2^2+n_2^2}}$."
+                            },
+                            // 22. Differential Calculus: Real Numbers (Archimedean Property)
+                            {
+                                "question": "Which property of real numbers states that for any positive real number $x$, there exists a natural number $n$ such that $n > x$?",
+                                "answerOptions": [
+                                    { "text": "Completeness Property", "rationale": "The completeness property relates to the existence of a least upper bound for every non-empty set of real numbers that is bounded above.", "isCorrect": false },
+                                    { "text": "Density Property", "rationale": "The density property states that between any two distinct real numbers, there exists another real number.", "isCorrect": false },
+                                    { "text": "Archimedean Property", "rationale": "The Archimedean property states that for any positive real number $x$, there exists a natural number $n$ such that $n > x$ (or $nx > y$ for any $x>0, y>0$).", "isCorrect": true },
+                                    { "text": "Trichotomy Property", "rationale": "The trichotomy property states that for any two real numbers $a$ and $b$, exactly one of $a < b$, $a = b$, or $a > b$ is true.", "isCorrect": false }
+                                ],
+                                "hint": "This property essentially states that there are no 'infinitely large' real numbers in comparison to natural numbers."
+                            },
+                            // 23. Differential Calculus: Sequences (Limit)
+                            {
+                                "question": "What is the limit of the sequence $a_n = \\frac{2n^2 + 3n - 1}{5n^2 - n + 2}$ as $n \\to \\infty$?",
+                                "answerOptions": [
+                                    { "text": "0", "rationale": "The limit is not zero because the degree of the numerator and denominator are the same.", "isCorrect": false },
+                                    { "text": "1", "rationale": "This would be the limit if the leading coefficients were both 1.", "isCorrect": false },
+                                    { "text": "2/5", "rationale": "When finding the limit of a rational function as $n \\to \\infty$, if the degrees of the numerator and denominator are equal, the limit is the ratio of their leading coefficients.", "isCorrect": true },
+                                    { "text": "$\\infty$", "rationale": "The limit is finite because the degree of the numerator is not greater than the degree of the denominator.", "isCorrect": false }
+                                ],
+                                "hint": "For a rational function, when the degree of the numerator equals the degree of the denominator, the limit as $n \\to \\infty$ is the ratio of the leading coefficients."
+                            },
+                            // 24. Differential Calculus: Infinite Series
+                            {
+                                "question": "Which of the following series converges?",
+                                "answerOptions": [
+                                    { "text": "$\\sum_{n=1}^{\\infty} \\frac{1}{n}$ (Harmonic Series)", "rationale": "The harmonic series is a well-known divergent p-series (p=1).", "isCorrect": false },
+                                    { "text": "$\\sum_{n=1}^{\\infty} n$", "rationale": "This series diverges by the nth term test (terms do not approach 0).", "isCorrect": false },
+                                    { "text": "$\\sum_{n=1}^{\\infty} (-1)^n \\frac{1}{n}$ (Alternating Harmonic Series)", "rationale": "This is an alternating series where the terms decrease in magnitude and approach zero, so it converges by the Alternating Series Test (Leibnitz Test).", "isCorrect": true },
+                                    { "text": "$\\sum_{n=1}^{\\infty} \\frac{1}{\\sqrt{n}}$", "rationale": "This is a p-series with $p=1/2 < 1$, so it diverges.", "isCorrect": false }
+                                ],
+                                "hint": "Consider the common convergence tests for series, such as the p-series test and the Alternating Series Test."
+                            },
+                            // 25. Differential Calculus: Continuity
+                            {
+                                "question": "For what value of $a$ is the function $f(x) = \\begin{cases} ax + 5 & \\text{if } x \\le 2 \\\\ x^2 - 1 & \\text{if } x > 2 \\end{cases}$ continuous at $x=2$?",
+                                "answerOptions": [
+                                    { "text": "$-1$", "rationale": "If $a=-1$, then $f(2) = -2+5=3$ and $\\lim_{x \\to 2^+} f(x) = 2^2-1=3$. So, $a=-1$ makes the function continuous.", "isCorrect": true },
+                                    { "text": "0", "rationale": "If $a=0$, then $f(2)=5$, but $\\lim_{x \\to 2^+} f(x) = 3$, so it's not continuous.", "isCorrect": false },
+                                    { "text": "1", "rationale": "If $a=1$, then $f(2)=7$, but $\\lim_{x \\to 2^+} f(x) = 3$, so it's not continuous.", "isCorrect": false },
+                                    { "text": "3", "rationale": "This value of 'a' would make the left limit $3(2)+5=11$, which is not equal to the right limit.", "isCorrect": false }
+                                ],
+                                "hint": "For a piecewise function to be continuous at a point, the left-hand limit, the right-hand limit, and the function value at that point must all be equal."
+                            },
+                            // 26. Differential Calculus: Differentiability
+                            {
+                                "question": "If $y = e^{ax} \\cos(bx)$, what is $\\frac{dy}{dx}$?",
+                                "answerOptions": [
+                                    { "text": "$e^{ax}(a \\cos(bx) - b \\sin(bx))$", "rationale": "Apply the product rule: $\\frac{d}{dx}(uv) = u'v + uv'$. Here $u=e^{ax}, v=\\cos(bx)$. So, $u'=ae^{ax}, v'=-b\\sin(bx)$.", "isCorrect": true },
+                                    { "text": "$ae^{ax} \\sin(bx)$", "rationale": "This is incorrect and misses terms from the product rule.", "isCorrect": false },
+                                    { "text": "$e^{ax}(\\cos(bx) + \\sin(bx))$", "rationale": "This incorrectly applies the chain rule and product rule.", "isCorrect": false },
+                                    { "text": "$e^{ax}(a \\sin(bx) + b \\cos(bx))$", "rationale": "This has a sign error and mixes up the derivatives of sine and cosine.", "isCorrect": false }
+                                ],
+                                "hint": "Use the product rule for differentiation, considering $e^{ax}$ as one function and $\\cos(bx)$ as another."
+                            },
+                            // 27. Differential Calculus: Rolle's Theorem
+                            {
+                                "question": "For the function $f(x) = x^2 - 4x + 3$ on the interval $[1, 3]$, what is the value of $c$ guaranteed by Rolle's Theorem?",
+                                "answerOptions": [
+                                    { "text": "1", "rationale": "This is one of the endpoints, not the interior point guaranteed by Rolle's theorem.", "isCorrect": false },
+                                    { "text": "2", "rationale": "Rolle's Theorem states that there exists a $c \\in (1, 3)$ such that $f'(c) = 0$. $f'(x) = 2x - 4$. Setting $2x-4=0$ gives $x=2$, which is in the interval $(1,3)$.", "isCorrect": true },
+                                    { "text": "3", "rationale": "This is one of the endpoints, not the interior point guaranteed by Rolle's theorem.", "isCorrect": false },
+                                    { "text": "4", "rationale": "This value is outside the given interval.", "isCorrect": false }
+                                ],
+                                "hint": "Rolle's Theorem states that if $f(a)=f(b)$ and $f$ is continuous and differentiable, then there exists a $c$ in $(a,b)$ such that $f'(c)=0$."
+                            },
+                            // 28. Differential Calculus: Taylor's Theorem
+                            {
+                                "question": "The Taylor series expansion of $e^x$ about $x=0$ (Maclaurin series) is:",
+                                "answerOptions": [
+                                    { "text": "$1 + x + x^2 + \\dots$", "rationale": "This is the geometric series, not the expansion of $e^x$.", "isCorrect": false },
+                                    { "text": "$x - \\frac{x^3}{3!} + \\frac{x^5}{5!} - \\dots$", "rationale": "This is the Maclaurin series for $\\sin x$.", "isCorrect": false },
+                                    { "text": "$1 + x + \\frac{x^2}{2!} + \\frac{x^3}{3!} + \\dots$", "rationale": "The Maclaurin series for $e^x$ is $\\sum_{n=0}^{\\infty} \\frac{x^n}{n!}$.", "isCorrect": true },
+                                    { "text": "$x - \\frac{x^2}{2!} + \\frac{x^3}{3!} - \\dots$", "rationale": "This is the Maclaurin series for $\\ln(1+x)$ with an incorrect first term.", "isCorrect": false }
+                                ],
+                                "hint": "Recall the standard Maclaurin series for common elementary functions, especially $e^x$."
+                            },
+                            // 29. Differential Calculus: Functions of Two Variables (Partial Derivatives)
+                            {
+                                "question": "If $f(x, y) = x^3 y^2 + 2x - 3y$, what is $\\frac{\\partial f}{\\partial x}$?",
+                                "answerOptions": [
+                                    { "text": "$3x^2 y^2 + 2$", "rationale": "When differentiating with respect to $x$, treat $y$ as a constant. The derivative of $x^3 y^2$ is $3x^2 y^2$, and $2x$ is $2$, while $-3y$ is $0$.", "isCorrect": true },
+                                    { "text": "$2x^3 y - 3$", "rationale": "This is $\\frac{\\partial f}{\\partial y}$, not $\\frac{\\partial f}{\\partial x}$.", "isCorrect": false },
+                                    { "text": "$3x^2 y^2 + 2x - 3y$", "rationale": "This incorrectly includes the original terms that are constant with respect to x.", "isCorrect": false },
+                                    { "text": "$3x^2 y^2 + 2x$", "rationale": "This incorrectly includes the term $2x$ instead of its derivative with respect to $x$.", "isCorrect": false }
+                                ],
+                                "hint": "When computing a partial derivative with respect to one variable, treat all other variables as constants."
+                            },
+                            // 30. Differential Calculus: Applications (Tangents and Normals)
+                            {
+                                "question": "What is the slope of the tangent to the curve $y = x^3 - 2x + 1$ at the point $(1, 0)$?",
+                                "answerOptions": [
+                                    { "text": "0", "rationale": "This would mean the tangent is horizontal.", "isCorrect": false },
+                                    { "text": "1", "rationale": "The derivative $dy/dx = 3x^2 - 2$. At $x=1$, the slope is $3(1)^2 - 2 = 1$.", "isCorrect": true },
+                                    { "text": "2", "rationale": "This value is incorrect. Recheck the derivative calculation.", "isCorrect": false },
+                                    { "text": "3", "rationale": "This would be the slope if the constant term was different.", "isCorrect": false }
+                                ],
+                                "hint": "The slope of the tangent to a curve at a point is given by the derivative of the function evaluated at that point."
+                            },
+                            // 31. Integral Calculus: Integration of Rational Functions
+                            {
+                                "question": "Evaluate $\\int \\frac{1}{x^2 - 4} dx$.",
+                                "answerOptions": [
+                                    { "text": "$\\frac{1}{4} \\ln\\left|\\frac{x-2}{x+2}\\right| + C$", "rationale": "Use partial fraction decomposition or the standard integral formula $\\int \\frac{1}{x^2 - a^2} dx = \\frac{1}{2a} \\ln\\left|\\frac{x-a}{x+a}\\right| + C$. Here $a=2$.", "isCorrect": true },
+                                    { "text": "$\\frac{1}{2} \\ln\\left|\\frac{x-2}{x+2}\\right| + C$", "rationale": "This has an incorrect coefficient in front of the logarithm.", "isCorrect": false },
+                                    { "text": "$\\frac{1}{4} \\ln\\left|\\frac{x+2}{x-2}\\right| + C$", "rationale": "This has the terms in the logarithm inverted, leading to a sign error.", "isCorrect": false },
+                                    { "text": "$\\arctan(\\frac{x}{2}) + C$", "rationale": "This is the integral of $\\frac{1}{x^2+a^2}$, not $\\frac{1}{x^2-a^2}$.", "isCorrect": false }
+                                ],
+                                "hint": "Use partial fraction decomposition or the standard integral formula for $\\int \\frac{1}{x^2 - a^2} dx$."
+                            },
+                            // 32. Integral Calculus: Definite Integrals
+                            {
+                                "question": "Evaluate $\\int_{0}^{1} (x^2 + 1) dx$.",
+                                "answerOptions": [
+                                    { "text": "1", "rationale": "This value is incorrect. Recheck the integration and evaluation at limits.", "isCorrect": false },
+                                    { "text": "2/3", "rationale": "This would be the result if the '+1' term was omitted during integration.", "isCorrect": false },
+                                    { "text": "4/3", "rationale": "The integral is $[\\frac{x^3}{3} + x]_{0}^{1} = (\\frac{1^3}{3} + 1) - (\\frac{0^3}{3} + 0) = \\frac{1}{3} + 1 = \\frac{4}{3}$.", "isCorrect": true },
+                                    { "text": "5/3", "rationale": "This value is incorrect. Recheck the arithmetic.", "isCorrect": false }
+                                ],
+                                "hint": "Integrate the polynomial term by term and then apply the Fundamental Theorem of Calculus by evaluating at the upper and lower limits."
+                            },
+                            // 33. Integral Calculus: Integration as Limit of Sum
+                            {
+                                "question": "The definite integral $\\int_{a}^{b} f(x) dx$ can be defined as the limit of a sum. This is known as:",
+                                "answerOptions": [
+                                    { "text": "Newton's Method", "rationale": "Newton's method is for finding roots of equations.", "isCorrect": false },
+                                    { "text": "Taylor Series", "rationale": "Taylor series are for approximating functions.", "isCorrect": false },
+                                    { "text": "Riemann Sum", "rationale": "The definite integral is formally defined as the limit of Riemann sums as the width of the subintervals approaches zero.", "isCorrect": true },
+                                    { "text": "Lagrange Interpolation", "rationale": "Lagrange interpolation is for constructing polynomials that pass through given points.", "isCorrect": false }
+                                ],
+                                "hint": "This concept relates to approximating the area under a curve using rectangles."
+                            },
+                            // 34. Integral Calculus: Reduction Formula
+                            {
+                                "question": "Using a reduction formula, what is the value of $\\int_{0}^{\\pi/2} \\cos^3 x \\, dx$?",
+                                "answerOptions": [
+                                    { "text": "1/3", "rationale": "This answer is incorrect. Recheck the reduction formula application.", "isCorrect": false },
+                                    { "text": "2/3", "rationale": "Using the reduction formula for $\\int \\cos^n x \\, dx$ or Wallis' formula for $n=3$ (odd), $\\frac{(3-1)}{3} \\cdot 1 = \\frac{2}{3}$.", "isCorrect": true },
+                                    { "text": "$\\pi/2$", "rationale": "This would be the result if the integral was of $\\cos x$ over this interval.", "isCorrect": false },
+                                    { "text": "$\\pi/4$", "rationale": "This is the result for $\\int_{0}^{\\pi/2} \\sin^2 x \\, dx$ or $\\int_{0}^{\\pi/2} \\cos^2 x \\, dx$.", "isCorrect": false }
+                                ],
+                                "hint": "Recall Wallis' integrals or the reduction formula for $\\int \\cos^n x \\, dx$ evaluated from 0 to $\\pi/2$."
+                            },
+                            // 35. Integral Calculus: Double Integral
+                            {
+                                "question": "Evaluate the double integral $\\int_{0}^{1} \\int_{0}^{1} (x + y) dy dx$.",
+                                "answerOptions": [
+                                    { "text": "0", "rationale": "The integrand is positive over the region, so the integral cannot be zero.", "isCorrect": false },
+                                    { "text": "1/2", "rationale": "This value is too small. Recheck the integration steps.", "isCorrect": false },
+                                    { "text": "1", "rationale": "First integrate with respect to $y$: $\\int_0^1 [xy + y^2/2]_0^1 dx = \\int_0^1 (x + 1/2) dx$. Then integrate with respect to $x$: $[x^2/2 + x/2]_0^1 = 1/2 + 1/2 = 1$.", "isCorrect": true },
+                                    { "text": "2", "rationale": "This value is too large. Recheck the integration steps.", "isCorrect": false }
+                                ],
+                                "hint": "Perform the inner integral first with respect to $y$, treating $x$ as a constant, then perform the outer integral with respect to $x$."
+                            },
+                            // 36. Integral Calculus: Quadrature (Area)
+                            {
+                                "question": "What is the area enclosed by the parabola $y^2 = 4x$ and the line $x=1$?",
+                                "answerOptions": [
+                                    { "text": "4/3", "rationale": "The area is $\\int_{0}^{1} 2\\sqrt{4x} dx = \\int_{0}^{1} 4\\sqrt{x} dx = [4 \\cdot \\frac{2}{3} x^{3/2}]_0^1 = \\frac{8}{3}$.", "isCorrect": false },
+                                    { "text": "8/3", "rationale": "The area is symmetric about the x-axis. Integrate $y = 2\\sqrt{x}$ from $x=0$ to $x=1$ and multiply by 2. $\\text{Area} = 2 \\int_{0}^{1} 2\\sqrt{x} dx = 4 \\int_{0}^{1} x^{1/2} dx = 4 [\\frac{2}{3}x^{3/2}]_0^1 = 4 (\\frac{2}{3}) = \\frac{8}{3}$.", "isCorrect": true },
+                                    { "text": "2", "rationale": "This value is incorrect. Recheck the integration of the square root function.", "isCorrect": false },
+                                    { "text": "16/3", "rationale": "This value is too large and suggests an error in calculation.", "isCorrect": false }
+                                ],
+                                "hint": "The area can be found by integrating $y$ with respect to $x$. Remember the parabola is symmetric about the x-axis, so you can integrate from $y=0$ to $y=2\\sqrt{x}$ and multiply by 2."
+                            },
+                            // 37. Differential Equations: First Order (Variable Separable)
+                            {
+                                "question": "Solve the differential equation $\\frac{dy}{dx} = \\frac{x}{y}$.",
+                                "answerOptions": [
+                                    { "text": "$y = Cx$", "rationale": "This is a solution to $dy/dx = y/x$, not $x/y$.", "isCorrect": false },
+                                    { "text": "$y^2 - x^2 = C$", "rationale": "Separating variables gives $y dy = x dx$. Integrating both sides yields $\\frac{y^2}{2} = \\frac{x^2}{2} + C'$, which simplifies to $y^2 - x^2 = C$.", "isCorrect": true },
+                                    { "text": "$y^2 + x^2 = C$", "rationale": "This would be the solution to $y dy = -x dx$.", "isCorrect": false },
+                                    { "text": "$y = x + C$", "rationale": "This is a linear solution, not applicable here.", "isCorrect": false }
+                                ],
+                                "hint": "Separate the variables $x$ and $y$ to opposite sides of the equation and then integrate both sides."
+                            },
+                            // 38. Differential Equations: First Order (Homogeneous)
+                            {
+                                "question": "Which substitution is typically used to solve a homogeneous differential equation like $\\frac{dy}{dx} = \\frac{x+y}{x}$?",
+                                "answerOptions": [
+                                    { "text": "$y = vx$", "rationale": "The substitution $y=vx$ (or $x=vy$) transforms a homogeneous differential equation into a separable one.", "isCorrect": true },
+                                    { "text": "$y = uv$", "rationale": "This is a product rule for differentiation, not a standard substitution for homogeneous equations.", "isCorrect": false },
+                                    { "text": "$y = x + v$", "rationale": "This substitution is not generally useful for homogeneous equations.", "isCorrect": false },
+                                    { "text": "$y = e^x v$", "rationale": "This substitution is typically used for linear first-order differential equations, not homogeneous ones.", "isCorrect": false }
+                                ],
+                                "hint": "Homogeneous differential equations are those where all terms have the same degree. A specific substitution helps convert them into a separable form."
+                            },
+                            // 39. Differential Equations: Second Order Linear (Constant Coefficients)
+                            {
+                                "question": "What is the general solution of the differential equation $y'' + 4y = 0$?",
+                                "answerOptions": [
+                                    { "text": "$y = C_1 e^{2x} + C_2 e^{-2x}$", "rationale": "This is the solution for $y'' - 4y = 0$.", "isCorrect": false },
+                                    { "text": "$y = C_1 \\cos(2x) + C_2 \\sin(2x)$", "rationale": "The characteristic equation is $m^2 + 4 = 0$, which gives $m = \\pm 2i$. For complex roots $\\alpha \\pm i\\beta$, the solution is $e^{\\alpha x}(C_1 \\cos(\\beta x) + C_2 \\sin(\\beta x))$. Here $\\alpha=0, \\beta=2$.", "isCorrect": true },
+                                    { "text": "$y = C_1 e^{4x} + C_2 e^{-4x}$", "rationale": "This is incorrect. The characteristic equation involves $m^2$, not $m$.", "isCorrect": false },
+                                    { "text": "$y = C_1 \\cos(4x) + C_2 \\sin(4x)$", "rationale": "This would be the solution if the characteristic equation was $m^2+16=0$.", "isCorrect": false }
+                                ],
+                                "hint": "Form the characteristic equation from the homogeneous linear differential equation and find its roots."
+                            },
+                            // 40. Vector Algebra: Scalar Product
+                            {
+                                "question": "If $\\vec{a} = 2\\hat{i} + 3\\hat{j} - \\hat{k}$ and $\\vec{b} = \\hat{i} - 2\\hat{j} + 4\\hat{k}$, what is the scalar product $\\vec{a} \\cdot \\vec{b}$?",
+                                "answerOptions": [
+                                    { "text": "$2\\hat{i} - 6\\hat{j} - 4\\hat{k}$", "rationale": "This is an incorrect vector result, not a scalar product.", "isCorrect": false },
+                                    { "text": "$-8$", "rationale": "The scalar product is $(2)(1) + (3)(-2) + (-1)(4) = 2 - 6 - 4 = -8$.", "isCorrect": true },
+                                    { "text": "$12$", "rationale": "This is an incorrect arithmetic calculation.", "isCorrect": false },
+                                    { "text": "$-12$", "rationale": "This is an incorrect arithmetic calculation.", "isCorrect": false }
+                                ],
+                                "hint": "The scalar product (dot product) of two vectors is the sum of the products of their corresponding components."
+                            },
+                            // 41. Vector Algebra: Vector Product
+                            {
+                                "question": "If $\\vec{a} = \\hat{i} + \\hat{j}$ and $\\vec{b} = \\hat{j} + \\hat{k}$, what is the vector product $\\vec{a} \\times \\vec{b}$?",
+                                "answerOptions": [
+                                    { "text": "$\\hat{i} - \\hat{j} + \\hat{k}$", "rationale": "This is the correct result of the cross product calculation.", "isCorrect": true },
+                                    { "text": "$\\hat{i} + \\hat{j} + \\hat{k}$", "rationale": "This is an incorrect result, possibly from an addition instead of cross product.", "isCorrect": false },
+                                    { "text": "$0$", "rationale": "The cross product is zero only if the vectors are parallel.", "isCorrect": false },
+                                    { "text": "$- \\hat{i} - \\hat{j} - \\hat{k}$", "rationale": "This has sign errors in the components of the cross product.", "isCorrect": false }
+                                ],
+                                "hint": "Use the determinant form to calculate the cross product of the two vectors."
+                            },
+                            // 42. Vector Algebra: Scalar Triple Product
+                            {
+                                "question": "The scalar triple product $[\u20d7a \u20d7b \u20d7c]$ of three vectors $\\vec{a}, \\vec{b}, \\vec{c}$ represents the:",
+                                "answerOptions": [
+                                    { "text": "Area of the parallelogram formed by $\\vec{a}$ and $\\vec{b}$", "rationale": "This is represented by $|\\vec{a} \\times \\vec{b}|$.", "isCorrect": false },
+                                    { "text": "Volume of the parallelepiped formed by $\\vec{a}, \\vec{b}, \\vec{c}$", "rationale": "The magnitude of the scalar triple product represents the volume of the parallelepiped formed by the three vectors.", "isCorrect": true },
+                                    { "text": "Angle between $\\vec{a}$ and $\\vec{b}$", "rationale": "This is related to the dot product, not the scalar triple product.", "isCorrect": false },
+                                    { "text": "Vector perpendicular to the plane containing $\\vec{a}$ and $\\vec{b}$", "rationale": "This is represented by the vector product $\\vec{a} \\times \\vec{b}$.", "isCorrect": false }
+                                ],
+                                "hint": "Consider the geometric interpretation of the scalar triple product."
+                            },
+                            // 43. Analytical Dynamics: Velocity and Acceleration (Rectangular Coordinates)
+                            {
+                                "question": "If the position of a particle is given by $\\vec{r}(t) = (t^2+1)\\hat{i} + (3t-2)\\hat{j}$, what is its velocity vector at $t=1$?",
+                                "answerOptions": [
+                                    { "text": "$2\\hat{i} + 3\\hat{j}$", "rationale": "The velocity vector is $\\vec{v}(t) = \\frac{d\\vec{r}}{dt} = 2t\\hat{i} + 3\\hat{j}$. At $t=1$, $\\vec{v}(1) = 2(1)\\hat{i} + 3\\hat{j} = 2\\hat{i} + 3\\hat{j}$.", "isCorrect": true },
+                                    { "text": "$2t\\hat{i} + 3\\hat{j}$", "rationale": "This is the general velocity vector, not evaluated at $t=1$.", "isCorrect": false },
+                                    { "text": "$2\\hat{i}$", "rationale": "This only represents the x-component of the velocity.", "isCorrect": false },
+                                    { "text": "$3\\hat{j}$", "rationale": "This only represents the y-component of the velocity.", "isCorrect": false }
+                                ],
+                                "hint": "Velocity is the first derivative of the position vector with respect to time."
+                            },
+                            // 44. Analytical Dynamics: Newton's Laws
+                            {
+                                "question": "Newton's second law of motion states that the net force acting on an object is equal to the product of its mass and acceleration. Which of the following is the mathematical representation of this law?",
+                                "answerOptions": [
+                                    { "text": "$E = mc^2$", "rationale": "This is Einstein's mass-energy equivalence formula.", "isCorrect": false },
+                                    { "text": "$F = ma$", "rationale": "This is the mathematical formulation of Newton's second law of motion, where F is net force, m is mass, and a is acceleration.", "isCorrect": true },
+                                    { "text": "$P = mv$", "rationale": "This is the formula for momentum.", "isCorrect": false },
+                                    { "text": "$W = Fd$", "rationale": "This is the formula for work done by a constant force.", "isCorrect": false }
+                                ],
+                                "hint": "Recall the fundamental equation that relates force, mass, and acceleration."
+                            },
+                            // 45. Analytical Dynamics: Motion in a Straight Line (Constant Force)
+                            {
+                                "question": "A particle starts from rest and moves with a constant acceleration of $2 \\text{ m/s}^2$. What is its velocity after 5 seconds?",
+                                "answerOptions": [
+                                    { "text": "2 m/s", "rationale": "This would be the velocity after 1 second.", "isCorrect": false },
+                                    { "text": "5 m/s", "rationale": "This is the time, not the velocity.", "isCorrect": false },
+                                    { "text": "10 m/s", "rationale": "Using the kinematic equation $v = u + at$, where $u=0$, $a=2$, $t=5$, we get $v = 0 + (2)(5) = 10 \\text{ m/s}$.", "isCorrect": true },
+                                    { "text": "25 m/s", "rationale": "This would be the distance traveled if acceleration was 10 m/s^2.", "isCorrect": false }
+                                ],
+                                "hint": "Use the first equation of motion for constant acceleration: $v = u + at$."
+                            },
+                            // 46. Analytical Dynamics: Projectiles
+                            {
+                                "question": "A projectile is launched horizontally from a height of 45 m with an initial velocity of 10 m/s. How long does it take to hit the ground? (Assume $g = 10 \\text{ m/s}^2$)",
+                                "answerOptions": [
+                                    { "text": "1 s", "rationale": "This time is too short. Recheck the calculation for vertical motion.", "isCorrect": false },
+                                    { "text": "2 s", "rationale": "This time is too short. Recheck the calculation for vertical motion.", "isCorrect": false },
+                                    { "text": "3 s", "rationale": "For vertical motion, $h = ut + \\frac{1}{2}gt^2$. Since initial vertical velocity $u=0$, $45 = 0 \\cdot t + \\frac{1}{2}(10)t^2 \\implies 45 = 5t^2 \\implies t^2 = 9 \\implies t = 3 \\text{ s}$.", "isCorrect": true },
+                                    { "text": "4.5 s", "rationale": "This might result from a calculation error.", "isCorrect": false }
+                                ],
+                                "hint": "The time it takes to hit the ground depends only on the vertical motion. Use the kinematic equation for displacement under constant acceleration."
+                            },
+                            // 47. Linear Programming Problem (L.P.P.): Basic Feasible Solution
+                            {
+                                "question": "In an L.P.P., a basic feasible solution (BFS) is a basic solution that also satisfies the condition that all basic variables are:",
+                                "answerOptions": [
+                                    { "text": "Zero", "rationale": "If all basic variables were zero, it would be a degenerate BFS, but not all BFS are degenerate.", "isCorrect": false },
+                                    { "text": "Negative", "rationale": "Basic feasible solutions require non-negative values for all variables.", "isCorrect": false },
+                                    { "text": "Non-negative", "rationale": "A basic feasible solution (BFS) must satisfy all constraints, including the non-negativity constraints for all variables.", "isCorrect": true },
+                                    { "text": "Integers", "rationale": "This condition applies to integer programming problems, not all L.P.P.s.", "isCorrect": false }
+                                ],
+                                "hint": "Recall the definition of a feasible solution in the context of linear programming, particularly the non-negativity constraint."
+                            },
+                            // 48. Linear Programming Problem (L.P.P.): Convex Set
+                            {
+                                "question": "The set of all feasible solutions of an L.P.P. forms a:",
+                                "answerOptions": [
+                                    { "text": "Non-convex set", "rationale": "The intersection of half-spaces (linear inequalities) always forms a convex set.", "isCorrect": false },
+                                    { "text": "Concave set", "rationale": "A concave set is the opposite of a convex set.", "isCorrect": false },
+                                    { "text": "Convex polyhedron", "rationale": "The feasible region of a linear programming problem is always a convex set, specifically a convex polyhedron (or polytope if bounded).", "isCorrect": true },
+                                    { "text": "Straight line", "rationale": "This is only true for very specific and limited cases, not generally.", "isCorrect": false }
+                                ],
+                                "hint": "Consider the geometric shape formed by the intersection of linear inequalities."
+                            },
+                            // 49. Linear Programming Problem (L.P.P.): Simplex Method
+                            {
+                                "question": "In the simplex method, if all entries in the $C_j - Z_j$ row (or reduced cost row) are less than or equal to zero for a maximization problem, what does it indicate?",
+                                "answerOptions": [
+                                    { "text": "The problem is unbounded.", "rationale": "Unboundedness occurs when there's an incoming variable but no outgoing variable.", "isCorrect": false },
+                                    { "text": "An optimal solution has been reached.", "rationale": "For a maximization problem, all $C_j - Z_j \\le 0$ indicates that no further improvement in the objective function is possible, meaning an optimal solution has been found.", "isCorrect": true },
+                                    { "text": "The problem has multiple optimal solutions.", "rationale": "Multiple optimal solutions occur if a non-basic variable has a $C_j - Z_j = 0$ at optimality.", "isCorrect": false },
+                                    { "text": "The problem is infeasible.", "rationale": "Infeasibility is indicated by an artificial variable remaining in the basis at a positive level in the final tableau.", "isCorrect": false }
+                                ],
+                                "hint": "This condition is a stopping criterion for the simplex algorithm in maximization problems."
+                            },
+                            // 50. Numerical Methods: Computational Errors
+                            {
+                                "question": "When performing numerical calculations, the error introduced by approximating a real number with a finite number of digits is called:",
+                                "answerOptions": [
+                                    { "text": "Truncation error", "rationale": "Truncation error arises from approximating an infinite process (like a series) with a finite one.", "isCorrect": false },
+                                    { "text": "Round-off error", "rationale": "Round-off error occurs when numbers are rounded to a certain number of significant digits, leading to a loss of precision.", "isCorrect": true },
+                                    { "text": "Absolute error", "rationale": "Absolute error is the magnitude of the difference between the true value and the approximate value.", "isCorrect": false },
+                                    { "text": "Relative error", "rationale": "Relative error is the absolute error divided by the magnitude of the true value.", "isCorrect": false }
+                                ],
+                                "hint": "This type of error is inherent in representing real numbers in a computer's finite memory."
+                            },
+                            // 51. Numerical Methods: Interpolation (Newton's Forward)
+                            {
+                                "question": "Newton's forward difference interpolation formula is most suitable for interpolating values:",
+                                "answerOptions": [
+                                    { "text": "Near the beginning of the data set", "rationale": "Newton's forward difference formula uses data points at the beginning of the table and is best for interpolation near the start of the interval.", "isCorrect": true },
+                                    { "text": "Near the end of the data set", "rationale": "Newton's backward difference formula is more suitable for interpolating values near the end of the data set.", "isCorrect": false },
+                                    { "text": "In the middle of the data set", "rationale": "Stirling's or Bessel's formulas are more suitable for interpolation in the middle of the data set.", "isCorrect": false },
+                                    { "text": "Anywhere in the data set with equal accuracy", "rationale": "Different interpolation formulas have varying accuracies depending on the position of the interpolation point relative to the data points.", "isCorrect": false }
+                                ],
+                                "hint": "Consider where the 'forward' differences are most naturally constructed in a difference table."
+                            },
+                            // 52. Numerical Methods: Numerical Integration (Simpson's 1/3 Rule)
+                            {
+                                "question": "Simpson's 1/3 rule for numerical integration requires the number of subintervals to be:",
+                                "answerOptions": [
+                                    { "text": "Any integer", "rationale": "This is true for the Trapezoidal Rule, but not Simpson's 1/3 rule.", "isCorrect": false },
+                                    { "text": "An odd integer", "rationale": "Simpson's 1/3 rule requires an even number of subintervals (or an odd number of ordinates).", "isCorrect": false },
+                                    { "text": "An even integer", "rationale": "Simpson's 1/3 rule approximates the function with parabolas, requiring three points (two subintervals) for each application, hence an even number of subintervals is necessary.", "isCorrect": true },
+                                    { "text": "A prime number", "rationale": "There is no such restriction for numerical integration rules.", "isCorrect": false }
+                                ],
+                                "hint": "Think about how many subintervals are grouped together to form a parabolic approximation in Simpson's 1/3 rule."
+                            },
+                            // 53. Numerical Methods: Solution of Equations (Newton-Raphson)
+                            {
+                                "question": "The Newton-Raphson method is used to find the roots of an equation $f(x) = 0$. The iterative formula is $x_{n+1} = x_n - \\frac{f(x_n)}{f'(x_n)}$. This method converges quadratically provided:",
+                                "answerOptions": [
+                                    { "text": "$f'(x_n) = 0$", "rationale": "If $f'(x_n)=0$, the method fails due to division by zero.", "isCorrect": false },
+                                    { "text": "The initial guess $x_0$ is far from the root.", "rationale": "A good initial guess is crucial for convergence, especially quadratic convergence.", "isCorrect": false },
+                                    { "text": "$f'(x_n) \\ne 0$ in the neighborhood of the root and $f''(x_n)$ is continuous.", "rationale": "Quadratic convergence is achieved when $f'(x)$ is non-zero at the root and $f''(x)$ is continuous in the neighborhood of the root.", "isCorrect": true },
+                                    { "text": "The function $f(x)$ is linear.", "rationale": "Newton-Raphson is typically used for non-linear equations; for linear equations, the root is found in one step.", "isCorrect": false }
+                                ],
+                                "hint": "Consider the conditions under which the derivative in the denominator of the iterative formula would cause issues, and what properties of the function ensure rapid convergence."
+                            },
+                            // 54. Probability and Statistics: Measures of Central Tendency
+                            {
+                                "question": "For the data set $\\{10, 12, 15, 12, 18, 10, 12\\}$, what is the mode?",
+                                "answerOptions": [
+                                    { "text": "10", "rationale": "10 appears twice, but 12 appears more frequently.", "isCorrect": false },
+                                    { "text": "12", "rationale": "The mode is the value that appears most frequently in a data set. Here, 12 appears 3 times, which is more than any other value.", "isCorrect": true },
+                                    { "text": "13", "rationale": "This is close to the mean, not the mode.", "isCorrect": false },
+                                    { "text": "15", "rationale": "15 appears only once.", "isCorrect": false }
+                                ],
+                                "hint": "The mode is the value that occurs with the highest frequency in a data set."
+                            },
+                            // 55. Probability and Statistics: Probability Theory
+                            {
+                                "question": "A bag contains 5 red balls and 3 blue balls. If two balls are drawn without replacement, what is the probability that both are red?",
+                                "answerOptions": [
+                                    { "text": "25/64", "rationale": "This would be the probability if the balls were drawn with replacement.", "isCorrect": false },
+                                    { "text": "10/28", "rationale": "This simplifies to 5/14, which is the correct answer.", "isCorrect": false },
+                                    { "text": "5/14", "rationale": "The probability of drawing the first red ball is $5/8$. After drawing one red ball, there are 4 red balls left out of 7 total. So, the probability of drawing a second red ball is $4/7$. The combined probability is $(5/8) \\times (4/7) = 20/56 = 5/14$.", "isCorrect": true },
+                                    { "text": "15/56", "rationale": "This would be the probability of drawing one red and one blue ball in a specific order.", "isCorrect": false }
+                                ],
+                                "hint": "Calculate the probability of drawing the first red ball, then the probability of drawing a second red ball given the first was red (without replacement), and multiply these probabilities."
+                            }
+                        ]
+                    };
+
+                    const quizQuestionsDiv = document.getElementById('quiz-questions');
+                    const timerDisplay = document.getElementById('timer-display');
+                    const submitQuizBtn = document.getElementById('submit-quiz-btn');
+
+                    let timeLeft = 5400; // 90 minutes in seconds for 55 questions
+                    let timerInterval;
+
+                    function formatTime(seconds) {
+                        const minutes = Math.floor(seconds / 60);
+                        const remainingSeconds = seconds % 60;
+                        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+                    }
+
+                    function updateTimer() {
+                        timerDisplay.textContent = `Time Left: ${formatTime(timeLeft)}`;
+                        if (timeLeft <= 60) { // Warning for last minute
+                            timerDisplay.classList.add('warning');
+                        } else {
+                            timerDisplay.classList.remove('warning');
+                        }
+                        if (timeLeft <= 10) { // Critical for last 10 seconds
+                            timerDisplay.classList.add('critical');
+                        } else {
+                            timerDisplay.classList.remove('critical');
+                        }
+
+                        if (timeLeft <= 0) {
+                            clearInterval(timerInterval);
+                            submitQuiz(true); // Auto-submit
+                        } else {
+                            timeLeft--;
+                        }
+                    }
+
+                    function submitQuiz(autoSubmitted = false) {
+                        clearInterval(timerInterval);
+                        submitQuizBtn.disabled = true;
+                        submitQuizBtn.textContent = autoSubmitted ? 'Time Up! Quiz Submitted' : 'Quiz Submitted';
+
+                        let correctAnswersCount = 0;
+                        quizData.questions.forEach((q, index) => {
+                            const questionCard = quizQuestionsDiv.children[index];
+                            const optionsContainer = questionCard.querySelector('.space-y-3');
+                            const radioInputs = optionsContainer.querySelectorAll('input[type="radio"]');
+                            const rationaleBox = questionCard.querySelector('.rationale-box');
+
+                            rationaleBox.style.display = 'block'; // Show rationale
+
+                            let selectedOptionIndex = -1;
+                            radioInputs.forEach((input, optIndex) => {
+                                input.disabled = true; // Disable all options after submit
+                                if (input.checked) {
+                                    selectedOptionIndex = optIndex;
+                                }
+                            });
+
+                            let rationaleContent = '';
+                            if (selectedOptionIndex !== -1) {
+                                const selectedOption = q.answerOptions[selectedOptionIndex];
+                                if (selectedOption.isCorrect) {
+                                    rationaleContent = `Correct! ${selectedOption.rationale}`;
+                                    rationaleBox.style.backgroundColor = '#ecfdf5'; /* Light green */
+                                    rationaleBox.style.borderColor = '#10b981'; /* Green border */
+                                    rationaleBox.style.color = '#065f46'; /* Dark green text */
+                                    correctAnswersCount++;
+                                } else {
+                                    const correctOption = q.answerOptions.find(opt => opt.isCorrect);
+                                    rationaleContent = `Incorrect. ${selectedOption.rationale} The correct answer is: ${correctOption.text}. ${correctOption.rationale}`;
+                                    rationaleBox.style.backgroundColor = '#fee2e2'; /* Light red */
+                                    rationaleBox.style.borderColor = '#ef4444'; /* Red border */
+                                    rationaleBox.style.color = '#991b1b'; /* Dark red text */
+                                }
+                            } else {
+                                const correctOption = q.answerOptions.find(opt => opt.isCorrect);
+                                rationaleContent = `You did not select an answer. The correct answer is: ${correctOption.text}. ${correctOption.rationale}`;
+                                rationaleBox.style.backgroundColor = '#fffbeb'; /* Light yellow */
+                                rationaleBox.style.borderColor = '#f59e0b'; /* Yellow border */
+                                rationaleBox.style.color = '#92400e'; /* Dark yellow text */
+                            }
+                            rationaleBox.innerHTML = rationaleContent;
+                            // Ensure MathJax typesets the rationale content after it's set
+                            if (typeof MathJax !== 'undefined') {
+                                MathJax.typesetPromise([rationaleBox]);
+                            }
+                        });
+
+                        const scoreDisplay = document.createElement('h2');
+                        scoreDisplay.className = 'text-2xl font-bold text-center mt-6';
+                        scoreDisplay.textContent = `You scored ${correctAnswersCount} out of ${quizData.questions.length}!`;
+                        quizQuestionsDiv.prepend(scoreDisplay); // Add score at the top
+                    }
+
+                    // Populate quiz questions
+                    quizData.questions.forEach((q, index) => {
+                        const questionCard = document.createElement('div');
+                        questionCard.className = 'question-card';
+
+                        const questionText = document.createElement('p');
+                        questionText.className = 'text-lg font-semibold text-gray-900 mb-4';
+                        questionText.innerHTML = `${index + 1}. ${q.question}`;
+                        questionCard.appendChild(questionText);
+
+                        const optionsContainer = document.createElement('div');
+                        optionsContainer.className = 'space-y-3';
+
+                        q.answerOptions.forEach((option, optionIndex) => {
+                            const optionDiv = document.createElement('div');
+                            const radioInput = document.createElement('input');
+                            radioInput.type = 'radio';
+                            radioInput.name = `question-${index}`;
+                            radioInput.id = `q${index}-option${optionIndex}`;
+                            radioInput.className = 'hidden'; // Hide default radio button
+
+                            const label = document.createElement('label');
+                            label.htmlFor = `q${index}-option${optionIndex}`;
+                            label.className = 'option-label flex items-center';
+
+                            const customRadio = document.createElement('span');
+                            customRadio.className = 'w-5 h-5 border-2 border-blue-400 rounded-full flex items-center justify-center mr-3 transition-all duration-200 ease-in-out';
+                            customRadio.innerHTML = '<span class="w-3 h-3 bg-blue-600 rounded-full opacity-0 scale-0 transition-all duration-200 ease-in-out"></span>'; // Inner circle for checked state
+
+                            radioInput.addEventListener('change', () => {
+                                document.querySelectorAll(`input[name="question-${index}"]`).forEach(input => {
+                                    input.nextElementSibling.querySelector('span').classList.remove('opacity-100', 'scale-100');
+                                    input.nextElementSibling.querySelector('span').classList.add('opacity-0', 'scale-0');
+                                });
+                                if (radioInput.checked) {
+                                    customRadio.querySelector('span').classList.remove('opacity-0', 'scale-0');
+                                    customRadio.querySelector('span').classList.add('opacity-100', 'scale-100');
+                                }
+                            });
+
+                            const optionText = document.createElement('span');
+                            optionText.innerHTML = option.text;
+
+                            label.appendChild(radioInput);
+                            label.appendChild(customRadio);
+                            label.appendChild(optionText);
+                            optionsContainer.appendChild(label);
+                        });
+                        questionCard.appendChild(optionsContainer);
+
+                        const hintText = document.createElement('p');
+                        hintText.className = 'text-sm text-gray-600 mt-4 italic';
+                        hintText.textContent = `Hint: ${q.hint}`;
+                        questionCard.appendChild(hintText);
+
+                        // Rationale box for each question (initially hidden)
+                        const rationaleBox = document.createElement('div');
+                        rationaleBox.className = 'rationale-box';
+                        questionCard.appendChild(rationaleBox);
+
+                        quizQuestionsDiv.appendChild(questionCard);
+                    });
+
+                    // Start timer
+                    timerInterval = setInterval(updateTimer, 1000);
+                    updateTimer(); // Initial call to display time immediately
+
+                    // Submit button event listener
+                    submitQuizBtn.addEventListener('click', () => submitQuiz(false));
+
+                    // Initial MathJax typesetting for all questions after they are added
+                    // This is crucial to ensure equations are rendered when the page first loads
+                    if (typeof MathJax !== 'undefined') {
+                        MathJax.typesetPromise();
+                    } else {
+                        console.error("MathJax was not defined after quiz population.");
+                    }
+                }).catch(function (err) {
+                    console.error("MathJax startup failed:", err);
+                });
+            } else {
+                console.error("MathJax object or startup promise not found. Ensure MathJax script is loaded correctly.");
+            }
+        });
+    </script>
 </body>
 </html>
