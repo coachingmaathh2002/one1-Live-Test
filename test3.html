@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Math Mock Test 1</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <h2>Mock Test 1 - Algebra</h2>
+
+  <form id="quizForm">
+    <div class="question">
+      <p>1. Solve: \( 2x + 3 = 11 \)</p>
+      <input type="radio" name="q1" value="a"> 3<br>
+      <input type="radio" name="q1" value="b"> 4<br>
+      <input type="radio" name="q1" value="c"> 5<br>
+    </div>
+
+    <div class="question">
+      <p>2. If \( x^2 = 25 \), then x = ?</p>
+      <input type="radio" name="q2" value="a"> ±5<br>
+      <input type="radio" name="q2" value="b"> 5<br>
+      <input type="radio" name="q2" value="c"> 0<br>
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    document.getElementById('quizForm').onsubmit = function(e) {
+      e.preventDefault();
+      let score = 0;
+      const answers = { q1: 'b', q2: 'a' };
+
+      for (let q in answers) {
+        const radios = document.getElementsByName(q);
+        for (let i = 0; i < radios.length; i++) {
+          if (radios[i].checked && radios[i].value === answers[q]) {
+            score++;
+          }
+        }
+      }
+
+      document.getElementById('result').innerHTML = "<h3>Your Score: " + score + " / 2</h3>";
+    };
+  </script>
+</body>
+</html>
