@@ -628,7 +628,7 @@
             const submitQuizBtn = document.getElementById('submit-quiz-btn');
             const progressFill = document.getElementById('progress-fill');
 
-            let timeLeft = 300; // 5 minutes in seconds
+            let timeLeft = 600; // 10 minutes in seconds
             let timerInterval;
 
             function formatTime(seconds) {
@@ -641,7 +641,7 @@
                 timerDisplay.textContent = `Time Left: ${formatTime(timeLeft)}`;
                 
                 // Update progress bar
-                const progressPercentage = (timeLeft / 300) * 100;
+                const progressPercentage = (timeLeft / 600) * 100;
                 progressFill.style.width = `${progressPercentage}%`;
                 
                 // Update timer colors and effects
