@@ -3,57 +3,99 @@
 <head>
   <meta charset="UTF-8">
   <title>Math Mock Test Portal</title>
-  <link rel="stylesheet" href="assets/style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/style.css">
 
   <style>
     body {
-      background-color: #0d1b2a; /* Dark Blue */
-      color: #ffffff; /* White text */
-      font-family: Arial, sans-serif;
-      margin: 20px;
+      background-color: #0d1b2a;
+      color: #e0e6f2;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
     }
 
-    a {
-      color: #90e0ef; /* Soft cyan for links */
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    h1, h2 {
+    header {
+      background-color: #1e2733;
+      padding: 20px 10px;
       text-align: center;
-      color: #ade8f4;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #4fc3f7;
+    }
+
+    header p {
+      color: #ccc;
+      font-size: 16px;
+      margin: 5px 0 0;
     }
 
     .question {
-      background: #1b263b; /* Slightly lighter dark blue */
-      padding: 20px;
-      max-width: 600px;
-      margin: 30px auto;
+      background: #1b263b;
+      padding: 30px 20px;
+      max-width: 700px;
+      margin: 40px auto;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       border: 1px solid #415a77;
     }
 
+    h2 {
+      color: #ade8f4;
+      margin-bottom: 25px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      margin: 12px 0;
+    }
+
+    a {
+      display: block;
+      padding: 12px 20px;
+      background-color: #243447;
+      color: #90e0ef;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-size: 16px;
+    }
+
+    a:hover {
+      background-color: #3a506b;
+      color: #ffffff;
+      transform: scale(1.02);
+    }
+
     footer {
       text-align: center;
-      margin-top: 40px;
+      padding: 20px;
       font-size: 14px;
-      color: #ccc;
+      color: #8899a6;
+      border-top: 1px solid #2a3442;
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
 
-  <h1>🧮 Welcome to Raj Sir's Math Mock Test Portal</h1>
-  <p style="text-align: center;">Practice. Perform. Perfect.</p>
+  <header>
+    <h1>🧮 Raj Sir's Math Mock Test Portal</h1>
+    <p>Practice. Perform. Perfect.</p>
+  </header>
 
-  <div class="question" style="text-align: center;">
-    <h2>Available Tests</h2>
-    <ul style="list-style: none; padding: 0;">
+  <div class="question">
+    <h2>📚 Available Mock Tests</h2>
+    <ul>
       <li><a href="test1.html">📘 Mock Test 1</a></li>
       <li><a href="test2.html">📗 Mock Test 2</a></li>
       <li><a href="test300.html">📘 Mock Test 3</a></li>
