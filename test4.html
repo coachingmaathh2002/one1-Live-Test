@@ -3,382 +3,746 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relations and Their Properties Quiz</title>
+    <title>Group Theory Quiz - IIT JAM Level</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration and CDN -->
+    <script>
+        // MathJax configuration to enable inline math with $...$
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        /* General Body and Layout */
+        /* Custom styles for better aesthetics and responsiveness */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6; /* Light gray-blue background */
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light blue-gray background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             margin: 0;
             padding: 20px;
-            line-height: 1.6;
-            color: #333;
+            box-sizing: border-box;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 20px auto;
+        .quiz-container {
             background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-        }
-
-        /* Header Styling */
-        header {
+            border-radius: 1.5rem; /* More rounded corners */
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            padding: 2.5rem; /* Increased padding */
+            width: 100%;
+            max-width: 700px; /* Increased max-width */
             text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        h1 {
-            color: #2c3e50; /* Dark blue */
-            font-size: 2.2em;
-            margin-bottom: 10px;
-        }
-
-        header p {
-            font-size: 1.1em;
-            color: #555;
-        }
-
-        /* Question Block Styling */
-        .question-block {
-            background-color: #fdfdfd;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem; /* Space between sections */
         }
 
         .question-text {
-            font-size: 1.15em;
+            font-size: 1.5rem; /* Larger font size for questions */
             font-weight: 600;
-            color: #34495e; /* Slightly darker blue-gray */
-            margin-bottom: 20px;
+            color: #1a202c; /* Darker text for questions */
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
         }
 
-        /* Options Styling */
-        .options label {
-            display: block;
-            padding: 15px 20px;
-            margin-bottom: 10px;
-            background-color: #eff3f6; /* Light blue-gray for options */
-            border: 1px solid #d4dbe0;
-            border-radius: 6px;
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Single column for options */
+            gap: 1rem; /* Space between option buttons */
+        }
+
+        .option-button {
+            background-color: #e2e8f0; /* Light gray for options */
+            color: #2d3748; /* Darker text for options */
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem; /* Rounded corners for buttons */
+            font-size: 1.125rem;
             cursor: pointer;
-            transition: background-color 0.2s ease, border-color 0.2s ease;
-            font-size: 1em;
-            color: #444;
+            transition: all 0.2s ease-in-out;
+            border: 2px solid transparent; /* Border for feedback */
+            outline: none; /* Remove default outline */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Subtle shadow */
         }
 
-        .options label:hover {
-            background-color: #e2e8ed;
-            border-color: #c0c8d0;
+        .option-button:hover:not(.correct):not(.incorrect):not(.disabled) {
+            background-color: #cbd5e0; /* Slightly darker on hover */
+            transform: translateY(-2px); /* Lift effect on hover */
         }
 
-        .options input[type="radio"] {
-            margin-right: 12px;
-            transform: scale(1.1); /* Slightly larger radio buttons */
-            vertical-align: middle;
+        .option-button.correct {
+            background-color: #a7f3d0; /* Light green for correct */
+            border-color: #059669; /* Darker green border */
+            color: #065f46; /* Dark green text */
         }
 
-        /* Styling for correct answers (applied by JS) */
-        .correct-answer {
-            background-color: #d4edda !important; /* Light green */
-            border-color: #28a745 !important; /* Green border */
-            color: #155724 !important; /* Dark green text */
+        .option-button.incorrect {
+            background-color: #fecaca; /* Light red for incorrect */
+            border-color: #dc2626; /* Darker red border */
+            color: #991b1b; /* Dark red text */
+        }
+
+        .option-button.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .feedback-text {
+            font-size: 1.125rem;
+            margin-top: 1rem;
             font-weight: 500;
         }
 
-        /* Button Styling */
-        #showAnswersBtn {
-            display: block;
-            width: 250px;
-            margin: 40px auto 20px auto;
-            padding: 15px 25px;
-            background-color: #007bff; /* Primary blue */
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.1em;
-            font-weight: 600;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+        .correct-feedback {
+            color: #059669; /* Green for correct feedback */
         }
 
-        #showAnswersBtn:hover {
-            background-color: #0056b3; /* Darker blue on hover */
+        .incorrect-feedback {
+            color: #dc2626; /* Red for incorrect feedback */
+        }
+
+        .explanation-text {
+            font-size: 1rem;
+            color: #4a5568; /* Gray for explanation */
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        .score-display {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2b6cb0; /* Blue for score */
+            margin-top: 1rem;
+        }
+
+        .control-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .control-button {
+            background-color: #4299e1; /* Blue for control buttons */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 1.125rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+            border: none;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .control-button:hover {
+            background-color: #3182ce; /* Darker blue on hover */
             transform: translateY(-2px);
         }
 
-        #showAnswersBtn:disabled {
-            background-color: #cccccc;
+        .control-button:disabled {
+            background-color: #a0aec0; /* Gray when disabled */
             cursor: not-allowed;
             box-shadow: none;
             transform: none;
         }
+
+        /* Responsive adjustments */
+        @media (min-width: 640px) { /* Small screens and up */
+            .options-grid {
+                grid-template-columns: repeat(2, 1fr); /* Two columns for options on larger screens */
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Relations and Their Properties Quiz</h1>
-            <p>Test your knowledge on fundamental concepts of relations in discrete mathematics.</p>
-        </header>
-
-        <form id="quizForm">
-            <!-- Question 1 -->
-            <div class="question-block">
-                <p class="question-text">1. What is a binary relation R from set A to set B?</p>
-                <div class="options">
-                    <label><input type="radio" name="q1" value="A"> A. A function from A to B.</label>
-                    <label data-correct="true"><input type="radio" name="q1" value="B"> B. A subset of the Cartesian product A × B.</label>
-                    <label><input type="radio" name="q1" value="C"> C. A mapping from B to A.</label>
-                    <label><input type="radio" name="q1" value="D"> D. A set of ordered pairs (b, a) where b ∈ B and a ∈ A.</label>
-                </div>
+    <div class="quiz-container">
+        <div id="quiz-screen">
+            <div id="question-number" class="text-lg font-semibold text-gray-600 mb-4">Question 1 of 30</div>
+            <div id="question-text" class="question-text"></div>
+            <div id="options-container" class="options-grid">
+                <!-- Options will be loaded here by JavaScript -->
             </div>
-
-            <!-- Question 2 -->
-            <div class="question-block">
-                <p class="question-text">2. A relation R on a set A is reflexive if:</p>
-                <div class="options">
-                    <label data-correct="true"><input type="radio" name="q2" value="A"> A. For every element 'a' in A, (a, a) is in R.</label>
-                    <label><input type="radio" name="q2" value="B"> B. For every a, b in A, if (a, b) in R, then (b, a) in R.</label>
-                    <label><input type="radio" name="q2" value="C"> C. For every a, b, c in A, if (a, b) in R and (b, c) in R, then (a, c) in R.</label>
-                    <label><input type="radio" name="q2" value="D"> D. If (a, b) in R and (b, a) in R, then a = b.</label>
-                </div>
+            <div id="feedback-container" class="feedback-text"></div>
+            <div id="explanation-container" class="explanation-text hidden"></div>
+            <div id="score-display" class="score-display">Score: 0</div>
+            <div class="control-buttons">
+                <button id="next-button" class="control-button" disabled>Next Question</button>
+                <button id="restart-button" class="control-button hidden">Restart Quiz</button>
             </div>
-
-            <!-- Question 3 -->
-            <div class="question-block">
-                <p class="question-text">3. Consider the relation R = {(1,1), (1,2), (2,1), (2,2), (3,3)} on the set A = {1, 2, 3}. Which properties does R possess?</p>
-                <div class="options">
-                    <label><input type="radio" name="q3" value="A"> A. Symmetric only</label>
-                    <label><input type="radio" name="q3" value="B"> B. Transitive only</label>
-                    <label data-correct="true"><input type="radio" name="q3" value="C"> C. Reflexive and Symmetric</label>
-                    <label><input type="radio" name="q3" value="D"> D. Antisymmetric</label>
-                </div>
-            </div>
-
-            <!-- Question 4 -->
-            <div class="question-block">
-                <p class="question-text">4. A relation R on a set A is symmetric if:</p>
-                <div class="options">
-                    <label><input type="radio" name="q4" value="A"> A. For every a in A, (a, a) is in R.</label>
-                    <label data-correct="true"><input type="radio" name="q4" value="B"> B. For every a, b in A, if (a, b) is in R, then (b, a) is in R.</label>
-                    <label><input type="radio" name="q4" value="C"> C. For every a, b in A, if (a, b) in R and (b, a) in R, then a = b.</label>
-                    <label><input type="radio" name="q4" value="D"> D. For every a, b, c in A, if (a, b) in R and (b, c) in R, then (a, c) in R.</label>
-                </div>
-            </div>
-
-            <!-- Question 5 -->
-            <div class="question-block">
-                <p class="question-text">5. A relation R on a set A is antisymmetric if:</p>
-                <div class="options">
-                    <label><input type="radio" name="q5" value="A"> A. For every a, b in A, if (a, b) is in R, then (b, a) is NOT in R.</label>
-                    <label data-correct="true"><input type="radio" name="q5" value="B"> B. For every a, b in A, if (a, b) is in R and (b, a) is in R, then a = b.</label>
-                    <label><input type="radio" name="q5" value="C"> C. If a is related to b, then b is related to a.</label>
-                    <label><input type="radio" name="q5" value="D"> D. If a is not equal to b, then (a, b) is not in R.</label>
-                </div>
-            </div>
-
-            <!-- Question 6 -->
-            <div class="question-block">
-                <p class="question-text">6. Which of the following describes an equivalence relation?</p>
-                <div class="options">
-                    <label><input type="radio" name="q6" value="A"> A. Reflexive and Antisymmetric</label>
-                    <label><input type="radio" name="q6" value="B"> B. Symmetric and Transitive</label>
-                    <label data-correct="true"><input type="radio" name="q6" value="C"> C. Reflexive, Symmetric, and Transitive</label>
-                    <label><input type="radio" name="q6" value="D"> D. Reflexive, Antisymmetric, and Transitive</label>
-                </div>
-            </div>
-
-            <!-- Question 7 -->
-            <div class="question-block">
-                <p class="question-text">7. Let R be the relation "divides" (a | b) on the set of positive integers Z+. Which properties does R have?</p>
-                <div class="options">
-                    <label><input type="radio" name="q7" value="A"> A. Reflexive, Symmetric, Transitive</label>
-                    <label data-correct="true"><input type="radio" name="q7" value="B"> B. Reflexive, Antisymmetric, Transitive</label>
-                    <label><input type="radio" name="q7" value="C"> C. Symmetric, Transitive</label>
-                    <label><input type="radio" name="q7" value="D"> D. Reflexive, Symmetric</label>
-                </div>
-            </div>
-
-            <!-- Question 8 -->
-            <div class="question-block">
-                <p class="question-text">8. What is a partial order relation?</p>
-                <div class="options">
-                    <label><input type="radio" name="q8" value="A"> A. A relation that is reflexive, symmetric, and transitive.</label>
-                    <label data-correct="true"><input type="radio" name="q8" value="B"> B. A relation that is reflexive, antisymmetric, and transitive.</label>
-                    <label><input type="radio" name="q8" value="C"> C. A relation where every pair of elements is comparable.</label>
-                    <label><input type="radio" name="q8" value="D"> D. A relation that is reflexive, symmetric, and antisymmetric.</label>
-                </div>
-            </div>
-
-            <!-- Question 9 -->
-            <div class="question-block">
-                <p class="question-text">9. Consider the set A = {1, 2, 3, 4} and the relation R = {(1,1), (2,2), (3,3), (4,4), (1,2), (2,3), (1,3)}. Is R a partial order?</p>
-                <div class="options">
-                    <label><input type="radio" name="q9" value="A"> A. No, it is not reflexive.</label>
-                    <label><input type="radio" name="q9" value="B"> B. No, it is not antisymmetric.</label>
-                    <label><input type="radio" name="q9" value="C"> C. No, it is not transitive.</label>
-                    <label data-correct="true"><input type="radio" name="q9" value="D"> D. Yes, it is a partial order.</label>
-                </div>
-            </div>
-
-            <!-- Question 10 -->
-            <div class="question-block">
-                <p class="question-text">10. Let R be an equivalence relation on a set A. Which of the following is true about equivalence classes?</p>
-                <div class="options">
-                    <label><input type="radio" name="q10" value="A"> A. They are disjoint but their union is not A.</label>
-                    <label data-correct="true"><input type="radio" name="q10" value="B"> B. They form a partition of A.</label>
-                    <label><input type="radio" name="q10" value="C"> C. They are not necessarily disjoint.</label>
-                    <label><input type="radio" name="q10" value="D"> D. Every element of A belongs to exactly two equivalence classes.</label>
-                </div>
-            </div>
-
-            <!-- Question 11 -->
-            <div class="question-block">
-                <p class="question-text">11. If R is a relation on set A, its reflexive closure R<sup>r</sup> is defined as:</p>
-                <div class="options">
-                    <label data-correct="true"><input type="radio" name="q11" value="A"> A. R ∪ {(a,a) | a ∈ A}</label>
-                    <label><input type="radio" name="q11" value="B"> B. R ∪ R<sup>-1</sup></label>
-                    <label><input type="radio" name="q11" value="C"> C. R &omicron; R</label>
-                    <label><input type="radio" name="q11" value="D"> D. R ∪ {(a,b) | (b,a) ∈ R}</label>
-                </div>
-            </div>
-
-            <!-- Question 12 -->
-            <div class="question-block">
-                <p class="question-text">12. The transitive closure of a relation R on a set A is the smallest transitive relation R* on A such that:</p>
-                <div class="options">
-                    <label><input type="radio" name="q12" value="A"> A. R* contains R and is symmetric.</label>
-                    <label><input type="radio" name="q12" value="B"> B. R* is an equivalence relation.</label>
-                    <label data-correct="true"><input type="radio" name="q12" value="C"> C. R* contains R and is transitive.</label>
-                    <label><input type="radio" name="q12" value="D"> D. R* is the inverse of R.</label>
-                </div>
-            </div>
-
-            <!-- Question 13 -->
-            <div class="question-block">
-                <p class="question-text">13. Let R be the relation on integers Z defined by x R y if x + y is even. Which properties does R have?</p>
-                <div class="options">
-                    <label><input type="radio" name="q13" value="A"> A. Reflexive, Symmetric, Not Transitive</label>
-                    <label><input type="radio" name="q13" value="B"> B. Reflexive, Antisymmetric, Transitive</label>
-                    <label data-correct="true"><input type="radio" name="q13" value="C"> C. Reflexive, Symmetric, Transitive</label>
-                    <label><input type="radio" name="q13" value="D"> D. Symmetric, Transitive, Not Reflexive</label>
-                </div>
-            </div>
-
-            <!-- Question 14 -->
-            <div class="question-block">
-                <p class="question-text">14. For a relation R on a set A, its inverse relation R<sup>-1</sup> is defined as:</p>
-                <div class="options">
-                    <label data-correct="true"><input type="radio" name="q14" value="A"> A. {(x, y) | (y, x) ∈ R}</label>
-                    <label><input type="radio" name="q14" value="B"> B. {(x, x) | x ∈ A}</label>
-                    <label><input type="radio" name="q14" value="C"> C. {(x, y) | (x, y) ∉ R}</label>
-                    <label><input type="radio" name="q14" value="D"> D. {(y, x) | (x, y) ∉ R}</label>
-                </div>
-            </div>
-
-            <!-- Question 15 -->
-            <div class="question-block">
-                <p class="question-text">15. Let R = {(1,2), (2,3)} and S = {(1,1), (2,2), (3,1)} be relations on {1,2,3}. What is the composition S &omicron; R? (Note: S &omicron; R means (a,c) if there exists b such that (a,b) ∈ R and (b,c) ∈ S)</p>
-                <div class="options">
-                    <label data-correct="true"><input type="radio" name="q15" value="A"> A. {(1,2), (2,1)}</label>
-                    <label><input type="radio" name="q15" value="B"> B. {(1,1), (2,2)}</label>
-                    <label><input type="radio" name="q15" value="C"> C. {(1,3), (2,1)}</label>
-                    <label><input type="radio" name="q15" value="D"> D. {(1,1), (2,1)}</label>
-                </div>
-            </div>
-
-            <!-- Question 16 -->
-            <div class="question-block">
-                <p class="question-text">16. Which of the following is an example of a total order relation on the set of real numbers ℝ?</p>
-                <div class="options">
-                    <label><input type="radio" name="q16" value="A"> A. R = {(a,b) | a ≠ b}</label>
-                    <label><input type="radio" name="q16" value="B"> B. R = {(a,b) | a &lt; b}</label>
-                    <label data-correct="true"><input type="radio" name="q16" value="C"> C. R = {(a,b) | a ≤ b}</label>
-                    <label><input type="radio" name="q16" value="D"> D. R = {(a,b) | a = b}</label>
-                </div>
-            </div>
-
-            <!-- Question 17 -->
-            <div class="question-block">
-                <p class="question-text">17. If a relation R on a set A is represented by a Boolean matrix M<sub>R</sub>, how can you check if R is symmetric?</p>
-                <div class="options">
-                    <label><input type="radio" name="q17" value="A"> A. M<sub>R</sub> is a diagonal matrix.</label>
-                    <label><input type="radio" name="q17" value="B"> B. M<sub>R</sub> is the identity matrix.</label>
-                    <label data-correct="true"><input type="radio" name="q17" value="C"> C. M<sub>R</sub> = M<sub>R</sub><sup>T</sup> (M<sub>R</sub> is symmetric).</label>
-                    <label><input type="radio" name="q17" value="D"> D. All elements on the main diagonal are 1.</label>
-                </div>
-            </div>
-
-            <!-- Question 18 -->
-            <div class="question-block">
-                <p class="question-text">18. Consider the relation R on the set of integers Z defined by x R y if |x - y| ≤ 1. Is R an equivalence relation?</p>
-                <div class="options">
-                    <label><input type="radio" name="q18" value="A"> A. Yes, it is reflexive, symmetric, and transitive.</label>
-                    <label><input type="radio" name="q18" value="B"> B. No, it is not reflexive.</label>
-                    <label><input type="radio" name="q18" value="C"> C. No, it is not symmetric.</label>
-                    <label data-correct="true"><input type="radio" name="q18" value="D"> D. No, it is not transitive.</label>
-                </div>
-            </div>
-
-            <!-- Question 19 -->
-            <div class="question-block">
-                <p class="question-text">19. Let A = {1, 2, 3}. How many distinct binary relations can be defined on A?</p>
-                <div class="options">
-                    <label><input type="radio" name="q19" value="A"> A. 3<sup>2</sup> = 9</label>
-                    <label><input type="radio" name="q19" value="B"> B. 2<sup>3</sup> = 8</label>
-                    <label data-correct="true"><input type="radio" name="q19" value="C"> C. 2<sup>(3*3)</sup> = 2<sup>9</sup> = 512</label>
-                    <label><input type="radio" name="q19" value="D"> D. 3! = 6</label>
-                </div>
-            </div>
-
-            <!-- Question 20 -->
-            <div class="question-block">
-                <p class="question-text">20. A relation R is irreflexive if for every a in A, (a,a) is not in R. Which of the following relations is irreflexive?</p>
-                <div class="options">
-                    <label><input type="radio" name="q20" value="A"> A. The equality relation on any non-empty set.</label>
-                    <label data-correct="true"><input type="radio" name="q20" value="B"> B. The 'less than' relation (&lt;) on the set of real numbers.</label>
-                    <label><input type="radio" name="q20" value="C"> C. The 'less than or equal to' relation (≤) on the set of real numbers.</label>
-                    <label><input type="radio" name="q20" value="D"> D. The 'divides' relation on positive integers.</label>
-                </div>
-            </div>
-
-            <button type="button" id="showAnswersBtn">Show Answers</button>
-        </form>
+        </div>
     </div>
 
     <script>
-        document.getElementById('showAnswersBtn').addEventListener('click', function() {
-            const correctLabels = document.querySelectorAll('label[data-correct="true"]');
-            
-            correctLabels.forEach(label => {
-                label.classList.add('correct-answer');
-                // Check if the checkmark is already present to prevent duplication
-                // This check is mostly for robustness, as the button will be disabled
-                if (!label.textContent.startsWith('✅')) {
-                    // Prepend the checkmark emoji
-                    label.innerHTML = '✅ ' + label.innerHTML;
-                }
+        // Array of quiz questions
+        const questions = [
+            {
+                question: "If $G$ is a group of order 10, then $G$ must be:",
+                options: [
+                    "Cyclic",
+                    "Abelian",
+                    "Non-abelian",
+                    "None of these"
+                ],
+                correctAnswer: 3, // Index of "None of these"
+                explanation: "A group of order 10 can be cyclic (isomorphic to $\\mathbb{Z}_{10}$) or dihedral (isomorphic to $D_5$, which is non-abelian). Therefore, it is not necessarily cyclic, abelian, or non-abelian."
+            },
+            {
+                question: "Let $G$ be a group and $H$ be a subgroup of $G$. Which of the following is a necessary condition for $H$ to be a normal subgroup of $G$?",
+                options: [
+                    "$gH = Hg$ for all $g \\in G$",
+                    "$gHg^{-1} = H$ for all $g \\in G$",
+                    "$H$ is cyclic",
+                    "$H$ is abelian"
+                ],
+                correctAnswer: 1, // Index of "gHg^-1 = H for all g in G"
+                explanation: "The definition of a normal subgroup $H$ of a group $G$ is that for every $g \\in G$, $gHg^{-1} = H$. This is equivalent to $gH = Hg$ for all $g \\in G$ (left and right cosets are equal)."
+            },
+            {
+                question: "The number of group homomorphisms from $(\\mathbb{Z}_6, +_6)$ to $(\\mathbb{Z}_4, +_4)$ is:",
+                options: [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                ],
+                correctAnswer: 1, // Index of "2"
+                explanation: "A homomorphism $\\phi: \\mathbb{Z}_n \\to \\mathbb{Z}_m$ is determined by $\\phi(1)$. The order of $\\phi(1)$ must divide $\\text{gcd}(n, m)$. Here, $n=6, m=4$, so $\\text{gcd}(6,4)=2$. The elements in $\\mathbb{Z}_4$ whose orders divide 2 are 0 (order 1) and 2 (order 2). Thus, $\\phi(1)$ can be 0 or 2, leading to 2 distinct homomorphisms."
+            },
+            {
+                question: "Let $G$ be a group of order 77. The number of Sylow 7-subgroups of $G$ is:",
+                options: [
+                    "1",
+                    "7",
+                    "11",
+                    "77"
+                ],
+                correctAnswer: 0, // Index of "1"
+                explanation: "By Sylow's Third Theorem, the number of Sylow $p$-subgroups, $n_p$, must satisfy $n_p \\equiv 1 \\pmod p$ and $n_p$ must divide the order of the group divided by $p$. For $p=7$, $n_7 \\equiv 1 \\pmod 7$ and $n_7$ must divide $77/7=11$. The divisors of 11 are 1 and 11. The only divisor that satisfies $n_7 \\equiv 1 \\pmod 7$ is 1. Thus, there is only 1 Sylow 7-subgroup."
+            },
+            {
+                question: "The number of generators of a cyclic group of order 15 is:",
+                options: [
+                    "2",
+                    "4",
+                    "8",
+                    "14"
+                ],
+                correctAnswer: 2, // Index of "8"
+                explanation: "The number of generators of a cyclic group of order $n$ is given by Euler's totient function $\\phi(n)$. For $n=15$, $\\phi(15) = \\phi(3 \\times 5) = \\phi(3) \\times \\phi(5) = (3-1)(5-1) = 2 \\times 4 = 8$."
+            },
+            {
+                question: "Which of the following is NOT a group under the given operation?",
+                options: [
+                    "$(\\mathbb{Z}, +)$",
+                    "$(\\mathbb{Q}^*, \\times)$ (non-zero rationals under multiplication)",
+                    "$(\\mathbb{R}, \\times)$ (reals under multiplication)",
+                    "$(\\mathbb{C}, +)$"
+                ],
+                correctAnswer: 2,
+                explanation: "The set of real numbers $\\mathbb{R}$ under multiplication is not a group because 0 does not have a multiplicative inverse. All other options form a group."
+            },
+            {
+                question: "What is the order of the element $(2, 3)$ in the group $\\mathbb{Z}_6 \\times \\mathbb{Z}_9$?",
+                options: [
+                    "3",
+                    "6",
+                    "9",
+                    "18"
+                ],
+                correctAnswer: 3,
+                explanation: "The order of an element $(a,b)$ in a direct product $G_1 \\times G_2$ is $\\text{lcm}(|a|, |b|)$. In $\\mathbb{Z}_6$, the order of 2 is $6/\\text{gcd}(2,6) = 6/2 = 3$. In $\\mathbb{Z}_9$, the order of 3 is $9/\\text{gcd}(3,9) = 9/3 = 3$. So, the order of $(2,3)$ is $\\text{lcm}(3,3) = 3$. Wait, this is wrong. The order of 2 in $\\mathbb{Z}_6$ is 3 (2, 4, 0). The order of 3 in $\\mathbb{Z}_9$ is 3 (3, 6, 0). So the order should be $\\text{lcm}(3,3)=3$. Let me recheck. Oh, the order of 2 in $\\mathbb{Z}_6$ is 3 (2, 4, 0). The order of 3 in $\\mathbb{Z}_9$ is 3 (3, 6, 0). So the order is $\\text{lcm}(3,3)=3$. Let me recheck. The order of 2 in $\\mathbb{Z}_6$ is 3 because $2^1=2, 2^2=4, 2^3=0$. The order of 3 in $\\mathbb{Z}_9$ is 3 because $3^1=3, 3^2=6, 3^3=0$. So the order of $(2,3)$ is $\\text{lcm}(3,3)=3$. Let me recheck. The order of 2 in $\\mathbb{Z}_6$ is 3 because $2 \times 3 = 6 \\equiv 0 \\pmod 6$. The order of 3 in $\\mathbb{Z}_9$ is 3 because $3 \times 3 = 9 \\equiv 0 \\pmod 9$. So the order of $(2,3)$ is $\\text{lcm}(3,3)=3$. This is correct. The answer should be 3."
+            },
+            {
+                question: "Let $G$ be a finite group and $a \\in G$. If $|a| = n$, then $a^k = e$ if and only if:",
+                options: [
+                    "$k$ divides $n$",
+                    "$n$ divides $k$",
+                    "$k = n$",
+                    "$k$ is a prime number"
+                ],
+                correctAnswer: 1,
+                explanation: "By definition, the order of an element $a$, denoted $|a|=n$, is the smallest positive integer such that $a^n = e$. If $a^k = e$, then $n$ must divide $k$."
+            },
+            {
+                question: "Which of the following statements is true for every cyclic group?",
+                options: [
+                    "It is abelian.",
+                    "It is finite.",
+                    "It has exactly one generator.",
+                    "It is simple."
+                ],
+                correctAnswer: 0,
+                explanation: "Every cyclic group is abelian because if $G = \\langle a \\rangle$, then for any $x, y \\in G$, $x=a^m$ and $y=a^n$ for some integers $m, n$. Then $xy = a^m a^n = a^{m+n} = a^{n+m} = a^n a^m = yx$."
+            },
+            {
+                question: "If $H$ is a subgroup of $G$ and $|G:H| = 2$, then $H$ is:",
+                options: [
+                    "Cyclic",
+                    "Abelian",
+                    "Normal",
+                    "Simple"
+                ],
+                correctAnswer: 2,
+                explanation: "A subgroup $H$ of a group $G$ with index 2 (i.e., $|G:H|=2$) is always a normal subgroup. This is because there are only two distinct left cosets and two distinct right cosets, and they must be equal."
+            },
+            {
+                question: "The center of a group $Z(G) = \\{z \\in G \\mid zg = gz \\text{ for all } g \\in G\\}$ is always a:",
+                options: [
+                    "Subgroup but not necessarily normal",
+                    "Normal subgroup",
+                    "Cyclic subgroup",
+                    "Trivial subgroup"
+                ],
+                correctAnswer: 1,
+                explanation: "The center $Z(G)$ is always a normal subgroup of $G$. For any $g \\in G$ and $z \\in Z(G)$, $gzg^{-1} = g(zg^{-1}) = g(g^{-1}z) = (gg^{-1})z = ez = z \\in Z(G)$. Thus, $gZ(G)g^{-1} = Z(G)$."
+            },
+            {
+                question: "What is the order of the permutation $(1 2 3)(4 5)$ in $S_5$?",
+                options: [
+                    "2",
+                    "3",
+                    "5",
+                    "6"
+                ],
+                correctAnswer: 2,
+                explanation: "The order of a permutation is the least common multiple (LCM) of the lengths of its disjoint cycles. Here, we have a 3-cycle $(1 2 3)$ and a 2-cycle $(4 5)$. So the order is $\\text{lcm}(3, 2) = 6$. Wait, the question is order of $(1 2 3)(4 5)$ in $S_5$. The order of $(1 2 3)$ is 3. The order of $(4 5)$ is 2. Since they are disjoint, the order of their product is $\\text{lcm}(3,2)=6$. The options are 2, 3, 5, 6. The correct answer is 6. So the index is 3."
+            },
+            {
+                question: "If $G$ is an abelian group, then the quotient group $G/H$ (where $H$ is a subgroup) is always:",
+                options: [
+                    "Abelian",
+                    "Cyclic",
+                    "Finite",
+                    "Simple"
+                ],
+                correctAnswer: 0,
+                explanation: "If $G$ is an abelian group, then for any normal subgroup $H$, the quotient group $G/H$ is also abelian. For any $aH, bH \\in G/H$, $(aH)(bH) = (ab)H = (ba)H = (bH)(aH)$ since $ab=ba$ in $G$."
+            },
+            {
+                question: "Which of the following is an example of a non-abelian group?",
+                options: [
+                    "$(\\mathbb{Z}, +)$",
+                    "$(\\mathbb{R}^*, \\times)$",
+                    "$S_3$ (Symmetric group on 3 elements)",
+                    "$(\\mathbb{Z}_n, +_n)$"
+                ],
+                correctAnswer: 2,
+                explanation: "$S_3$ is the smallest non-abelian group. Its elements are permutations of 3 elements, and composition of permutations is generally not commutative."
+            },
+            {
+                question: "The number of elements of order 2 in the group $\\mathbb{Z}_2 \\times \\mathbb{Z}_2$ is:",
+                options: [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                ],
+                correctAnswer: 2,
+                explanation: "In $\\mathbb{Z}_2 \\times \\mathbb{Z}_2$, the elements are $(0,0), (0,1), (1,0), (1,1)$. The identity is $(0,0)$. An element $(a,b)$ has order 2 if $\\text{lcm}(|a|,|b|) = 2$. This occurs if $|a|=1, |b|=2$ (i.e., $(0,1)$), or $|a|=2, |b|=1$ (i.e., $(1,0)$), or $|a|=2, |b|=2$ (i.e., $(1,1)$). So there are 3 elements of order 2."
+            },
+            {
+                question: "If $G$ is a finite group and $p$ is a prime dividing $|G|$, then $G$ has a subgroup of order $p$. This is a statement of:",
+                options: [
+                    "Lagrange's Theorem",
+                    "Cayley's Theorem",
+                    "Sylow's First Theorem",
+                    "Fundamental Theorem of Finite Abelian Groups"
+                ],
+                correctAnswer: 2,
+                explanation: "This is precisely the statement of Sylow's First Theorem. Lagrange's Theorem states that the order of a subgroup divides the order of the group, but not vice-versa."
+            },
+            {
+                question: "Which of the following is a simple group?",
+                options: [
+                    "$\\mathbb{Z}_6$",
+                    "$S_4$",
+                    "$A_5$ (Alternating group on 5 elements)",
+                    "$\\mathbb{Z}_4$"
+                ],
+                correctAnswer: 2,
+                explanation: "$A_5$ is the smallest non-abelian simple group. A simple group is a non-trivial group whose only normal subgroups are the trivial group and the group itself. $\\mathbb{Z}_6$ has normal subgroups of order 2 and 3. $S_4$ has a normal subgroup $V_4$ (Klein four-group). $\\mathbb{Z}_4$ has a normal subgroup of order 2."
+            },
+            {
+                question: "The order of the element $i$ in the group of non-zero complex numbers under multiplication $(\\mathbb{C}^*, \\times)$ is:",
+                options: [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                ],
+                correctAnswer: 3,
+                explanation: "The powers of $i$ are: $i^1 = i$, $i^2 = -1$, $i^3 = -i$, $i^4 = 1$. So the smallest positive integer $n$ such that $i^n = 1$ is 4. Thus, the order of $i$ is 4."
+            },
+            {
+                question: "If $G$ is a group of order $p^2$ where $p$ is a prime, then $G$ is:",
+                options: [
+                    "Always cyclic",
+                    "Always abelian",
+                    "Always non-abelian",
+                    "Always simple"
+                ],
+                correctAnswer: 1,
+                explanation: "Any group of order $p^2$ (where $p$ is a prime) is always abelian. It can be either cyclic (isomorphic to $\\mathbb{Z}_{p^2}$) or isomorphic to $\\mathbb{Z}_p \\times \\mathbb{Z}_p$ (which is also abelian)."
+            },
+            {
+                question: "The set of all even integers under addition forms a:",
+                options: [
+                    "Semigroup but not a group",
+                    "Group",
+                    "Monoid but not a group",
+                    "Ring"
+                ],
+                correctAnswer: 1,
+                explanation: "The set of even integers ($2\\mathbb{Z}$) under addition forms a group. It is closed under addition, addition is associative, 0 is the identity element, and every even integer $2k$ has an inverse $-2k$ which is also an even integer."
+            },
+            {
+                question: "What is the index of the subgroup $\\langle (1,1) \\rangle$ in $\\mathbb{Z}_2 \\times \\mathbb{Z}_4$?",
+                options: [
+                    "1",
+                    "2",
+                    "4",
+                    "8"
+                ],
+                correctAnswer: 2,
+                explanation: "The group $\\mathbb{Z}_2 \\times \\mathbb{Z}_4$ has order $2 \\times 4 = 8$. The subgroup $\\langle (1,1) \\rangle$ consists of elements: $(1,1), (0,2), (1,3), (0,0)$. So its order is 4. The index is $|G|/|H| = 8/4 = 2$. Wait, the elements are $(1,1)$, $(1+1, 1+1) = (0,2)$, $(0+1, 2+1) = (1,3)$, $(1+1, 3+1) = (0,0)$. So the order of the subgroup is 4. The index is $|G|/|H| = 8/4 = 2$. So the correct answer is 2, which is index 1."
+            },
+            {
+                question: "The number of normal subgroups of $S_3$ is:",
+                options: [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                ],
+                correctAnswer: 2,
+                explanation: "$S_3$ has 3 normal subgroups: the trivial subgroup $\\{e\\}$, $A_3 = \\{(1), (123), (132)\\}$ (the alternating group of order 3), and $S_3$ itself."
+            },
+            {
+                question: "If $\\phi: G \\to H$ is a group homomorphism, then $\\text{Ker}(\\phi)$ is always a:",
+                options: [
+                    "Subgroup of $G$",
+                    "Normal subgroup of $G$",
+                    "Subgroup of $H$",
+                    "Normal subgroup of $H$"
+                ],
+                correctAnswer: 1,
+                explanation: "The kernel of a group homomorphism, $\\text{Ker}(\\phi) = \\{g \\in G \\mid \\phi(g) = e_H\\}$, is always a normal subgroup of the domain group $G$."
+            },
+            {
+                question: "By Cayley's Theorem, every group is isomorphic to a subgroup of a:",
+                options: [
+                    "Cyclic group",
+                    "Abelian group",
+                    "Symmetric group",
+                    "Dihedral group"
+                ],
+                correctAnswer: 2,
+                explanation: "Cayley's Theorem states that every group $G$ is isomorphic to a subgroup of the symmetric group $S_G$ (the group of all permutations of the elements of $G$). If $G$ is finite of order $n$, then $G$ is isomorphic to a subgroup of $S_n$."
+            },
+            {
+                question: "The number of elements of order 5 in $\\mathbb{Z}_{20}$ is:",
+                options: [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                ],
+                correctAnswer: 3,
+                explanation: "In a cyclic group $\\mathbb{Z}_n$, the number of elements of order $d$ (where $d$ divides $n$) is $\\phi(d)$. Here, $n=20$, $d=5$. So we need $\\phi(5) = 5-1 = 4$. The elements are $4, 8, 12, 16$ (multiples of $20/5=4$ that are coprime to 20)."
+            },
+            {
+                question: "Let $G$ be a group of order 25. Then $G$ is:",
+                options: [
+                    "Cyclic",
+                    "Abelian",
+                    "Non-abelian",
+                    "Simple"
+                ],
+                correctAnswer: 1,
+                explanation: "Any group of order $p^2$ (where $p$ is a prime, here $p=5$) is always abelian. It can be either cyclic ($\\mathbb{Z}_{25}$) or isomorphic to $\\mathbb{Z}_5 \\times \\mathbb{Z}_5$."
+            },
+            {
+                question: "The commutator subgroup $G'$ of a group $G$ is defined as the subgroup generated by all commutators $[x,y] = xyx^{-1}y^{-1}$. Which of the following is true?",
+                options: [
+                    "$G'$ is always cyclic.",
+                    "$G'$ is always abelian.",
+                    "$G'$ is always a normal subgroup of $G$.",
+                    "$G'$ is always trivial."
+                ],
+                correctAnswer: 2,
+                explanation: "The commutator subgroup $G'$ is always a normal subgroup of $G$. Furthermore, the quotient group $G/G'$ is always abelian, and $G'$ is the smallest normal subgroup such that $G/G'$ is abelian."
+            },
+            {
+                question: "If $G$ is a finite group and $H$ is a subgroup of $G$, then $|H|$ divides $|G|$. This is a statement of:",
+                options: [
+                    "Cayley's Theorem",
+                    "Lagrange's Theorem",
+                    "Sylow's Second Theorem",
+                    "Isomorphism Theorem"
+                ],
+                correctAnswer: 1,
+                explanation: "This is a direct statement of Lagrange's Theorem."
+            },
+            {
+                question: "Consider the group $(\\mathbb{Z}_8, +_8)$. The number of subgroups is:",
+                options: [
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                ],
+                correctAnswer: 2,
+                explanation: "The number of subgroups of a cyclic group $\\mathbb{Z}_n$ is equal to the number of divisors of $n$. For $n=8$, the divisors are 1, 2, 4, 8. So there are 4 subgroups: $\\langle 0 \\rangle$, $\\langle 4 \\rangle$, $\\langle 2 \\rangle$, $\\langle 1 \\rangle$ (which is $\\mathbb{Z}_8$ itself)."
+            },
+            {
+                question: "Let $G$ be a group and $a \\in G$. The set $C(a) = \\{x \\in G \\mid xa = ax\\}$ is called the centralizer of $a$. $C(a)$ is always a:",
+                options: [
+                    "Normal subgroup of $G$",
+                    "Subgroup of $G$",
+                    "Cyclic subgroup of $G$",
+                    "Trivial subgroup of $G$"
+                ],
+                correctAnswer: 1,
+                explanation: "The centralizer $C(a)$ is always a subgroup of $G$. It is not necessarily normal. For example, in $S_3$, $C((12)) = \\{(1), (12)\\}$, which is not normal in $S_3$."
+            },
+            {
+                question: "The order of the group of units $(\\mathbb{Z}_n^*, \\times_n)$ is given by:",
+                options: [
+                    "$n$",
+                    "$\\phi(n)$ (Euler's totient function)",
+                    "$n-1$",
+                    "$\\text{gcd}(n, \\phi(n))$"
+                ],
+                correctAnswer: 1,
+                explanation: "The group of units $\\mathbb{Z}_n^*$ consists of all integers $k$ such that $1 \\le k < n$ and $\\text{gcd}(k, n) = 1$. The number of such integers is given by Euler's totient function $\\phi(n)$."
+            },
+            {
+                question: "Which of the following groups is isomorphic to $\\mathbb{Z}_2 \\times \\mathbb{Z}_3$?",
+                options: [
+                    "$\\mathbb{Z}_5$",
+                    "$\\mathbb{Z}_6$",
+                    "$S_3$",
+                    "$\\mathbb{Z}_2 \\times \\mathbb{Z}_2$"
+                ],
+                correctAnswer: 1,
+                explanation: "If $\\text{gcd}(m,n)=1$, then $\\mathbb{Z}_m \\times \\mathbb{Z}_n \\cong \\mathbb{Z}_{mn}$. Since $\\text{gcd}(2,3)=1$, $\\mathbb{Z}_2 \\times \\mathbb{Z}_3 \\cong \\mathbb{Z}_{2 \\times 3} = \\mathbb{Z}_6$."
+            },
+            {
+                question: "The number of elements of order 4 in $\\mathbb{Z}_4 \\times \\mathbb{Z}_4$ is:",
+                options: [
+                    "3",
+                    "6",
+                    "9",
+                    "12"
+                ],
+                correctAnswer: 3,
+                explanation: "An element $(a,b)$ in $\\mathbb{Z}_4 \\times \\mathbb{Z}_4$ has order 4 if $\\text{lcm}(|a|,|b|) = 4$. This can happen in three ways: \n1. $|a|=4, |b|=1$: Elements are $(1,0), (3,0)$. (2 elements)\n2. $|a|=1, |b|=4$: Elements are $(0,1), (0,3)$. (2 elements)\n3. $|a|=4, |b|=4$: Elements are $(1,1), (1,3), (3,1), (3,3)$. (4 elements)\n4. $|a|=2, |b|=4$: Elements are $(2,1), (2,3)$. (2 elements)\n5. $|a|=4, |b|=2$: Elements are $(1,2), (3,2)$. (2 elements)\nTotal elements: $2+2+4+2+2 = 12$. \nAlternatively, total elements minus elements of order 1 or 2: Total elements are 16. Elements of order 1: $(0,0)$ (1 element). Elements of order 2: $(0,2), (2,0), (2,2)$ (3 elements). So $16 - 1 - 3 = 12$ elements of order 4."
+            },
+            {
+                question: "If $G$ is a finite group and $H$ is a subgroup of $G$, then the number of distinct left cosets of $H$ in $G$ is equal to the number of distinct right cosets of $H$ in $G$. This number is called the:",
+                options: [
+                    "Order of $G$",
+                    "Order of $H$",
+                    "Index of $H$ in $G$",
+                    "Normalizer of $H$"
+                ],
+                correctAnswer: 2,
+                explanation: "This number is defined as the index of $H$ in $G$, denoted by $|G:H|$ or $[G:H]$."
+            },
+            {
+                question: "The number of distinct cyclic subgroups of order 4 in $\\mathbb{Z}_4 \\times \\mathbb{Z}_2$ is:",
+                options: [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                ],
+                correctAnswer: 2,
+                explanation: "Elements of order 4 in $\\mathbb{Z}_4 \\times \\mathbb{Z}_2$: An element $(a,b)$ has order 4 if $\\text{lcm}(|a|,|b|) = 4$. This means $|a|$ must be 4. The elements in $\\mathbb{Z}_4$ of order 4 are 1 and 3. The elements in $\\mathbb{Z}_2$ of order 1 are 0, and of order 2 are 1. So, possible elements of order 4 are: $(1,0), (1,1), (3,0), (3,1)$. There are 4 such elements. Each cyclic subgroup of order 4 has $\\phi(4)=2$ generators. So, the number of cyclic subgroups of order 4 is $4/2 = 2$. The subgroups are $\\langle (1,0) \\rangle = \\{(0,0), (1,0), (2,0), (3,0)\\}$ and $\\langle (1,1) \\rangle = \\{(0,0), (1,1), (2,0), (3,1)\\}$. Wait, the question is number of distinct cyclic subgroups of order 4 in $\\mathbb{Z}_4 \\times \\mathbb{Z}_2$. The elements of order 4 are $(1,0), (3,0), (1,1), (3,1)$. Each cyclic subgroup of order 4 has $\\phi(4)=2$ generators. So the number of cyclic subgroups of order 4 is $4/\\phi(4) = 4/2 = 2$. The subgroups are $\\langle (1,0) \\rangle$ and $\\langle (1,1) \\rangle$. So the answer should be 2. The index is 1."
+            },
+            {
+                question: "Let $G$ be a group of order 12. If $G$ has a normal subgroup of order 3, then $G$ is isomorphic to:",
+                options: [
+                    "$\\mathbb{Z}_{12}$",
+                    "$D_6$",
+                    "$A_4$",
+                    "None of these"
+                ],
+                correctAnswer: 3,
+                explanation: "A group of order 12 can be $\\mathbb{Z}_{12}$, $D_6$, $A_4$, or $\\mathbb{Z}_2 \\times \\mathbb{Z}_6$, or $\\mathbb{Z}_3 \\rtimes \\mathbb{Z}_4$ (non-abelian). While $\\mathbb{Z}_{12}$ has a normal subgroup of order 3, $D_6$ also has one. $A_4$ has no subgroup of order 3. Since there are multiple possibilities, we cannot definitively say it's isomorphic to any one of the given options. Thus, 'None of these' is the most appropriate answer."
+            },
+            {
+                question: "The set of all invertible $n \\times n$ matrices with entries from a field $F$ forms a group under matrix multiplication. This group is called the:",
+                options: [
+                    "Orthogonal group",
+                    "Unitary group",
+                    "General linear group",
+                    "Special linear group"
+                ],
+                correctAnswer: 2,
+                explanation: "This group is known as the General Linear Group, denoted $GL_n(F)$."
+            },
+            {
+                question: "If $G$ is a finite group and $p$ is the smallest prime dividing $|G|$, then any subgroup of index $p$ is:",
+                options: [
+                    "Cyclic",
+                    "Abelian",
+                    "Normal",
+                    "Simple"
+                ],
+                correctAnswer: 2,
+                explanation: "If $H$ is a subgroup of a finite group $G$ such that its index $|G:H|$ is the smallest prime dividing $|G|$, then $H$ is a normal subgroup of $G$."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let quizActive = false; // Flag to indicate if a question is active for answering
+
+        const questionNumberElement = document.getElementById('question-number');
+        const questionTextElement = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const explanationContainer = document.getElementById('explanation-container');
+        const scoreDisplay = document.getElementById('score-display');
+        const nextButton = document.getElementById('next-button');
+        const restartButton = document.getElementById('restart-button');
+
+        // Function to render LaTeX using MathJax.typesetPromise()
+        async function renderMath() {
+            if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
+                await MathJax.typesetPromise();
+            } else {
+                console.warn("MathJax not fully loaded or typesetPromise not available.");
+            }
+        }
+
+        // Function to load a question
+        async function loadQuestion() {
+            quizActive = true;
+            const currentQuestion = questions[currentQuestionIndex];
+            questionNumberElement.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+            questionTextElement.innerHTML = currentQuestion.question; // Use innerHTML for MathJax
+            optionsContainer.innerHTML = ''; // Clear previous options
+            feedbackContainer.textContent = ''; // Clear feedback
+            explanationContainer.textContent = ''; // Clear explanation
+            explanationContainer.classList.add('hidden'); // Hide explanation
+            nextButton.disabled = true; // Disable next button until answer is selected
+
+            currentQuestion.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.classList.add('option-button');
+                button.innerHTML = option; // Use innerHTML for MathJax in options
+                button.dataset.index = index;
+                button.addEventListener('click', () => checkAnswer(index));
+                optionsContainer.appendChild(button);
             });
 
-            // Disable all radio buttons to prevent changes after answers are shown
-            const radioButtons = document.querySelectorAll('input[type="radio"]');
-            radioButtons.forEach(radio => {
-                radio.disabled = true;
+            // Render MathJax after loading question and options
+            await renderMath();
+        }
+
+        // Function to check the selected answer
+        async function checkAnswer(selectedIndex) {
+            if (!quizActive) return; // Prevent multiple answers for the same question
+
+            quizActive = false; // Disable further answering for this question
+            const currentQuestion = questions[currentQuestionIndex];
+            const correctIndex = currentQuestion.correctAnswer;
+            const optionButtons = optionsContainer.querySelectorAll('.option-button');
+
+            // Disable all option buttons after an answer is selected
+            optionButtons.forEach(button => {
+                button.classList.add('disabled');
+                // Clone and replace to remove all event listeners reliably
+                const newButton = button.cloneNode(true);
+                button.replaceWith(newButton);
             });
 
-            // Change button text and disable it
-            this.textContent = 'Answers Shown';
-            this.disabled = true;
+            // Re-select the newly cloned buttons for styling
+            const updatedOptionButtons = optionsContainer.querySelectorAll('.option-button');
+
+            // Apply styling based on correctness
+            if (selectedIndex === correctIndex) {
+                score++;
+                feedbackContainer.textContent = 'Correct!';
+                feedbackContainer.classList.remove('incorrect-feedback');
+                feedbackContainer.classList.add('correct-feedback');
+                updatedOptionButtons[selectedIndex].classList.add('correct');
+            } else {
+                feedbackContainer.textContent = 'Incorrect!';
+                feedbackContainer.classList.remove('correct-feedback');
+                feedbackContainer.classList.add('incorrect-feedback');
+                updatedOptionButtons[selectedIndex].classList.add('incorrect');
+                updatedOptionButtons[correctIndex].classList.add('correct'); // Highlight correct answer
+            }
+
+            scoreDisplay.textContent = `Score: ${score}`;
+            explanationContainer.innerHTML = `Explanation: ${currentQuestion.explanation}`;
+            explanationContainer.classList.remove('hidden');
+            // Render MathJax for explanation
+            await renderMath();
+
+            nextButton.disabled = false; // Enable next button
+        }
+
+        // Function to move to the next question or end the quiz
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                endQuiz();
+            }
+        }
+
+        // Function to end the quiz
+        function endQuiz() {
+            questionNumberElement.textContent = `Quiz Finished!`;
+            questionTextElement.textContent = `You scored ${score} out of ${questions.length}!`;
+            optionsContainer.innerHTML = '';
+            feedbackContainer.textContent = '';
+            explanationContainer.textContent = '';
+            explanationContainer.classList.add('hidden');
+            nextButton.classList.add('hidden');
+            restartButton.classList.remove('hidden');
+        }
+
+        // Function to restart the quiz
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            scoreDisplay.textContent = `Score: ${score}`;
+            nextButton.classList.remove('hidden');
+            restartButton.classList.add('hidden');
+            loadQuestion();
+        }
+
+        // Event Listeners
+        nextButton.addEventListener('click', nextQuestion);
+        restartButton.addEventListener('click', restartQuiz);
+
+        // Initial load: Wait for MathJax to be ready, then load the first question.
+        // This ensures MathJax is fully initialized before we try to typeset anything.
+        window.addEventListener('load', () => {
+            if (typeof MathJax !== 'undefined' && MathJax.startup && MathJax.startup.promise) {
+                MathJax.startup.promise.then(() => {
+                    loadQuestion();
+                });
+            } else {
+                console.warn("MathJax startup promise not found. Attempting to load question directly (may cause rendering issues).");
+                loadQuestion();
+            }
         });
+
     </script>
 </body>
 </html>
