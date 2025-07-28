@@ -34,27 +34,6 @@
       margin: 5px 0 0;
     }
 
-    .header-actions { /* New style for login/signup link container */
-      margin-top: 15px;
-    }
-
-    .header-actions a {
-      display: inline-block; /* Make links inline-block */
-      padding: 8px 15px;
-      background-color: #415a77;
-      color: #90e0ef;
-      border-radius: 6px;
-      text-decoration: none;
-      font-size: 15px;
-      margin: 0 5px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .header-actions a:hover {
-      background-color: #5a738c;
-      color: #ffffff;
-    }
-
     .question {
       background: #1b263b;
       padding: 30px 20px;
@@ -105,6 +84,66 @@
       border-top: 1px solid #2a3442;
       margin-top: 40px;
     }
+
+    /* Styles for the passcode section */
+    .passcode-section {
+      background: #1b263b;
+      padding: 30px 20px;
+      max-width: 500px;
+      margin: 40px auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border: 1px solid #415a77;
+      text-align: center;
+    }
+
+    .passcode-section label {
+      display: block;
+      margin-bottom: 15px;
+      font-size: 18px;
+      color: #ade8f4;
+    }
+
+    .passcode-section input[type="password"] {
+      width: calc(100% - 40px); /* Adjust for padding */
+      padding: 12px 15px;
+      margin-bottom: 20px;
+      border: 1px solid #415a77;
+      border-radius: 8px;
+      background-color: #243447;
+      color: #e0e6f2;
+      font-size: 17px;
+      box-sizing: border-box; /* Include padding in width */
+    }
+
+    .passcode-section button {
+      padding: 12px 25px;
+      background-color: #4fc3f7;
+      color: #0d1b2a;
+      border: none;
+      border-radius: 8px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .passcode-section button:hover {
+      background-color: #00b0ff;
+      transform: translateY(-2px);
+    }
+
+    .error-message {
+      color: #ef476f; /* A red color for errors */
+      margin-top: 15px;
+      font-size: 15px;
+      display: none; /* Hidden by default */
+    }
+
+    /* Initially hide the mock test list */
+    #mockTestList {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -113,13 +152,17 @@
     <h1>🧮 Raj Sir's Math Mock Test Portal</h1>
     <p>Practice. Perform. Perfect.</p>
     <p>Welcome to the Math Mock Test Portal. This project offers free, high-quality math practice tests to help students, teachers, and self-learners prepare for exams or sharpen their problem-solving skills.</p>
-    <div class="header-actions">
-      <a href="login.html">Login</a>
-      <a href="signup.html">Sign Up</a>
-    </div>
   </header>
 
-  <div class="question">
+  <div class="passcode-section" id="passcodeAccess">
+    <h2>🔒 Enter Passcode to Access Tests</h2>
+    <label for="passcode">Please enter the access code:</label>
+    <input type="password" id="passcode" placeholder="Enter passcode here">
+    <button onclick="checkPasscode()">Access Tests</button>
+    <p class="error-message" id="errorMessage"></p>
+  </div>
+
+  <div class="question" id="mockTestList">
     <h2>📚 Available Mock Tests</h2>
     <ul>
       <li><a href="test1.html">📘 Mock Test 1</a></li>
@@ -148,6 +191,25 @@
   <footer>
     © 2025 Raj Sir's Academy | Designed for student success
   </footer>
+
+  <script>
+    function checkPasscode() {
+      const correctPasscode = "1234567845"; // Your fixed passcode
+      const enteredPasscode = document.getElementById("passcode").value;
+      const errorMessage = document.getElementById("errorMessage");
+      const passcodeSection = document.getElementById("passcodeAccess");
+      const mockTestList = document.getElementById("mockTestList");
+
+      if (enteredPasscode === correctPasscode) {
+        passcodeSection.style.display = "none"; // Hide the passcode section
+        mockTestList.style.display = "block"; // Show the mock test list
+        errorMessage.style.display = "none"; // Hide any error message
+      } else {
+        errorMessage.textContent = "Incorrect passcode. Please try again.";
+        errorMessage.style.display = "block"; // Show error message
+      }
+    }
+  </script>
 
 </body>
 </html>
