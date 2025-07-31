@@ -1,215 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Math Mock Test Portal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="assets/style.css">
-
-  <style>
-    body {
-      background-color: #0d1b2a;
-      color: #e0e6f2;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    header {
-      background-color: #1e2733;
-      padding: 20px 10px;
-      text-align: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 28px;
-      color: #4fc3f7;
-    }
-
-    header p {
-      color: #ccc;
-      font-size: 16px;
-      margin: 5px 0 0;
-    }
-
-    .question {
-      background: #1b263b;
-      padding: 30px 20px;
-      max-width: 700px;
-      margin: 40px auto;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      border: 1px solid #415a77;
-    }
-
-    h2 {
-      color: #ade8f4;
-      margin-bottom: 25px;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    li {
-      margin: 12px 0;
-    }
-
-    a {
-      display: block;
-      padding: 12px 20px;
-      background-color: #243447;
-      color: #90e0ef;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      font-size: 16px;
-    }
-
-    a:hover {
-      background-color: #3a506b;
-      color: #ffffff;
-      transform: scale(1.02);
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 14px;
-      color: #8899a6;
-      border-top: 1px solid #2a3442;
-      margin-top: 40px;
-    }
-
-    /* Styles for the passcode section */
-    .passcode-section {
-      background: #1b263b;
-      padding: 30px 20px;
-      max-width: 500px;
-      margin: 40px auto;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      border: 1px solid #415a77;
-      text-align: center;
-    }
-
-    .passcode-section label {
-      display: block;
-      margin-bottom: 15px;
-      font-size: 18px;
-      color: #ade8f4;
-    }
-
-    .passcode-section input[type="password"] {
-      width: calc(100% - 40px); /* Adjust for padding */
-      padding: 12px 15px;
-      margin-bottom: 20px;
-      border: 1px solid #415a77;
-      border-radius: 8px;
-      background-color: #243447;
-      color: #e0e6f2;
-      font-size: 17px;
-      box-sizing: border-box; /* Include padding in width */
-    }
-
-    .passcode-section button {
-      padding: 12px 25px;
-      background-color: #4fc3f7;
-      color: #0d1b2a;
-      border: none;
-      border-radius: 8px;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-    .passcode-section button:hover {
-      background-color: #00b0ff;
-      transform: translateY(-2px);
-    }
-
-    .error-message {
-      color: #ef476f; /* A red color for errors */
-      margin-top: 15px;
-      font-size: 15px;
-      display: none; /* Hidden by default */
-    }
-
-    /* Initially hide the mock test list */
-    #mockTestList {
-      display: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Math Mock Test Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for Inter font and general body background */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A; /* Dark Slate Blue - Tailwind slate-900 */
+            color: #F8FAFC; /* Light Slate - Tailwind slate-50 */
+        }
+    </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col">
 
-  <header>
-    <h1>🧮 Raj Sir's Math Mock Test Portal</h1>
-    <p>Practice. Perform. Perfect.</p>
-    <p>Welcome to the Math Mock Test Portal. This project offers free, high-quality math practice tests to help students, teachers, and self-learners prepare for exams or sharpen their problem-solving skills.</p>
-  </header>
+    <!-- Updated Header (Hero Section) with Blue Background and White Text -->
+    <header class="bg-blue-900 p-8 text-center shadow-2xl rounded-b-3xl">
+        <h1 class="text-5xl font-extrabold text-white mb-4 drop-shadow-lg">
+            <span role="img" aria-label="calculator">🧮</span> Raj Sir's Math Mastery Portal
+        </h1>
+        <p class="text-xl text-white font-medium mb-6">Unlock Your Potential. Excel in Math.</p>
+        <p class="text-lg text-white max-w-3xl mx-auto leading-relaxed">
+            Your ultimate resource for high-quality math mock tests. Designed to sharpen problem-solving skills and boost confidence for students, teachers, and self-learners alike.
+        </p>
+    </header>
 
-  <div class="passcode-section" id="passcodeAccess">
-    <h2>🔒 Enter Passcode to Access Tests</h2>
-    <label for="passcode">Please enter the access code:</label>
-    <input type="password" id="passcode" placeholder="Enter passcode here">
-    <button onclick="checkPasscode()">Access Tests</button>
-    <p class="error-message" id="errorMessage"></p>
-  </div>
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <!-- Passcode Section -->
+        <div id="passcodeAccess" class="bg-slate-800 p-8 max-w-lg mx-auto rounded-xl shadow-2xl border border-blue-700">
+            <h2 class="text-3xl font-semibold text-teal-400 mb-6 text-center">
+                <span role="img" aria-label="lock">🔒</span> Enter Passcode to Access Tests
+            </h2>
+            <label for="passcode" class="block text-lg font-medium text-slate-200 mb-4">Please enter the access code:</label>
+            <input type="password" id="passcode" placeholder="Enter passcode here"
+                   class="w-full p-3 mb-6 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-300">
+            <button onclick="checkPasscode()"
+                    class="w-full py-3 bg-teal-600 text-white font-bold text-lg rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-75 transition duration-300 transform hover:scale-105">
+                Access Tests
+            </button>
+            <p id="errorMessage" class="text-red-400 text-center mt-4 text-sm hidden"></p>
+        </div>
 
-  <div class="question" id="mockTestList">
-    <h2>📚 Available Mock Tests</h2>
-    <ul>
-      <li><a href="test1.html">📘 Mock Test 1</a></li>
-      <li><a href="test2.html">📗 Mock Test 2</a></li>
-      <li><a href="test300.html">📘 Mock Test 3</a></li>
-      <li><a href="test4.html">📗 Mock Test 4</a></li>
-      <li><a href="test5.html">📘 Mock Test 5</a></li>
-      <li><a href="test6.html">📗 Mock Test 6</a></li>
-      <li><a href="test7.html">📘 Mock Test 7</a></li>
-      <li><a href="test8.html">📗 Mock Test 8</a></li>
-      <li><a href="test9.html">📘 Mock Test 9</a></li>
-      <li><a href="test10.html">📗 Mock Test 10</a></li>
-      <li><a href="test11.html">📘 Mock Test 11</a></li>
-      <li><a href="test12.html">📗 Mock Test 12</a></li>
-      <li><a href="test13.html">📘 Mock Test 13</a></li>
-      <li><a href="test14.html">📗 Mock Test 14</a></li>
-      <li><a href="test15.html">📘 Mock Test 15</a></li>
-      <li><a href="test16.html">📗 Mock Test 16</a></li>
-      <li><a href="test17.html">📘 Mock Test 17</a></li>
-      <li><a href="test18.html">📗 Mock Test 18</a></li>
-      <li><a href="test19.html">📘 Mock Test 19</a></li>
-      <li><a href="test20.html">📗 Mock Test 20</a></li>
-    </ul>
-  </div>
+        <!-- Mock Test List (Initially hidden) -->
+        <div id="mockTestList" class="bg-slate-800 p-8 max-w-3xl mx-auto rounded-xl shadow-2xl border border-blue-700 hidden">
+            <h2 class="text-3xl font-semibold text-teal-400 mb-6 text-center">
+                <span role="img" aria-label="books">📚</span> Available Mock Tests
+            </h2>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <li><a href="test1.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 Mock Test 1</a></li>
+                <li><a href="test2.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Mock Test 2</a></li>
+                <li><a href="test300.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 Mock Test 3</a></li>
+                <li><a href="test4.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Mock Test 4</a></li>
+                <li><a href="test5.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 Mock Test 5</a></li>
+                <li><a href="test6.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Mock Test 6</a></li>
+                <li><a href="test7.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 Mock Test 7</a></li>
+                <li><a href="test8.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Mock Test 8</a></li>
+                <li><a href="test9.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 Mock Test 9</a></li>
+                <li><a href="test10.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Mock Test 10</a></li>
+                <li><a href="test11.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 Mock Test 11</a></li>
+                <li><a href="test12.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Mock Test 12</a></li>
+                <li><a href="test13.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 Mock Test 13</a></li>
+                <li><a href="test14.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Mock Test 14</a></li>
+                <li><a href="test15.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 Mock Test 15</a></li>
+                <li><a href="test16.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Mock Test 16</a></li>
+                <li><a href="test17.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 Mock Test 17</a></li>
+                <li><a href="test18.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Mock Test 18</a></li>
+                <li><a href="test19.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 Mock Test 19</a></li>
+                <li><a href="test20.html" class="block p-4 bg-slate-700 text-blue-300 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Mock Test 20</a></li>
+            </ul>
+        </div>
 
-  <footer>
-    © 2025 Raj Sir's Academy | Designed for student success
-  </footer>
+        ---
 
-  <script>
-    function checkPasscode() {
-      const correctPasscode = "1234567845"; // Your fixed passcode
-      const enteredPasscode = document.getElementById("passcode").value;
-      const errorMessage = document.getElementById("errorMessage");
-      const passcodeSection = document.getElementById("passcodeAccess");
-      const mockTestList = document.getElementById("mockTestList");
+        <!-- Testimonials Section -->
+        <div id="testimonialsSection" class="bg-slate-800 p-8 max-w-4xl mx-auto rounded-xl shadow-2xl border border-blue-700 mt-8">
+            <h2 class="text-3xl font-semibold text-teal-400 mb-6 text-center">
+                <span role="img" aria-label="star">🌟</span> What Our Users Say
+            </h2>
+            <div id="testimonialCarousel" class="relative overflow-hidden h-48"> <!-- Added relative and overflow-hidden for carousel -->
+                <!-- Testimonial 1 -->
+                <div class="testimonial-item absolute w-full transition-opacity duration-1000 ease-in-out opacity-100 bg-slate-700 p-6 rounded-lg shadow-inner border border-slate-600">
+                    <p class="text-slate-200 italic mb-4">
+                        "Raj Sir's Math Mock Test Portal has been a game-changer for my exam preparation. The questions are challenging and perfectly align with the syllabus. Highly recommended!"
+                    </p>
+                    <p class="text-teal-300 font-semibold">- Priya Sharma, Student</p>
+                </div>
+                <!-- Testimonial 2 -->
+                <div class="testimonial-item absolute w-full transition-opacity duration-1000 ease-in-out opacity-0 bg-slate-700 p-6 rounded-lg shadow-inner border border-slate-600">
+                    <p class="text-slate-200 italic mb-4">
+                        "As a teacher, I find this platform invaluable. It provides a fantastic resource for my students to practice independently and track their progress. The interface is clean and easy to use."
+                    </p>
+                    <p class="text-teal-300 font-semibold">- Mr. Alok Kumar, Math Educator</p>
+                </div>
+                <!-- Testimonial 3 -->
+                <div class="testimonial-item absolute w-full transition-opacity duration-1000 ease-in-out opacity-0 bg-slate-700 p-6 rounded-lg shadow-inner border border-slate-600">
+                    <p class="text-slate-200 italic mb-4">
+                        "The variety of tests available is impressive. I've seen a significant improvement in my problem-solving speed and accuracy since I started using this portal. Thank you, Raj Sir!"
+                    </p>
+                    <p class="text-teal-300 font-semibold">- Rohan Mehta, Self-Learner</p>
+                </div>
+                <!-- Testimonial 4 -->
+                <div class="testimonial-item absolute w-full transition-opacity duration-1000 ease-in-out opacity-0 bg-slate-700 p-6 rounded-lg shadow-inner border border-slate-600">
+                    <p class="text-slate-200 italic mb-4">
+                        "Excellent resource for quick revisions and understanding weak areas. The passcode system ensures controlled access, which is a smart feature for focused learning environments."
+                    </p>
+                    <p class="text-teal-300 font-semibold">- Dr. S. Singh, Academic Coordinator</p>
+                </div>
+            </div>
+        </div>
+    </main>
 
-      if (enteredPasscode === correctPasscode) {
-        passcodeSection.style.display = "none"; // Hide the passcode section
-        mockTestList.style.display = "block"; // Show the mock test list
-        errorMessage.style.display = "none"; // Hide any error message
-      } else {
-        errorMessage.textContent = "Incorrect passcode. Please try again.";
-        errorMessage.style.display = "block"; // Show error message
-      }
-    }
-  </script>
+    <footer class="text-center p-6 text-sm text-slate-400 border-t border-slate-700 mt-8">
+        © 2025 Raj Sir's Academy | Designed for student success
+    </footer>
+
+    <script>
+        function checkPasscode() {
+            const correctPasscode = "1234567845"; // Your fixed passcode
+            const enteredPasscode = document.getElementById("passcode").value;
+            const errorMessage = document.getElementById("errorMessage");
+            const passcodeSection = document.getElementById("passcodeAccess");
+            const mockTestList = document.getElementById("mockTestList");
+
+            if (enteredPasscode === correctPasscode) {
+                passcodeSection.classList.add("hidden"); // Hide the passcode section
+                mockTestList.classList.remove("hidden"); // Show the mock test list
+                errorMessage.classList.add("hidden"); // Hide any error message
+            } else {
+                errorMessage.textContent = "Incorrect passcode. Please try again.";
+                errorMessage.classList.remove("hidden"); // Show error message
+            }
+        }
+
+        // Testimonial Carousel Logic
+        let currentTestimonialIndex = 0;
+        const testimonials = document.querySelectorAll('.testimonial-item');
+        const totalTestimonials = testimonials.length;
+
+        function showTestimonial(index) {
+            // Hide all testimonials
+            testimonials.forEach((testimonial, i) => {
+                testimonial.classList.add('opacity-0');
+                testimonial.classList.remove('opacity-100');
+                // Ensure they are not visible for screen readers when hidden
+                testimonial.setAttribute('aria-hidden', 'true');
+            });
+
+            // Show the current testimonial
+            testimonials[index].classList.remove('opacity-0');
+            testimonials[index].classList.add('opacity-100');
+            testimonials[index].setAttribute('aria-hidden', 'false');
+        }
+
+        function nextTestimonial() {
+            currentTestimonialIndex = (currentTestimonialIndex + 1) % totalTestimonials;
+            showTestimonial(currentTestimonialIndex);
+        }
+
+        // Initialize the first testimonial and start the rotation
+        document.addEventListener('DOMContentLoaded', () => {
+            if (totalTestimonials > 0) {
+                showTestimonial(currentTestimonialIndex);
+                // Rotate every 5 seconds (5000 milliseconds)
+                setInterval(nextTestimonial, 5000);
+            }
+        });
+    </script>
 
 </body>
 </html>
