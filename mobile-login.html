@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for Inter font and new white/blue color scheme */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFFFFF; /* White background */
+            color: #1F2937; /* Dark Gray text - Tailwind gray-800 */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Header for the Mobile Login Portal -->
+    <header class="bg-blue-950 p-8 text-center shadow-2xl rounded-b-3xl">
+        <h1 class="text-5xl font-extrabold text-white mb-4 drop-shadow-lg">
+            <span role="img" aria-label="calculator">📱</span> Student Mobile Login
+        </h1>
+        <p class="text-xl text-white font-medium mb-6">Access your mock tests with your registered mobile number.</p>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-8 flex items-center justify-center">
+        <!-- Login Section -->
+        <div id="loginForm" class="bg-blue-50 p-8 max-w-lg w-full mx-auto rounded-xl shadow-2xl border border-blue-200">
+            <h2 class="text-3xl font-semibold text-blue-900 mb-6 text-center">
+                <span role="img" aria-label="mobile phone">📞</span> Enter Mobile Number
+            </h2>
+            <label for="mobileNumber" class="block text-lg font-medium text-blue-800 mb-4">Mobile Number:</label>
+            <input type="tel" id="mobileNumber" placeholder="e.g., 9876543210"
+                   class="w-full p-3 mb-6 bg-white border border-blue-200 rounded-lg text-blue-950 placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-300">
+            <button onclick="checkMobileNumber()"
+                    class="w-full py-3 bg-teal-600 text-white font-bold text-lg rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-75 transition duration-300 transform hover:scale-105">
+                Login
+            </button>
+            <p id="errorMessage" class="text-red-600 text-center mt-4 text-sm hidden"></p>
+        </div>
+        
+        <!-- Mock Test List (Initially hidden) -->
+        <div id="mockTestList" class="bg-blue-50 p-8 max-w-3xl w-full mx-auto rounded-xl shadow-2xl border border-blue-200 hidden">
+            <h2 class="text-3xl font-semibold text-blue-900 mb-6 text-center">
+                <span role="img" aria-label="books">📚</span> Your Mock Tests
+            </h2>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <li><a href="test1.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 Complex Number</a></li>
+                <li><a href="test2.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Inequality</a></li>
+                <li><a href="test300.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 Theory of Equations</a></li>
+                <li><a href="test4.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Group Theory</a></li>
+                <li><a href="test5.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 Ring Theory</a></li>
+                <li><a href="test6.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Geometry 2D</a></li>
+                <li><a href="test7.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 Geometry 3D</a></li>
+                <li><a href="test8.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Linear Algebra</a></li>
+                <li><a href="test9.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 Real Analysis</a></li>
+                <li><a href="test10.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Differential Calculus</a></li>
+                <li><a href="test11.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 Integral Calculus</a></li>
+                <li><a href="test12.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Differential Equation</a></li>
+                <li><a href="test13.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 Vector Algebra</a></li>
+                <li><a href="test14.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Dynamics</a></li>
+                <li><a href="test15.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 LPP</a></li>
+                <li><a href="test16.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Numerical Analysis</a></li>
+                <li><a href="test17.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 Probability</a></li>
+                <li><a href="test18.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Statistics</a></li>
+                <li><a href="test19.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📘 Mechanics</a></li>
+                <li><a href="test20.html" class="block p-4 bg-blue-100 text-blue-800 rounded-lg text-center text-lg font-medium hover:bg-teal-600 hover:text-white transition duration-300 shadow-md">📗 Integer</a></li>
+            </ul>
+        </div>
+    </main>
+
+    <footer class="text-center p-6 text-sm text-blue-400 border-t border-blue-200 mt-8">
+        © 2025 Raj Sir's Academy | Designed for student success
+    </footer>
+
+    <script>
+        // === STUDENT LOGIN LOGIC ===
+        // This is the list of approved mobile numbers.
+        // You can add or remove numbers from this array.
+        // Make sure to wrap each number in quotes "".
+        const approvedMobileNumbers = [
+            "9876543210",
+            "8877665544",
+            "7766554433",
+            "1234567890",
+            // Add more mobile numbers here
+        ];
+
+        function checkMobileNumber() {
+            const enteredNumber = document.getElementById("mobileNumber").value;
+            const errorMessage = document.getElementById("errorMessage");
+            const loginForm = document.getElementById("loginForm");
+            const mockTestList = document.getElementById("mockTestList");
+
+            // Check if the entered number is in the approved list
+            if (approvedMobileNumbers.includes(enteredNumber)) {
+                loginForm.classList.add("hidden"); // Hide the login form
+                mockTestList.classList.remove("hidden"); // Show the mock test list
+                errorMessage.classList.add("hidden"); // Hide any error message
+            } else {
+                errorMessage.textContent = "Mobile number not registered. Please contact the administrator.";
+                errorMessage.classList.remove("hidden"); // Show the error message
+            }
+        }
+    </script>
+</body>
+</html>
