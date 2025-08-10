@@ -1,251 +1,301 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Math Mock Test Portal</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts - Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* Custom styles for Inter font and the new professional dark theme */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #1a202c; /* Deep Charcoal Gray background */
-            color: #e2e8f0; /* Light Gray text for readability */
-        }
-        /* Dashboard section with specific dark purple background from the screenshot */
-        .dashboard-bg {
-            background-color: #4b3c96;
-        }
-        .login-card-bg {
-             background-color: #2d3748; /* Darker Gray for the login card */
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Math Mock Test Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Google Fonts - Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* Custom styles for Inter font and the new professional dark theme */
+body {
+font-family: 'Inter', sans-serif;
+background-color: #1a202c; /* Deep Charcoal Gray background */
+color: #e2e8f0; /* Light Gray text for readability */
+}
+/* Dashboard section with specific dark purple background from the screenshot */
+.dashboard-bg {
+background-color: #4b3c96;
+}
+</style>
 </head>
 <body class="min-h-screen flex flex-col">
+code Code
+downloadcontent_copyexpand_less
+      <!-- Header (Math Mock Test Dashboard) with Dark Purple Background -->
+<header class="dashboard-bg p-8 text-center shadow-2xl rounded-b-3xl">
+    <h1 class="text-4xl font-extrabold text-white mb-2 drop-shadow-lg">
+        <span role="img" aria-label="brain" class="inline-block align-middle mr-2 text-5xl">🧠</span> Math Mock Test Dashboard
+    </h1>
+    <p class="text-lg text-gray-300 font-medium max-w-3xl mx-auto">
+        Choose a category to start practicing.
+    </p>
+</header>
 
-    <!-- Header (Math Mock Test Dashboard) with Dark Purple Background -->
-    <header class="dashboard-bg p-8 text-center shadow-2xl rounded-b-3xl">
-        <h1 class="text-4xl font-extrabold text-white mb-2 drop-shadow-lg">
-            <span role="img" aria-label="brain" class="inline-block align-middle mr-2 text-5xl">🧠</span> Math Mock Test Dashboard
-        </h1>
-        <p class="text-lg text-gray-300 font-medium max-w-3xl mx-auto">
-            Choose a category to start practicing.
-        </p>
-    </header>
+<main class="flex-grow container mx-auto px-4 py-8 space-y-8">
 
-    <main class="flex-grow container mx-auto px-4 py-8 space-y-8">
-
-        <!-- Main Dashboard Section (Visible by default) -->
-        <div id="mainDashboard" class="block">
-            <div class="max-w-4xl mx-auto p-4 md:p-8 dashboard-bg rounded-xl shadow-lg">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <!-- Cards for IIT JAM, WBJEE, etc. -->
-                    <a href="test-iit-jam.html" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
-                        <span role="img" aria-label="indian-flag" class="text-4xl mb-2 inline-block">🇮🇳</span>
-                        <h3 class="text-xl font-bold text-gray-900">IIT JAM</h3>
-                        <p class="text-gray-500 text-sm">10 tests</p>
-                    </a>
-                    <a href="test-wbjee.html" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
-                        <span role="img" aria-label="wb-logo" class="text-4xl mb-2 inline-block">🏛️</span>
-                        <h3 class="text-xl font-bold text-gray-900">WBJEE</h3>
-                        <p class="text-gray-500 text-sm">10 tests</p>
-                    </a>
-                    <a href="test-csir-net.html" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
-                        <span role="img" aria-label="atom" class="text-4xl mb-2 inline-block">⚛️</span>
-                        <h3 class="text-xl font-bold text-gray-900">CSIR NET</h3>
-                        <p class="text-gray-500 text-sm">10 tests</p>
-                    </a>
-                    <a href="test-cuet-pg.html" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
-                        <span role="img" aria-label="graduation-cap" class="text-4xl mb-2 inline-block">🎓</span>
-                        <h3 class="text-xl font-bold text-gray-900">CUET PG</h3>
-                        <p class="text-gray-500 text-sm">10 tests</p>
-                    </a>
-                    <a href="test-up-lt-grade.html" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
-                        <span role="img" aria-label="document" class="text-4xl mb-2 inline-block">📝</span>
-                        <h3 class="text-xl font-bold text-gray-900">UP LT Grade</h3>
-                        <p class="text-gray-500 text-sm">10 tests</p>
-                    </a>
-                    <a href="test-bpsc.html" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
-                        <span role="img" aria-label="classical-building" class="text-4xl mb-2 inline-block">🏛️</span>
-                        <h3 class="text-xl font-bold text-gray-900">BPSC</h3>
-                        <p class="text-gray-500 text-sm">10 tests</p>
-                    </a>
-                    <!-- WB SLST Card - Now calls the new showSlstSection function -->
-                    <button onclick="showSlstSection()" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <span role="img" aria-label="books" class="text-4xl mb-2 inline-block">📚</span>
-                        <h3 class="text-xl font-bold text-gray-900">WB SLST</h3>
-                        <p class="text-gray-500 text-sm">20 tests (Login Required)</p>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- WB SLST Section (Hidden by default) -->
-        <div id="slstSection" class="hidden">
-            <!-- NEW: Email/Password Login Section -->
-            <div id="slstLogin" class="max-w-md mx-auto login-card-bg p-8 md:p-10 rounded-xl shadow-lg border border-gray-700 text-white">
-                <h2 class="text-3xl font-bold text-white mb-4 text-center">
-                    <span role="img" aria-label="lock">🔐</span> WB SLST Login
-                </h2>
-                <p class="text-md text-gray-300 mb-8 text-center">
-                    This section is for registered students only.
-                </p>
-                <form id="slstLoginForm" onsubmit="event.preventDefault(); handleSlstLogin();" class="space-y-6">
-                     <div>
-                        <label for="slstEmail" class="block mb-2 text-sm font-medium text-gray-300">Email</label>
-                        <input type="email" id="slstEmail" class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300" placeholder="student@example.com" required>
-                    </div>
-                    <div>
-                        <label for="slstPassword" class="block mb-2 text-sm font-medium text-gray-300">Password</label>
-                        <input type="password" id="slstPassword" class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300" placeholder="••••••••" required>
-                    </div>
-                    <p id="loginErrorMessage" class="text-red-500 text-center text-sm hidden"></p>
-                    <button type="submit" class="w-full py-3 bg-indigo-600 text-white font-bold text-lg rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75 transition duration-300 transform hover:scale-105">
-                        Login
-                    </button>
-                </form>
-                <p class="text-center text-xs text-gray-400 mt-4">Demo credentials: <br> Email: <strong>slst@student.com</strong> | Pass: <strong>test1234</strong></p>
-                <button onclick="showMainDashboard()" class="w-full mt-6 py-3 text-indigo-400 font-bold rounded-lg border border-indigo-500 hover:bg-indigo-900 hover:bg-opacity-30 transition duration-300">
-                    Back to Dashboard
+    <!-- Main Dashboard Section (Visible by default) -->
+    <div id="mainDashboard" class="block">
+        <div class="max-w-4xl mx-auto p-4 md:p-8 dashboard-bg rounded-xl shadow-lg">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- IIT JAM Card -->
+                <a href="test-iit-jam.html" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
+                    <span role="img" aria-label="indian-flag" class="text-4xl mb-2 inline-block">🇮🇳</span>
+                    <h3 class="text-xl font-bold text-gray-900">IIT JAM</h3>
+                    <p class="text-gray-500 text-sm">10 tests</p>
+                </a>
+                <!-- WBJEE Card -->
+                <a href="test-wbjee.html" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
+                    <span role="img" aria-label="wb-logo" class="text-4xl mb-2 inline-block">🏛️</span>
+                    <h3 class="text-xl font-bold text-gray-900">WBJEE</h3>
+                    <p class="text-gray-500 text-sm">10 tests</p>
+                </a>
+                <!-- CSIR NET Card -->
+                <a href="test-csir-net.html" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
+                    <span role="img" aria-label="atom" class="text-4xl mb-2 inline-block">⚛️</span>
+                    <h3 class="text-xl font-bold text-gray-900">CSIR NET</h3>
+                    <p class="text-gray-500 text-sm">10 tests</p>
+                </a>
+                <!-- CUET PG Card -->
+                <a href="test-cuet-pg.html" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
+                    <span role="img" aria-label="graduation-cap" class="text-4xl mb-2 inline-block">🎓</span>
+                    <h3 class="text-xl font-bold text-gray-900">CUET PG</h3>
+                    <p class="text-gray-500 text-sm">10 tests</p>
+                </a>
+                <!-- UP LT Grade Card -->
+                <a href="test-up-lt-grade.html" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
+                    <span role="img" aria-label="document" class="text-4xl mb-2 inline-block">📝</span>
+                    <h3 class="text-xl font-bold text-gray-900">UP LT Grade</h3>
+                    <p class="text-gray-500 text-sm">10 tests</p>
+                </a>
+                <!-- BPSC Card -->
+                <a href="test-bpsc.html" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
+                    <span role="img" aria-label="classical-building" class="text-4xl mb-2 inline-block">🏛️</span>
+                    <h3 class="text-xl font-bold text-gray-900">BPSC</h3>
+                    <p class="text-gray-500 text-sm">10 tests</p>
+                </a>
+                <!-- WB SLST Card - Now a button to show the login form -->
+                <button onclick="showSlstLogin()" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <span role="img" aria-label="books" class="text-4xl mb-2 inline-block">📚</span>
+                    <h3 class="text-xl font-bold text-gray-900">WB SLST</h3>
+                    <p class="text-gray-500 text-sm">20 tests</p>
                 </button>
             </div>
+        </div>
+    </div>
 
-            <!-- Mock Test List for SLST (Initially hidden) -->
-            <div id="mockTestList" class="bg-gray-800 p-10 max-w-4xl mx-auto rounded-xl shadow-lg border border-gray-700 hidden text-white">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-3xl font-semibold text-white">
-                        <span role="img" aria-label="books">📚</span> WB SLST Mock Tests
-                    </h2>
-                    <!-- NEW: Logout Button for this section -->
-                    <button onclick="handleSlstLogout()" class="py-2 px-4 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition-all duration-300 shadow-sm transform hover:scale-105">
-                        Logout
-                    </button>
-                </div>
-                <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <li><a href="test1.html" class="block p-5 bg-indigo-900/50 text-indigo-200 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📘 Complex Number</a></li>
-                    <li><a href="test2.html" class="block p-5 bg-indigo-900/50 text-indigo-200 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📗 Inequality</a></li>
-                    <li><a href="test300.html" class="block p-5 bg-indigo-900/50 text-indigo-200 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📘 Theory of Equations</a></li>
-                    <li><a href="test4.html" class="block p-5 bg-indigo-900/50 text-indigo-200 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📗 Group Theory</a></li>
-                    <!-- Add all other test links here... -->
-                    <li><a href="test20.html" class="block p-5 bg-indigo-900/50 text-indigo-200 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📗 Integer</a></li>
-                </ul>
+    <!-- WB SLST Section (Hidden by default) -->
+    <div id="slstSection" class="hidden">
+        <!-- Mobile Number Login Section -->
+        <div id="slstLogin" class="max-w-md mx-auto bg-gray-50 p-10 rounded-xl shadow-lg border border-gray-100 text-gray-900">
+            <h2 class="text-3xl font-semibold text-gray-900 mb-6 text-center">
+                <span role="img" aria-label="phone">📱</span> WB SLST Student Login
+            </h2>
+            <p class="text-md text-gray-700 mb-6 text-center">
+                Please enter your registered mobile number to access the tests.
+            </p>
+            <label for="mobileNumber" class="block text-lg font-medium text-gray-800 mb-4">Mobile Number:</label>
+            <input type="tel" id="mobileNumber" placeholder="e.g., 9876543210" pattern="[0-9]{10}"
+                   class="w-full p-4 mb-6 bg-white border border-gray-300 rounded-lg text-gray-950 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300" required>
+            <button onclick="checkMobileNumber()"
+                    class="w-full py-4 bg-indigo-600 text-white font-bold text-lg rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75 transition duration-300 transform hover:scale-105">
+                Login
+            </button>
+            <p id="loginErrorMessage" class="text-red-600 text-center mt-4 text-sm hidden"></p>
+            <button onclick="showMainDashboard()" class="w-full mt-4 py-3 text-indigo-600 font-bold rounded-lg border border-indigo-600 hover:bg-indigo-50 transition duration-300">
+                Back to Dashboard
+            </button>
+        </div>
+
+        <!-- Mock Test List for SLST (Initially hidden) -->
+        <div id="mockTestList" class="bg-gray-50 p-10 max-w-3xl mx-auto rounded-xl shadow-lg border border-gray-100 hidden text-gray-900">
+            <button onclick="showSlstLogin()" class="mb-6 py-2 px-4 text-indigo-600 font-bold rounded-lg border border-indigo-600 hover:bg-indigo-50 transition duration-300">
+                <span role="img" aria-label="left-arrow">←</span> Back to Login
+            </button>
+            <h2 class="text-3xl font-semibold text-gray-900 mb-6 text-center">
+                <span role="img" aria-label="books">📚</span> Available Mock Tests for WB SLST
+            </h2>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- List of all mock tests -->
+                <li><a href="test1.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📘 Complex Number</a></li>
+                <li><a href="test2.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📗 Inequality</a></li>
+                <li><a href="test300.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📘 Theory of Equations</a></li>
+                <li><a href="test4.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📗 Group Theory</a></li>
+                <li><a href="test5.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📘 Ring Theory</a></li>
+                <li><a href="test6.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📗 Geometry 2D</a></li>
+                <li><a href="test7.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📘 Geometry 3D</a></li>
+                <li><a href="test8.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📗 Linear Algebra</a></li>
+                <li><a href="test9.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📘 Real Analysis</a></li>
+                <li><a href="test10.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📗 Differential Calculus</a></li>
+                <li><a href="test11.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📘 Integral Calculus</a></li>
+                <li><a href="test12.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📗 Differential Equation</a></li>
+                <li><a href="test13.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📘 Vector Algebra</a></li>
+                <li><a href="test14.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📗 Dynamics</a></li>
+                <li><a href="test15.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📘 LPP</a></li>
+                <li><a href="test16.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📗 Numerical Analysis</a></li>
+                <li><a href="test17.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📘 Probability</a></li>
+                <li><a href="test18.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📗 Statistics</a></li>
+                <li><a href="test19.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📘 Mechanics</a></li>
+                <li><a href="test20.html" class="block p-5 bg-white text-indigo-800 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">📗 Integer</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- About Us Section -->
+    <div id="aboutUsSection" class="bg-white p-10 max-w-4xl mx-auto rounded-xl shadow-lg border border-gray-100 text-gray-900">
+        <h2 class="text-3xl font-semibold text-gray-900 mb-6 text-center">
+            <span role="img" aria-label="handshake">🤝</span> About Our Portal
+        </h2>
+        <p class="text-lg text-gray-800 leading-relaxed mb-4 text-center">
+            Welcome to the Advanced Math Mock Test Portal, your one-stop solution for comprehensive exam preparation. Our platform is designed to help students master various mathematical concepts through a wide range of mock tests tailored for specific competitive exams.
+        </p>
+        <p class="text-lg text-gray-800 leading-relaxed text-center">
+            We provide a structured learning experience with carefully curated practice tests, helping you to identify your strengths and weaknesses. Dive into our extensive library of questions and prepare yourself to ace your exams with confidence!
+        </p>
+    </div>
+
+    <!-- Testimonials Section -->
+    <div id="testimonialsSection" class="bg-[#2d2572] p-10 max-w-4xl mx-auto rounded-xl shadow-lg border border-gray-900 text-white">
+        <h2 class="text-3xl font-semibold text-white mb-6 text-center">
+            <span role="img" aria-label="star">🌟</span> What Our Users Say
+        </h2>
+        <div id="testimonialCarousel" class="relative overflow-hidden h-48">
+            <!-- Testimonial 1 -->
+            <div class="testimonial-item absolute w-full transition-opacity duration-1000 ease-in-out opacity-100 bg-gray-800 p-6 rounded-lg shadow-inner">
+                <p class="text-gray-300 italic mb-4">
+                    "Raj Sir's Math Mock Test Portal has been a game-changer for my exam preparation. The questions are challenging and perfectly align with the syllabus. Highly recommended!"
+                </p>
+                <p class="text-gray-200 font-semibold">- Priya Kundu, Student</p>
+            </div>
+            <!-- Testimonial 2 -->
+            <div class="testimonial-item absolute w-full transition-opacity duration-1000 ease-in-out opacity-0 bg-gray-800 p-6 rounded-lg shadow-inner">
+                <p class="text-gray-300 italic mb-4">
+                    "As a teacher, I find this platform invaluable. It provides a fantastic resource for my students to practice independently and track their progress. The interface is clean and easy to use."
+                </p>
+                <p class="text-gray-200 font-semibold">- Mr. Alok Karmakar, Math Educator</p>
+            </div>
+            <!-- Testimonial 3 -->
+            <div class="testimonial-item absolute w-full transition-opacity duration-1000 ease-in-out opacity-0 bg-gray-800 p-6 rounded-lg shadow-inner">
+                <p class="text-gray-300 italic mb-4">
+                    "The variety of tests available is impressive. I've seen a significant improvement in my problem-solving speed and accuracy since I started using this portal. Thank you, Raj Sir!"
+                </p>
+                <p class="text-gray-200 font-semibold">- Riya Dey, Self-Learner</p>
+            </div>
+            <!-- Testimonial 4 -->
+            <div class="testimonial-item absolute w-full transition-opacity duration-1000 ease-in-out opacity-0 bg-gray-800 p-6 rounded-lg shadow-inner">
+                <p class="text-gray-300 italic mb-4">
+                    "Excellent resource for quick revisions and understanding weak areas. The passcode system ensures controlled access, which is a smart feature for focused learning environments."
+                </p>
+                <p class="text-gray-200 font-semibold">- Pradip Roy, Academic Coordinator</p>
             </div>
         </div>
+    </div>
 
-        <!-- About Us Section -->
-        <div id="aboutUsSection" class="bg-white p-10 max-w-4xl mx-auto rounded-xl shadow-lg border border-gray-100 text-gray-900">
-            <!-- Content is unchanged -->
-            <h2 class="text-3xl font-semibold text-gray-900 mb-6 text-center">...</h2>
+    <!-- Contact Details Section -->
+    <div id="contactDetails" class="bg-white p-10 max-w-4xl mx-auto rounded-xl shadow-lg border border-gray-100 text-gray-900">
+        <h2 class="text-3xl font-semibold text-gray-900 mb-6 text-center">
+            <span role="img" aria-label="phone">📞</span> Get In Touch
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Our Details</h3>
+                <p class="text-gray-800 mb-2">
+                    <strong>Email:</strong> <a href="mailto:coachingmaathh2002@gmail.com" class="text-indigo-600 hover:underline">coachingmaathh2002@gmail.com</a>
+                </p>
+                <p class="text-gray-800 mb-2">
+                    <strong>Phone:</strong> <a href="tel:+9183458" class="text-indigo-600 hover:underline">+91 83458</a>
+                </p>
+                <p class="text-gray-800">
+                    <strong>Address:</strong> 123 Math Street, Education City, India
+                </p>
+            </div>
+            <div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Send Us a Message</h3>
+                <form action="#" method="POST" class="space-y-4">
+                    <input type="text" placeholder="Your Name" class="w-full p-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300">
+                    <input type="email" placeholder="Your Email" class="w-full p-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300">
+                    <textarea placeholder="Your Message" rows="4" class="w-full p-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300"></textarea>
+                    <button type="submit" class="w-full py-3 bg-indigo-600 text-white font-bold text-lg rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75 transition duration-300 transform hover:scale-105">
+                        Send Message
+                    </button>
+                </form>
+            </div>
         </div>
+    </div>
+</main>
 
-        <!-- Testimonials Section -->
-        <div id="testimonialsSection" class="bg-[#2d2572] p-10 max-w-4xl mx-auto rounded-xl shadow-lg border border-gray-900 text-white">
-            <!-- Content is unchanged -->
-             <h2 class="text-3xl font-semibold text-white mb-6 text-center">...</h2>
-        </div>
+<footer class="text-center p-6 text-sm text-gray-400 border-t border-gray-700 mt-12 bg-gray-900">
+    © 2025 Raj Sir's Academy | Designed for student success
+</footer>
 
-        <!-- Contact Details Section -->
-        <div id="contactDetails" class="bg-white p-10 max-w-4xl mx-auto rounded-xl shadow-lg border border-gray-100 text-gray-900">
-           <!-- Content is unchanged -->
-            <h2 class="text-3xl font-semibold text-gray-900 mb-6 text-center">...</h2>
-        </div>
-    </main>
+<script>
+    // Function to show the SLST login section
+    function showSlstLogin() {
+        document.getElementById("mainDashboard").classList.add("hidden");
+        document.getElementById("slstSection").classList.remove("hidden");
+        document.getElementById("slstLogin").classList.remove("hidden");
+        document.getElementById("mockTestList").classList.add("hidden");
+    }
 
-    <footer class="text-center p-6 text-sm text-gray-400 border-t border-gray-700 mt-12 bg-gray-900">
-        © 2025 Raj Sir's Academy | Designed for student success
-    </footer>
+    // Function to show the main dashboard
+    function showMainDashboard() {
+        document.getElementById("mainDashboard").classList.remove("hidden");
+        document.getElementById("slstSection").classList.add("hidden");
+    }
 
-    <script>
-        // --- UI Element References ---
-        const mainDashboard = document.getElementById('mainDashboard');
-        const slstSection = document.getElementById('slstSection');
-        const slstLogin = document.getElementById('slstLogin');
-        const mockTestList = document.getElementById('mockTestList');
-        const loginErrorMessage = document.getElementById('loginErrorMessage');
+    // Function to check the mobile number and grant access
+    function checkMobileNumber() {
+        // Hardcoded list of valid mobile numbers for demonstration purposes
+        const validNumbers = ["1234567890", "9876543210", "1112223334"];
+        const mobileNumberInput = document.getElementById("mobileNumber").value;
+        const loginErrorMessage = document.getElementById("loginErrorMessage");
+        const slstLoginSection = document.getElementById("slstLogin");
+        const mockTestListSection = document.getElementById("mockTestList");
 
-        // --- Core UI Navigation Functions ---
-
-        // Called when a user clicks the "WB SLST" card
-        function showSlstSection() {
-            mainDashboard.classList.add('hidden');
-            slstSection.classList.remove('hidden');
-
-            // Check if the user is already logged in for this session
-            if (sessionStorage.getItem('slst_loggedIn') === 'true') {
-                slstLogin.classList.add('hidden');
-                mockTestList.classList.remove('hidden');
-            } else {
-                slstLogin.classList.remove('hidden');
-                mockTestList.classList.add('hidden');
-            }
+        if (validNumbers.includes(mobileNumberInput)) {
+            // If the number is valid, hide the login section and show the test list
+            slstLoginSection.classList.add("hidden");
+            mockTestListSection.classList.remove("hidden");
+            loginErrorMessage.classList.add("hidden");
+        } else {
+            // If the number is invalid, show an error message
+            loginErrorMessage.textContent = "Invalid mobile number. Please try again.";
+            loginErrorMessage.classList.remove("hidden");
         }
+    }
 
-        // Called by the "Back to Dashboard" button
-        function showMainDashboard() {
-            mainDashboard.classList.remove('hidden');
-            slstSection.classList.add('hidden');
-        }
+    // Testimonial Carousel Logic
+    let currentTestimonialIndex = 0;
+    const testimonials = document.querySelectorAll('.testimonial-item');
+    const totalTestimonials = testimonials.length;
 
-        // --- WB SLST Authentication Logic ---
-
-        // Handles the login form submission for the SLST section
-        function handleSlstLogin() {
-            const email = document.getElementById('slstEmail').value;
-            const password = document.getElementById('slstPassword').value;
-
-            // --- SIMULATED AUTHENTICATION ---
-            // In a real application, you would make an API call to your server here.
-            if (email === 'slst@student.com' && password === 'test1234') {
-                // On successful login:
-                sessionStorage.setItem('slst_loggedIn', 'true');
-                loginErrorMessage.classList.add('hidden');
-                slstLogin.classList.add('hidden');
-                mockTestList.classList.remove('hidden');
-            } else {
-                // On failed login:
-                loginErrorMessage.textContent = "Invalid email or password. Please try again.";
-                loginErrorMessage.classList.remove('hidden');
-            }
-        }
-
-        // Handles logout specifically for the SLST section
-        function handleSlstLogout() {
-            sessionStorage.removeItem('slst_loggedIn');
-            // Hide the test list and show the login form again
-            mockTestList.classList.add('hidden');
-            slstLogin.classList.remove('hidden');
-        }
-
-
-        // --- Testimonial Carousel Logic (Unchanged) ---
-        let currentTestimonialIndex = 0;
-        const testimonials = document.querySelectorAll('.testimonial-item');
-        const totalTestimonials = testimonials.length;
-
-        function showTestimonial(index) {
-            testimonials.forEach((testimonial, i) => {
-                testimonial.style.opacity = (i === index) ? '1' : '0';
-                testimonial.setAttribute('aria-hidden', i !== index);
-            });
-        }
-
-        function nextTestimonial() {
-            currentTestimonialIndex = (currentTestimonialIndex + 1) % totalTestimonials;
-            showTestimonial(currentTestimonialIndex);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // Start testimonial rotation if they exist
-            if (totalTestimonials > 0) {
-                // A quick initial setup to prevent multiple items showing at once
-                testimonials.forEach(t => t.classList.add('absolute', 'w-full', 'transition-opacity', 'duration-1000', 'ease-in-out'));
-                showTestimonial(currentTestimonialIndex);
-                setInterval(nextTestimonial, 5000); // Rotate every 5 seconds
-            }
+    function showTestimonial(index) {
+        testimonials.forEach((testimonial, i) => {
+            testimonial.classList.add('opacity-0');
+            testimonial.classList.remove('opacity-100');
+            testimonial.setAttribute('aria-hidden', 'true');
         });
-    </script>
+
+        testimonials[index].classList.remove('opacity-0');
+        testimonials[index].classList.add('opacity-100');
+        testimonials[index].setAttribute('aria-hidden', 'false');
+    }
+
+    function nextTestimonial() {
+        currentTestimonialIndex = (currentTestimonialIndex + 1) % totalTestimonials;
+        showTestimonial(currentTestimonialIndex);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Start testimonial rotation
+        if (totalTestimonials > 0) {
+            showTestimonial(currentTestimonialIndex);
+            setInterval(nextTestimonial, 5000); // Rotate every 5 seconds
+        }
+    });
+</script>
+    
 </body>
 </html>
