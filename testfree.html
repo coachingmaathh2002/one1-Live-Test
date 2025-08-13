@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Online Probability Mock Test</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --card-dark: #1e293b;
+      --text-light: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent-blue: #3b82f6;
+      --accent-green: #22c55e;
+      --accent-red: #ef4444;
+      --border-color: rgba(241, 245, 249, 0.1);
+    }
+
+    /* Base Styles */
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1.5rem;
+    }
+
+    /* Layout & Components */
+    .app-container {
+      width: 100%;
+      max-width: 1000px;
+      display: grid;
+      gap: 1.5rem;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 800px) {
+      body { align-items: center; }
+      .app-container {
+        grid-template-columns: 1.2fr 0.8fr;
+      }
+    }
+
+    .card {
+      background-color: var(--card-dark);
+      border-radius: 1rem;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .panel { padding: 1.5rem; }
+
+    /* Header */
+    .header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding-bottom: 1.5rem;
+    }
+    .header h1 {
+      font-size: clamp(1.5rem, 4vw, 2.25rem);
+      margin: 0;
+      font-weight: 800;
+    }
+    .header .metadata {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+    .header .timer {
+      font-size: 2.5rem;
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+      color: var(--accent-blue);
+      letter-spacing: 0.05em;
+    }
+    @media (min-width: 640px) {
+      .header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    /* Buttons & UI Elements */
+    .btn {
+      appearance: none;
+      border: 0;
+      background-color: var(--accent-blue);
+      color: var(--card-dark);
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn:hover:not(:disabled) {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+    }
+    .btn:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+    .btn:disabled {
+      background-color: var(--text-muted);
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    .btn.secondary {
+      background: transparent;
+      color: var(--accent-blue);
+      border: 1px solid var(--accent-blue);
+    }
+    .btn.warn {
+      background: var(--accent-red);
+      color: var(--text-light);
+    }
+    .btn.ghost {
+      background: transparent;
+      color: var(--text-light);
+      border: 1px solid transparent;
+    }
+
+    .pill {
+      display: inline-flex;
+      padding: 0.5rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.875rem;
+      background-color: rgba(241, 245, 249, 0.05);
+      color: var(--text-light);
+      border: 1px solid var(--border-color);
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .badge {
+      font-size: 0.875rem;
+      padding: 0.375rem 0.75rem;
+      border-radius: 999px;
+      background-color: var(--accent-blue);
+      color: var(--card-dark);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* Progress & Sidebar */
+    .progress-bar-wrap {
+      height: 0.5rem;
+      background: rgba(241, 245, 249, 0.1);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+    .progress-bar-wrap span {
+      display: block;
+      height: 100%;
+      background: var(--accent-blue);
+      width: 0%;
+      transition: width 0.3s ease-in-out;
+    }
+    .sidebar-meta { margin-top: 1.5rem; }
+    .sidebar-meta p { margin: 0; }
+
+    /* Questions & Options */
+    .question-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 1.5rem 0 1rem;
+    }
+    .options-grid {
+      display: grid;
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      background-color: rgba(241, 245, 249, 0.03);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .option:hover {
+      background-color: rgba(241, 245, 249, 0.05);
+      border-color: rgba(241, 245, 249, 0.2);
+    }
+    .option input {
+      margin-top: 0.25rem;
+      accent-color: var(--accent-blue);
+      cursor: inherit;
+    }
+    .option.correct {
+      background-color: rgba(34, 197, 94, 0.1);
+      border-color: var(--accent-green);
+    }
+    .option.incorrect {
+      background-color: rgba(239, 68, 68, 0.1);
+      border-color: var(--accent-red);
+    }
+
+    .footer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    /* Review & Results */
+    .review-details summary { cursor: pointer; }
+    .review-details summary::marker { color: var(--accent-blue); }
+    .review-details + .review-details { margin-top: 0.75rem; }
+    .review-item {
+      padding: 1rem;
+      border-radius: 0.75rem;
+      background-color: rgba(241, 245, 249, 0.05);
+    }
+    .review-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    /* Custom Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal-backdrop.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-content {
+      background-color: var(--card-dark);
+      padding: 2rem;
+      border-radius: 1rem;
+      max-width: 400px;
+      width: 90%;
+      border: 1px solid var(--border-color);
+      transform: translateY(-20px);
+      transition: transform 0.3s ease;
+    }
+    .modal-backdrop.show .modal-content { transform: translateY(0); }
+    .modal-content h3 { margin: 0 0 1rem; }
+    .modal-content .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    /* Utility Classes */
+    .text-muted { color: var(--text-muted); }
+    .text-center { text-align: center; }
+  </style>
+  <!-- MathJax v3 -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
+</head>
+<body>
+  <div class="app-container">
+    <header class="card panel">
+      <div class="header">
+        <h1>Online Probability Mock Test</h1>
+        <div class="metadata">
+          <span class="badge" id="meta-questions">0 Questions</span>
+          <span class="badge" id="meta-marks">0 Marks</span>
+          <span class="badge" id="meta-duration">0 min</span>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" class="card panel"></main>
+
+    <aside class="card panel">
+      <div class="sidebar-info">
+        <h3 style="margin-top:0;">Progress</h3>
+        <p class="text-muted">Questions answered: <strong id="progress-count">0 / 0</strong></p>
+        <div class="progress-bar-wrap"><span id="progress-bar"></span></div>
+      </div>
+      <div class="sidebar-meta">
+        <h3 style="margin-top:0;">Settings</h3>
+        <p class="text-muted">Duration: <strong id="sidebar-duration">0</strong> minutes</p>
+        <p class="text-muted">Negative Marking: <strong id="sidebar-negative-marks">0</strong> per wrong answer</p>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirmation-modal" class="modal-backdrop">
+    <div class="modal-content">
+      <h3 id="modal-title"></h3>
+      <p id="modal-message"></p>
+      <div class="actions">
+        <button id="modal-cancel" class="btn secondary">Cancel</button>
+        <button id="modal-confirm" class="btn warn">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /***************************
+     * 1. CONFIGURATION
+     ***************************/
+    const CONFIG = {
+      durationMinutes: 30,
+      shuffleOptions: true,
+      negativeMarking: 0,
+    };
+
+    /***************************
+     * 2. PROBABILITY QUESTIONS
+     ***************************/
+    const QUESTIONS = [
+      {
+        marks: 1,
+        question: 'A single standard six-sided die is rolled. What is the probability of rolling a number greater than 4?',
+        options: ['$\\frac{1}{6}$', '$\\frac{1}{3}$', '$\\frac{1}{2}$', '$\\frac{2}{3}$'],
+        correctIndex: 1
+      },
+      {
+        marks: 1,
+        question: 'Two coins are tossed. What is the probability of getting at least one head?',
+        options: ['$\\frac{1}{4}$', '$\\frac{1}{2}$', '$\\frac{3}{4}$', '1'],
+        correctIndex: 2
+      },
+      {
+        marks: 1,
+        question: 'A bag contains 5 red balls and 3 blue balls. What is the probability of drawing a red ball and then a blue ball without replacement?',
+        options: ['$\\frac{15}{64}$', '$\\frac{15}{56}$', '$\\frac{8}{15}$', '$\\frac{5}{24}$'],
+        correctIndex: 1
+      },
+      {
+        marks: 1,
+        question: 'In a group of 100 students, 60 like math and 40 like science. If 20 students like both, what is the probability that a randomly selected student likes either math or science?',
+        options: ['$\\frac{6}{10}$', '$\\frac{4}{10}$', '$\\frac{8}{10}$', '$\\frac{2}{10}$'],
+        correctIndex: 2
+      },
+      {
+        marks: 1,
+        question: 'What is the probability of rolling a sum of 7 with two standard six-sided dice?',
+        options: ['$\\frac{1}{6}$', '$\\frac{1}{12}$', '$\\frac{7}{36}$', '$\\frac{1}{9}$'],
+        correctIndex: 0
+      },
+      {
+        marks: 1,
+        question: 'A deck of 52 cards is used. What is the probability of drawing a Queen or a King?',
+        options: ['$\\frac{1}{13}$', '$\\frac{2}{13}$', '$\\frac{1}{26}$', '$\\frac{4}{13}$'],
+        correctIndex: 1
+      },
+      {
+        marks: 1,
+        question: 'What is the probability of getting exactly 3 heads in 5 coin tosses?',
+        options: ['$\\frac{5}{16}$', '$\\frac{3}{32}$', '$\\frac{1}{2}$', '$\\frac{1}{4}$'],
+        correctIndex: 0
+      },
+      {
+        marks: 1,
+        question: 'A box contains 4 green, 3 yellow, and 5 red marbles. If you select one marble at random, what is the probability that it is not green?',
+        options: ['$\\frac{4}{12}$', '$\\frac{8}{12}$', '$\\frac{3}{12}$', '$\\frac{5}{12}$'],
+        correctIndex: 1
+      },
+      {
+        marks: 1,
+        question: 'The probability of event A is 0.4 and event B is 0.6. The events are independent. What is the probability of both A and B occurring?',
+        options: ['0.24', '1.0', '0.4', '0.6'],
+        correctIndex: 0
+      },
+      {
+        marks: 1,
+        question: 'The probability that a student passes a math test is 0.7, and a physics test is 0.6. The probability of passing both is 0.5. What is the probability of passing at least one test?',
+        options: ['0.8', '0.7', '0.9', '0.6'],
+        correctIndex: 0
+      },
+      {
+        marks: 1,
+        question: 'What is the number of permutations of the letters in the word `PENCIL`?',
+        options: ['720', '360', '120', '24'],
+        correctIndex: 0
+      },
+      {
+        marks: 1,
+        question: 'From a group of 5 men and 4 women, a committee of 3 is to be formed. What is the probability that the committee consists of 2 men and 1 woman?',
+        options: ['$\\frac{1}{2}$', '$\\frac{5}{14}$', '$\\frac{10}{21}$', '$\\frac{2}{9}$'],
+        correctIndex: 2
+      },
+      {
+        marks: 1,
+        question: 'If $P(A) = 0.5$ and $P(B) = 0.4$, and $P(A|B) = 0.3$. What is $P(A \\cap B)$?',
+        options: ['0.15', '0.12', '0.2', '0.7'],
+        correctIndex: 1
+      },
+      {
+        marks: 1,
+        question: 'What is the probability of drawing a red face card from a standard deck of 52 cards?',
+        options: ['$\\frac{3}{26}$', '$\\frac{3}{52}$', '$\\frac{1}{13}$', '$\\frac{3}{13}$'],
+        correctIndex: 0
+      },
+      {
+        marks: 1,
+        question: 'A test for a disease is 99% accurate (i.e., 99% of people with the disease test positive and 99% of people without the disease test negative). 0.5% of the population has the disease. If a person tests positive, what is the probability they actually have the disease?',
+        options: ['$\\approx 0.047$', '$\\approx 0.99$', '$\\approx 0.95$', '$\\approx 0.5$'],
+        correctIndex: 0
+      },
+      {
+        marks: 1,
+        question: 'A fair coin is tossed 10 times. What is the expected number of heads?',
+        options: ['3', '5', '7', '10'],
+        correctIndex: 1
+      },
+      {
+        marks: 1,
+        question: 'In a lottery, there are 10 prizes and 90 blanks. What is the probability of winning a prize if you buy 2 tickets?',
+        options: ['$\\frac{1}{10}$', '$\\frac{1}{5}$', '$\\frac{19}{100}$', '$\\frac{1}{2}$'],
+        correctIndex: 2
+      },
+      {
+        marks: 1,
+        question: 'The probability of event A is $P(A)$, and event B is $P(B)$. The events are mutually exclusive. Which of the following is true?',
+        options: ['$P(A \\cup B) = P(A) + P(B)$', '$P(A \\cap B) = P(A)P(B)$', '$P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$', '$P(A) = 1 - P(B)$'],
+        correctIndex: 0
+      },
+      {
+        marks: 1,
+        question: 'A card is drawn from a standard deck. What is the probability that it is a spade, given that it is a black card?',
+        options: ['$\\frac{1}{2}$', '$\\frac{1}{4}$', '$\\frac{13}{52}$', '$\\frac{1}{13}$'],
+        correctIndex: 0
+      },
+      {
+        marks: 1,
+        question: 'What is the probability of a randomly chosen integer from 1 to 20 (inclusive) being a prime number?',
+        options: ['$\\frac{7}{20}$', '$\\frac{8}{20}$', '$\\frac{9}{20}$', '$\\frac{6}{20}$'],
+        correctIndex: 1
+      },
+      {
+        marks: 1,
+        question: 'If a family has three children, what is the probability that they have exactly two boys, assuming boys and girls are equally likely?',
+        options: ['$\\frac{1}{8}$', '$\\frac{3}{8}$', '$\\frac{1}{2}$', '$\\frac{5}{8}$'],
+        correctIndex: 1
+      },
+      {
+        marks: 1,
+        question: 'The weights of a population of cats are normally distributed with a mean of 4kg and a standard deviation of 0.5kg. What is the probability that a randomly selected cat weighs between 3.5kg and 4.5kg?',
+        options: ['$\\approx 0.68$', '$\\approx 0.95$', '$\\approx 0.99$', '$\\approx 0.50$'],
+        correctIndex: 0
+      },
+      {
+        marks: 1,
+        question: 'There are 12 items in a box, 4 of which are defective. What is the probability of picking 3 non-defective items in a row without replacement?',
+        options: ['$\\frac{1}{2}$', '$\\frac{21}{55}$', '$\\frac{8}{11}$', '$\\frac{14}{55}$'],
+        correctIndex: 1
+      },
+      {
+        marks: 1,
+        question: 'What is the probability of rolling a multiple of 3 on a standard six-sided die?',
+        options: ['$\\frac{1}{6}$', '$\\frac{1}{3}$', '$\\frac{1}{2}$', '$\\frac{2}{3}$'],
+        correctIndex: 1
+      },
+      {
+        marks: 1,
+        question: 'The probability of John hitting a target is 0.4. The probability of Mary hitting the target is 0.5. They shoot at the same time. What is the probability that at least one of them hits the target?',
+        options: ['0.2', '0.9', '0.7', '0.8'],
+        correctIndex: 2
+      },
+      {
+        marks: 1,
+        question: 'A basket contains 6 apples and 4 oranges. Two fruits are chosen at random without replacement. What is the probability that both are apples?',
+        options: ['$\\frac{1}{3}$', '$\\frac{1}{5}$', '$\\frac{3}{5}$', '$\\frac{1}{2}$'],
+        correctIndex: 0
+      },
+      {
+        marks: 1,
+        question: 'If $P(A) = 0.6$ and $P(B) = 0.5$, and $P(A \\cup B) = 0.8$, are A and B independent events?',
+        options: ['Yes', 'No', 'Cannot be determined', 'Mutually Exclusive'],
+        correctIndex: 1
+      },
+      {
+        marks: 1,
+        question: 'The probability of a customer buying a coffee is 0.7. If 10 customers enter the shop, what is the probability that exactly 8 of them buy a coffee?',
+        options: ['$\\binom{10}{8}(0.7)^8(0.3)^2$', '$\\binom{10}{8}(0.3)^8(0.7)^2$', '$(0.7)^8(0.3)^2$', '$8 \\times 0.7$'],
+        correctIndex: 0
+      },
+      {
+        marks: 1,
+        question: 'A factory produces items where 2% are defective. If 10 items are selected at random, what is the probability that none of them are defective?',
+        options: ['$(0.98)^{10}$', '$(0.02)^{10}$', '$1 - (0.98)^{10}$', '$0.98$'],
+        correctIndex: 0
+      },
+      {
+        marks: 1,
+        question: 'What is the probability of drawing a card from a standard deck that is either a Club or a Face card?',
+        options: ['$\\frac{22}{52}$', '$\\frac{16}{52}$', '$\\frac{11}{26}$', '$\\frac{25}{52}$'],
+        correctIndex: 2
+      }
+    ];
+
+    /***************************
+     * 3. STATE MANAGEMENT
+     ***************************/
+    const state = {
+      started: false,
+      currentQuestionIndex: 0,
+      answers: Array(QUESTIONS.length).fill(null), // Stores the shown option index
+      timeLeft: CONFIG.durationMinutes * 60,
+      optionMaps: [], // Shuffled order mapping
+      timerInterval: null,
+      submitted: false,
+      startedAt: null,
+    };
+
+    /***************************
+     * 4. DOM ELEMENTS
+     ***************************/
+    const DOM = {
+      mainContent: document.getElementById('main-content'),
+      progressBar: document.getElementById('progress-bar'),
+      progressCount: document.getElementById('progress-count'),
+      timer: document.getElementById('meta-duration'),
+      metaQuestions: document.getElementById('meta-questions'),
+      metaMarks: document.getElementById('meta-marks'),
+      sidebarDuration: document.getElementById('sidebar-duration'),
+      sidebarNegativeMarks: document.getElementById('sidebar-negative-marks'),
+      modal: document.getElementById('confirmation-modal'),
+      modalTitle: document.getElementById('modal-title'),
+      modalMessage: document.getElementById('modal-message'),
+      modalCancel: document.getElementById('modal-cancel'),
+      modalConfirm: document.getElementById('modal-confirm'),
+    };
+
+    /***************************
+     * 5. HELPER FUNCTIONS
+     ***************************/
+    /**
+     * Shuffles an array in place using the Fisher-Yates algorithm.
+     * @param {Array} a The array to shuffle.
+     */
+    function shuffleArray(a) {
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+    }
+
+    /**
+     * Formats seconds into a MM:SS string.
+     * @param {number} s The number of seconds.
+     * @returns {string} The formatted time string.
+     */
+    function formatTime(s) {
+      const minutes = Math.floor(s / 60).toString().padStart(2, '0');
+      const seconds = (s % 60).toString().padStart(2, '0');
+      return `${minutes}:${seconds}`;
+    }
+
+    /**
+     * Prepares the option maps for shuffling.
+     */
+    function prepareOptionMaps() {
+      state.optionMaps = QUESTIONS.map(q => {
+        const indices = q.options.map((_, i) => i);
+        if (CONFIG.shuffleOptions) {
+          shuffleArray(indices);
+        }
+        return indices; // Map from shown order to original index
+      });
+    }
+
+    /**
+     * Renders the progress bar and count.
+     */
+    function renderProgress() {
+      const answeredCount = state.answers.filter(v => v !== null).length;
+      DOM.progressCount.textContent = `${answeredCount} / ${QUESTIONS.length}`;
+      const percentage = (answeredCount / QUESTIONS.length) * 100;
+      DOM.progressBar.style.width = `${percentage}%`;
+    }
+
+    /**
+     * Shows the custom confirmation modal.
+     * @param {string} title The modal title.
+     * @param {string} message The modal message.
+     * @param {Function} onConfirm The function to call on confirmation.
+     */
+    function showModal(title, message, onConfirm) {
+      DOM.modalTitle.textContent = title;
+      DOM.modalMessage.textContent = message;
+      DOM.modal.classList.add('show');
+
+      const handleConfirm = () => {
+        onConfirm();
+        DOM.modal.classList.remove('show');
+        DOM.modalConfirm.removeEventListener('click', handleConfirm);
+      };
+
+      DOM.modalConfirm.addEventListener('click', handleConfirm);
+      DOM.modalCancel.onclick = () => {
+        DOM.modal.classList.remove('show');
+        DOM.modalConfirm.removeEventListener('click', handleConfirm);
+      };
+    }
+
+    /***************************
+     * 6. RENDER FUNCTIONS
+     ***************************/
+    /**
+     * Renders the starting screen.
+     */
+    function renderStartScreen() {
+      DOM.mainContent.innerHTML = `
+        <div>
+          <h2>Welcome to the Probability Mock Test!</h2>
+          <p class="text-muted">This test contains ${QUESTIONS.length} questions and has a duration of <strong>${CONFIG.durationMinutes} minutes</strong>. You can navigate between questions and review your answers before submitting.</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem;">
+            <button id="btn-start" class="btn">Start Test</button>
+            <button id="btn-print" class="btn secondary">Print Questions</button>
+          </div>
+        </div>
+      `;
+      document.getElementById('btn-start').onclick = startTest;
+      document.getElementById('btn-print').onclick = () => window.print();
+    }
+
+    /**
+     * Renders a single question.
+     */
+    function renderQuestion() {
+      const qIndex = state.currentQuestionIndex;
+      const questionData = QUESTIONS[qIndex];
+      const optionMap = state.optionMaps[qIndex];
+
+      const optionsHtml = optionMap.map((originalIndex, shownIndex) => {
+        const isSelected = state.answers[qIndex] === shownIndex;
+        return `
+          <label class="option">
+            <input type="radio" name="question-${qIndex}" data-shown-index="${shownIndex}" ${isSelected ? 'checked' : ''} />
+            <div><span class="text-muted">[${String.fromCharCode(65 + shownIndex)}]</span> ${questionData.options[originalIndex]}</div>
+          </label>
+        `;
+      }).join('');
+
+      DOM.mainContent.innerHTML = `
+        <div>
+          <div class="pill">
+            Question ${qIndex + 1} of ${QUESTIONS.length}
+            <span style="font-weight: bold; margin-left: 0.5rem;">${questionData.marks} Mark${questionData.marks > 1 ? 's' : ''}</span>
+          </div>
+          <h3 class="question-title">${questionData.question}</h3>
+          <div class="options-grid" id="options-container">${optionsHtml}</div>
+          <div class="footer-actions">
+            <div style="display: flex; gap: 0.75rem;">
+              <button id="prev-btn" class="btn secondary" ${qIndex === 0 ? 'disabled' : ''}>&larr; Previous</button>
+              <button id="next-btn" class="btn">${qIndex === QUESTIONS.length - 1 ? 'Review & Submit' : 'Next &rarr;'}</button>
+            </div>
+            <div style="display: flex; gap: 0.75rem;">
+              <button id="clear-btn" class="btn ghost">Clear Answer</button>
+              <button id="submit-btn" class="btn warn">Submit Test</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Attach event listeners
+      document.getElementById('prev-btn').onclick = () => { state.currentQuestionIndex--; renderQuestion(); MathJax.typesetPromise(); renderProgress(); };
+      document.getElementById('next-btn').onclick = () => {
+        if (state.currentQuestionIndex < QUESTIONS.length - 1) {
+          state.currentQuestionIndex++;
+          renderQuestion();
+        } else {
+          renderReviewScreen();
+        }
+        MathJax.typesetPromise();
+        renderProgress();
+      };
+      document.getElementById('clear-btn').onclick = () => {
+        state.answers[qIndex] = null;
+        renderQuestion();
+        renderProgress();
+      };
+      document.getElementById('submit-btn').onclick = () => {
+        const unansweredCount = state.answers.filter(a => a === null).length;
+        showModal(
+          'Confirm Submission',
+          `Are you sure you want to submit? You have ${unansweredCount} unanswered question(s).`,
+          gradeAndShowResults
+        );
+      };
+
+      // Handle option selection
+      document.querySelectorAll('#options-container input').forEach(input => {
+        input.addEventListener('change', e => {
+          state.answers[qIndex] = Number(e.target.dataset.shownIndex);
+          renderProgress();
+        });
+      });
+
+      // Render math
+      MathJax.typesetPromise();
+    }
+
+    /**
+     * Renders the review screen.
+     */
+    function renderReviewScreen() {
+      const unansweredCount = state.answers.filter(a => a === null).length;
+      const answeredCount = QUESTIONS.length - unansweredCount;
+
+      const reviewButtonsHtml = QUESTIONS.map((_, i) => {
+        const isAnswered = state.answers[i] !== null;
+        return `
+          <button class="btn ${isAnswered ? '' : 'secondary'}" data-jump-to="${i}">
+            Q${i + 1} (${isAnswered ? 'Answered' : 'Unanswered'})
+          </button>
+        `;
+      }).join('');
+
+      DOM.mainContent.innerHTML = `
+        <div>
+          <h2>Review Answers</h2>
+          <p class="text-muted">You have answered <strong>${answeredCount}</strong> out of <strong>${QUESTIONS.length}</strong> questions. You can jump to any question below to make changes.</p>
+          <div class="review-grid">
+            ${reviewButtonsHtml}
+          </div>
+          <div class="footer-actions">
+            <button id="back-btn" class="btn secondary">&larr; Back to Questions</button>
+            <button id="submit-final-btn" class="btn warn">Submit Test</button>
+          </div>
+        </div>
+      `;
+
+      // Attach event listeners
+      document.getElementById('back-btn').onclick = () => {
+        state.currentQuestionIndex = Math.min(state.currentQuestionIndex, QUESTIONS.length - 1);
+        renderQuestion();
+        MathJax.typesetPromise();
+      };
+      document.getElementById('submit-final-btn').onclick = () => {
+        const unanswered = state.answers.filter(a => a === null).length;
+        showModal(
+          'Confirm Submission',
+          `Are you sure you want to submit? You have ${unanswered} unanswered question(s).`,
+          gradeAndShowResults
+        );
+      };
+      document.querySelectorAll('[data-jump-to]').forEach(btn => {
+        btn.onclick = (e) => {
+          state.currentQuestionIndex = Number(e.target.dataset.jumpTo);
+          renderQuestion();
+          MathJax.typesetPromise();
+        };
+      });
+
+      MathJax.typesetPromise();
+    }
+
+    /**
+     * Grades the test and shows the results screen.
+     * @param {string} [reason] An optional reason for auto-submission.
+     */
+    function gradeAndShowResults(reason) {
+      if (state.submitted) return;
+      stopTimer();
+      state.submitted = true;
+
+      const spentSeconds = Math.floor((Date.now() - state.startedAt) / 1000);
+      let score = 0;
+      let correctCount = 0;
+      let wrongCount = 0;
+
+      const results = QUESTIONS.map((q, qIndex) => {
+        const chosenShownIndex = state.answers[qIndex];
+        const optionMap = state.optionMaps[qIndex];
+        const chosenOriginalIndex = chosenShownIndex !== null ? optionMap[chosenShownIndex] : null;
+        const isCorrect = chosenOriginalIndex === q.correctIndex;
+
+        if (chosenShownIndex !== null) {
+          if (isCorrect) {
+            score += q.marks;
+            correctCount++;
+          } else {
+            score -= CONFIG.negativeMarking;
+            wrongCount++;
+          }
+        }
+        return { q, chosenShownIndex, isCorrect };
+      });
+
+      const totalMarks = QUESTIONS.reduce((sum, q) => sum + q.marks, 0);
+      const percentage = Math.max(0, (score / totalMarks) * 100);
+
+      const reviewDetailsHtml = results.map((result, i) => {
+        const { q, chosenShownIndex, isCorrect } = result;
+        const optionMap = state.optionMaps[i];
+        const correctShownIndex = optionMap.indexOf(q.correctIndex);
+
+        const yourAnswerText = chosenShownIndex !== null
+          ? `${String.fromCharCode(65 + chosenShownIndex)}. ${q.options[optionMap[chosenShownIndex]]}`
+          : '<em class="text-muted">Not answered</em>';
+
+        const correctAnswerText = `${String.fromCharCode(65 + correctShownIndex)}. ${q.options[q.correctIndex]}`;
+
+        const optionHtml = optionMap.map((originalIndex, shownIndex) => {
+          const isChosen = shownIndex === chosenShownIndex;
+          const isCorrectOption = shownIndex === correctShownIndex;
+          const classList = isCorrectOption ? 'correct' : (isChosen ? 'incorrect' : '');
+          return `
+            <div class="option ${classList}">
+              <div><span class="text-muted">[${String.fromCharCode(65 + shownIndex)}]</span> ${q.options[originalIndex]}</div>
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <div class="review-details">
+            <details ${!isCorrect ? 'open' : ''}>
+              <summary><strong>Question ${i + 1}</strong> (${isCorrect ? 'Correct' : 'Incorrect'})</summary>
+              <div style="padding-top: 1rem;">
+                <p>${q.question}</p>
+                <p><strong>Your Answer:</strong> ${yourAnswerText}</p>
+                <p><strong>Correct Answer:</strong> ${correctAnswerText}</p>
+                <div class="options-grid">${optionHtml}</div>
+              </div>
+            </details>
+          </div>
+        `;
+      }).join('');
+
+      DOM.mainContent.innerHTML = `
+        <div>
+          <h2 style="margin-bottom: 0;">Test Results <span class="badge" style="vertical-align: top;">${reason ? 'Auto-Submitted' : 'Submitted'}</span></h2>
+          <p class="text-muted">Completed in <strong>${formatTime(spentSeconds)}</strong>.</p>
+          <div style="display:flex; flex-wrap:wrap; gap: 1rem; margin: 1.5rem 0;">
+            <div class="pill">Score: <strong>${score.toFixed(2)} / ${totalMarks}</strong></div>
+            <div class="pill">Correct: <strong>${correctCount}</strong></div>
+            <div class="pill">Incorrect: <strong>${wrongCount}</strong></div>
+            <div class="pill">Unanswered: <strong>${QUESTIONS.length - correctCount - wrongCount}</strong></div>
+          </div>
+          <h3>Detailed Review</h3>
+          ${reviewDetailsHtml}
+        </div>
+      `;
+
+      MathJax.typesetPromise();
+    }
+
+    /**
+     * Handles the test start logic.
+     */
+    function startTest() {
+      state.started = true;
+      state.startedAt = Date.now();
+      prepareOptionMaps();
+      renderQuestion();
+      startTimer();
+      renderProgress();
+    }
+
+    /**
+     * Starts the test timer.
+     */
+    function startTimer() {
+      DOM.timer.textContent = formatTime(state.timeLeft);
+      state.timerInterval = setInterval(() => {
+        if (state.timeLeft <= 0) {
+          clearInterval(state.timerInterval);
+          state.timerInterval = null;
+          gradeAndShowResults('Time Expired');
+          return;
+        }
+        state.timeLeft--;
+        DOM.timer.textContent = formatTime(state.timeLeft);
+      }, 1000);
+      window.addEventListener('beforeunload', preventUnload);
+    }
+
+    /**
+     * Stops the test timer.
+     */
+    function stopTimer() {
+      if (state.timerInterval) {
+        clearInterval(state.timerInterval);
+        state.timerInterval = null;
+      }
+      window.removeEventListener('beforeunload', preventUnload);
+    }
+
+    /**
+     * Prevents the user from accidentally leaving the page during the test.
+     * @param {Event} e The beforeunload event.
+     */
+    function preventUnload(e) {
+      if (!state.submitted) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    }
+
+    /**
+     * Initializes the application.
+     */
+    function initialize() {
+      DOM.metaQuestions.textContent = `${QUESTIONS.length} Questions`;
+      DOM.metaMarks.textContent = `${QUESTIONS.reduce((sum, q) => sum + q.marks, 0)} Marks`;
+      DOM.timer.textContent = formatTime(CONFIG.durationMinutes * 60);
+      DOM.sidebarDuration.textContent = CONFIG.durationMinutes;
+      DOM.sidebarNegativeMarks.textContent = CONFIG.negativeMarking;
+      DOM.progressCount.textContent = `0 / ${QUESTIONS.length}`;
+      renderStartScreen();
+    }
+
+    // Initialize the app on page load
+    document.addEventListener('DOMContentLoaded', initialize);
+  </script>
+</body>
+</html>
