@@ -2,31 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Math Mock Test Portal</title>
+    <title>Raj Sir's Academy - Math Mock Test Portal</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts - Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons (social media) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Custom styles for Inter font and the new professional dark theme */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1a202c; /* Deep Charcoal Gray background */
-            color: #e2e8f0; /* Light Gray text for readability */
+            background-color: #121212; /* Very deep dark background */
+            color: rgba(255, 255, 255, 0.87); /* Light text for readability */
         }
-        /* Dashboard section with specific dark purple background */
-        .dashboard-bg {
-            background-color: #4b3c96;
+        /* Header/Hero Section Gradient */
+        .header-gradient-bg {
+            background: linear-gradient(135deg, #1f013d 0%, #3e0766 100%); /* Deeper, richer purple gradient */
         }
-        /* New vibrant gradient for the hero section */
-        .hero-gradient-bg {
-            background: linear-gradient(135deg, #4b3c96 0%, #2e245a 100%);
+        /* Card Backgrounds */
+        .card-bg {
+            background-color: #1E1E1E; /* Darker gray for section cards */
+            border: 1px solid #2C2C2C; /* Subtle border for definition */
         }
         .login-card-bg {
-            background-color: #2d3748; /* Darker Gray for the login card */
+            background-color: #2C2C2C; /* Slightly lighter for login card */
+            border: 1px solid #3A3A3A;
         }
-        /* Add a subtle animation for the hero heading */
+        /* Button colors */
+        .btn-primary {
+            background-color: #BB86FC; /* Vibrant purple for primary actions */
+            color: #121212; /* Dark text on vibrant button */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-primary:hover {
+            background-color: #9C27B0;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid #BB86FC;
+            color: #BB86FC;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-secondary:hover {
+            background-color: rgba(187, 134, 252, 0.1); /* Light purple tint on hover */
+            color: #BB86FC;
+            transform: translateY(-2px);
+        }
+        /* Input fields */
+        input[type="email"], input[type="password"] {
+            background-color: #1A1A1A;
+            border: 1px solid #3A3A3A;
+            color: rgba(255, 255, 255, 0.87);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        input[type="email"]:focus, input[type="password"]:focus {
+            border-color: #BB86FC;
+            box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.2);
+            outline: none;
+        }
+
+        /* Subtle animation for the hero heading */
         .wavy {
             display: inline-block;
             animation: wavy 1.5s ease-in-out infinite;
@@ -47,191 +87,226 @@
             transform: translateX(-50%);
             padding: 1rem 2rem;
             border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
             z-index: 1000;
             opacity: 0;
-            transition: opacity 0.5s ease-in-out;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         }
         .custom-alert-box.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0); /* Add a subtle slide-down effect */
+        }
+
+        /* Testimonial carousel styles */
+        .testimonial-item {
+            position: absolute;
+            width: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .testimonial-item.active {
             opacity: 1;
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- Header (Math Mock Test Dashboard) with Dark Purple Background -->
-    <header class="hero-gradient-bg p-8 text-center shadow-2xl rounded-b-3xl">
-        <h1 class="text-4xl sm:text-5xl font-extrabold text-white mb-2 drop-shadow-lg">
-            <span role="img" aria-label="rocket" class="inline-block align-middle mr-2 text-5xl wavy">🚀</span> Your Gateway to Success
-        </h1>
-        <p class="text-lg sm:text-xl text-gray-300 font-medium max-w-3xl mx-auto">
-            Master your exams with our comprehensive mock tests. Let's start practicing!
-        </p>
+    <!-- Header (Navigation and Hero) -->
+    <header class="header-gradient-bg p-6 lg:p-10 text-center shadow-xl rounded-b-3xl relative">
+        <!-- Navigation Bar -->
+        <nav class="absolute top-0 left-0 right-0 p-4 flex justify-between items-center z-10">
+            <h2 class="text-2xl font-extrabold text-white">Raj Sir's Academy</h2>
+            <ul class="flex space-x-6 text-lg font-medium">
+                <li><a href="#mainDashboard" class="text-gray-300 hover:text-white transition-colors duration-200">Dashboard</a></li>
+                <li><a href="#aboutUsSection" class="text-gray-300 hover:text-white transition-colors duration-200">About</a></li>
+                <li><a href="#testimonialsSection" class="text-gray-300 hover:text-white transition-colors duration-200">Testimonials</a></li>
+                <li><a href="#contactDetails" class="text-gray-300 hover:text-white transition-colors duration-200">Contact</a></li>
+            </ul>
+        </nav>
+
+        <!-- Hero Content -->
+        <div class="pt-20 pb-10"> <!-- Adjusted padding to account for nav bar -->
+            <h1 class="text-4xl sm:text-6xl font-extrabold text-white mb-4 drop-shadow-lg leading-tight">
+                <span role="img" aria-label="rocket" class="inline-block align-middle mr-3 text-5xl sm:text-7xl wavy">🚀</span> Your Path to <span class="text-[#03DAC6]">Excellence</span>
+            </h1>
+            <p class="text-lg sm:text-2xl text-gray-300 font-medium max-w-4xl mx-auto mb-8">
+                Master your competitive exams with our comprehensive mock tests and expert guidance.
+            </p>
+            <a href="#mainDashboard" class="btn-primary inline-flex items-center px-8 py-4 rounded-full text-lg font-bold shadow-lg">
+                Start Practicing Now <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
     </header>
 
-    <main class="flex-grow container mx-auto px-4 py-8 space-y-8">
+    <main class="flex-grow container mx-auto px-4 py-12 space-y-16">
 
         <!-- Main Dashboard Section (Visible by default) -->
-        <div id="mainDashboard" class="block">
-            <div class="max-w-4xl mx-auto p-4 md:p-8 dashboard-bg rounded-xl shadow-lg">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <section id="mainDashboard" class="block">
+            <div class="max-w-6xl mx-auto card-bg p-6 md:p-10 rounded-2xl shadow-2xl">
+                <h2 class="text-4xl font-bold text-white mb-8 text-center">Our Exam Categories</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     <!-- Cards for IIT JAM, WBJEE, etc. -->
-                    <a href="test-iit-jam.html" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
-                        <span role="img" aria-label="indian-flag" class="text-4xl mb-2 inline-block">🇮🇳</span>
-                        <h3 class="text-xl font-bold text-gray-900">IIT JAM</h3>
-                        <p class="text-gray-500 text-sm">10 tests</p>
+                    <a href="test-iit-jam.html" class="block p-6 card-bg rounded-xl shadow-lg hover:shadow-xl hover:border-[#BB86FC] transition-all duration-300 transform hover:-translate-y-2 text-center group">
+                        <span role="img" aria-label="indian-flag" class="text-5xl mb-3 inline-block transition-transform group-hover:scale-110">🇮🇳</span>
+                        <h3 class="text-xl font-bold text-white group-hover:text-[#BB86FC]">IIT JAM</h3>
+                        <p class="text-gray-400 text-sm">10+ Practice Tests</p>
                     </a>
-                    <a href="test-wbjee.html" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
-                        <span role="img" aria-label="wb-logo" class="text-4xl mb-2 inline-block">🏛️</span>
-                        <h3 class="text-xl font-bold text-gray-900">WBJEE</h3>
-                        <p class="text-gray-500 text-sm">10 tests</p>
+                    <a href="test-wbjee.html" class="block p-6 card-bg rounded-xl shadow-lg hover:shadow-xl hover:border-[#BB86FC] transition-all duration-300 transform hover:-translate-y-2 text-center group">
+                        <span role="img" aria-label="wb-logo" class="text-5xl mb-3 inline-block transition-transform group-hover:scale-110">🏛️</span>
+                        <h3 class="text-xl font-bold text-white group-hover:text-[#BB86FC]">WBJEE</h3>
+                        <p class="text-gray-400 text-sm">10+ Practice Tests</p>
                     </a>
-                    <a href="test-csir-net.html" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
-                        <span role="img" aria-label="atom" class="text-4xl mb-2 inline-block">⚛️</span>
-                        <h3 class="text-xl font-bold text-gray-900">CSIR NET</h3>
-                        <p class="text-gray-500 text-sm">10 tests</p>
+                    <a href="test-csir-net.html" class="block p-6 card-bg rounded-xl shadow-lg hover:shadow-xl hover:border-[#BB86FC] transition-all duration-300 transform hover:-translate-y-2 text-center group">
+                        <span role="img" aria-label="atom" class="text-5xl mb-3 inline-block transition-transform group-hover:scale-110">⚛️</span>
+                        <h3 class="text-xl font-bold text-white group-hover:text-[#BB86FC]">CSIR NET</h3>
+                        <p class="text-gray-400 text-sm">10+ Practice Tests</p>
                     </a>
-                    <a href="test-cuet-pg.html" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
-                        <span role="img" aria-label="graduation-cap" class="text-4xl mb-2 inline-block">🎓</span>
-                        <h3 class="text-xl font-bold text-gray-900">CUET PG</h3>
-                        <p class="text-gray-500 text-sm">10 tests</p>
+                    <a href="test-cuet-pg.html" class="block p-6 card-bg rounded-xl shadow-lg hover:shadow-xl hover:border-[#BB86FC] transition-all duration-300 transform hover:-translate-y-2 text-center group">
+                        <span role="img" aria-label="graduation-cap" class="text-5xl mb-3 inline-block transition-transform group-hover:scale-110">🎓</span>
+                        <h3 class="text-xl font-bold text-white group-hover:text-[#BB86FC]">CUET PG</h3>
+                        <p class="text-gray-400 text-sm">10+ Practice Tests</p>
                     </a>
-                    <a href="test-up-lt-grade.html" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
-                        <span role="img" aria-label="document" class="text-4xl mb-2 inline-block">📝</span>
-                        <h3 class="text-xl font-bold text-gray-900">UP LT Grade</h3>
-                        <p class="text-gray-500 text-sm">10 tests</p>
+                    <a href="test-up-lt-grade.html" class="block p-6 card-bg rounded-xl shadow-lg hover:shadow-xl hover:border-[#BB86FC] transition-all duration-300 transform hover:-translate-y-2 text-center group">
+                        <span role="img" aria-label="document" class="text-5xl mb-3 inline-block transition-transform group-hover:scale-110">📝</span>
+                        <h3 class="text-xl font-bold text-white group-hover:text-[#BB86FC]">UP LT Grade</h3>
+                        <p class="text-gray-400 text-sm">10+ Practice Tests</p>
                     </a>
-                    <a href="test-bpsc.html" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
-                        <span role="img" aria-label="classical-building" class="text-4xl mb-2 inline-block">🏛️</span>
-                        <h3 class="text-xl font-bold text-gray-900">BPSC</h3>
-                        <p class="text-gray-500 text-sm">10 tests</p>
+                    <a href="test-bpsc.html" class="block p-6 card-bg rounded-xl shadow-lg hover:shadow-xl hover:border-[#BB86FC] transition-all duration-300 transform hover:-translate-y-2 text-center group">
+                        <span role="img" aria-label="classical-building" class="text-5xl mb-3 inline-block transition-transform group-hover:scale-110">🏛️</span>
+                        <h3 class="text-xl font-bold text-white group-hover:text-[#BB86FC]">BPSC</h3>
+                        <p class="text-gray-400 text-sm">10+ Practice Tests</p>
                     </a>
-                    <a href="testfree.html" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
-                        <span role="img" aria-label="classical-building" class="text-4xl mb-2 inline-block">🏛️</span>
-                        <h3 class="text-xl font-bold text-gray-900">Free Mock Test</h3>
-                        <p class="text-gray-500 text-sm">10 tests</p>
+                    <a href="testfree.html" class="block p-6 card-bg rounded-xl shadow-lg hover:shadow-xl hover:border-[#03DAC6] transition-all duration-300 transform hover:-translate-y-2 text-center group">
+                        <span role="img" aria-label="gift" class="text-5xl mb-3 inline-block transition-transform group-hover:scale-110">🎁</span>
+                        <h3 class="text-xl font-bold text-white group-hover:text-[#03DAC6]">Free Mock Test</h3>
+                        <p class="text-gray-400 text-sm">Start your practice</p>
                     </a>
                     <!-- WB SLST Card - Now calls the new showSlstSection function -->
-                    <button id="slstButton" class="block p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <span role="img" aria-label="books" class="text-4xl mb-2 inline-block">📚</span>
-                        <h3 class="text-xl font-bold text-gray-900">WB SLST</h3>
-                        <p class="text-gray-500 text-sm">20 tests (Login Required)</p>
+                    <button id="slstButton" class="block p-6 card-bg rounded-xl shadow-lg hover:shadow-xl hover:border-[#BB86FC] transition-all duration-300 transform hover:-translate-y-2 text-center group focus:outline-none focus:ring-2 focus:ring-[#BB86FC]">
+                        <span role="img" aria-label="books" class="text-5xl mb-3 inline-block transition-transform group-hover:scale-110">📚</span>
+                        <h3 class="text-xl font-bold text-white group-hover:text-[#BB86FC]">WB SLST</h3>
+                        <p class="text-gray-400 text-sm">20 Exclusive Tests (Login Required)</p>
                     </button>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- WB SLST Section (Hidden by default) -->
-        <div id="slstSection" class="hidden">
+        <section id="slstSection" class="hidden">
             <!-- NEW: Email/Password Login Section -->
-            <div id="slstLogin" class="max-w-md mx-auto login-card-bg p-8 md:p-10 rounded-xl shadow-lg border border-gray-700 text-white">
+            <div id="slstLogin" class="max-w-md mx-auto login-card-bg p-8 md:p-10 rounded-xl shadow-lg text-white">
                 <h2 class="text-3xl font-bold text-white mb-4 text-center">
                     <span role="img" aria-label="lock">🔐</span> WB SLST Login
                 </h2>
-                <p class="text-md text-gray-300 mb-8 text-center">
-                    This section is for registered students only.
+                <p class="text-md text-gray-400 mb-8 text-center">
+                    This section is for registered students only. Please log in to access the tests.
                 </p>
                 <form id="slstLoginForm" class="space-y-6">
                     <div>
                         <label for="slstEmail" class="block mb-2 text-sm font-medium text-gray-300">Email</label>
-                        <input type="email" id="slstEmail" class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300" placeholder="student@example.com" required>
+                        <input type="email" id="slstEmail" class="w-full" placeholder="student@example.com" required>
                     </div>
                     <div>
                         <label for="slstPassword" class="block mb-2 text-sm font-medium text-gray-300">Password</label>
-                        <input type="password" id="slstPassword" class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300" placeholder="••••••••" required>
+                        <input type="password" id="slstPassword" class="w-full" placeholder="••••••••" required>
                     </div>
                     <p id="loginErrorMessage" class="text-red-500 text-center text-sm hidden"></p>
-                    <button type="submit" class="w-full py-3 bg-indigo-600 text-white font-bold text-lg rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75 transition duration-300 transform hover:scale-105">
+                    <button type="submit" class="w-full btn-primary py-3 rounded-lg text-lg">
                         Login
                     </button>
                 </form>
-                <p class="text-center text-xs text-gray-400 mt-4">Demo credentials: Email: <strong>slst@student.com</strong> | Pass: <strong>test1234</strong></p>
-                <button id="backToDashboardButton" class="w-full mt-6 py-3 text-indigo-400 font-bold rounded-lg border border-indigo-500 hover:bg-indigo-900 hover:bg-opacity-30 transition duration-300">
+                <p class="text-center text-xs text-gray-500 mt-4">Demo credentials: Email: <strong>slst@student.com</strong> | Pass: <strong>test1234</strong></p>
+                <button id="backToDashboardButton" class="w-full mt-6 btn-secondary py-3 rounded-lg text-lg">
                     Back to Dashboard
                 </button>
             </div>
 
             <!-- Mock Test List for SLST (Initially hidden) -->
-            <div id="mockTestList" class="bg-gray-800 p-10 max-w-4xl mx-auto rounded-xl shadow-lg border border-gray-700 hidden text-white">
-                <div class="flex justify-between items-center mb-6">
+            <div id="mockTestList" class="card-bg p-8 md:p-10 max-w-4xl mx-auto rounded-xl shadow-lg hidden text-white">
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
                     <h2 class="text-3xl font-semibold text-white">
                         <span role="img" aria-label="books">📚</span> WB SLST Mock Tests
                     </h2>
                     <!-- NEW: Logout Button for this section -->
-                    <button id="slstLogoutButton" class="py-2 px-4 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition-all duration-300 shadow-sm transform hover:scale-105">
+                    <button id="slstLogoutButton" class="py-2 px-5 bg-red-700 text-white font-bold rounded-lg hover:bg-red-800 transition-all duration-300 shadow-md transform hover:scale-105">
                         Logout
                     </button>
                 </div>
                 <div id="testListContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- Test links will be dynamically loaded here by the script -->
-                    <p class="text-center col-span-3 text-gray-400" id="loadingMessage">Loading tests...</p>
+                    <p class="text-center col-span-full text-gray-500" id="loadingMessage">Loading tests...</p>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- About Us Section -->
-        <div id="aboutUsSection" class="bg-white p-10 max-w-4xl mx-auto rounded-xl shadow-lg border border-gray-100 text-gray-900">
-            <h2 class="text-3xl font-semibold text-gray-900 mb-6 text-center">About Us</h2>
-            <div class="prose max-w-none text-gray-700">
+        <section id="aboutUsSection" class="card-bg p-8 md:p-10 max-w-6xl mx-auto rounded-2xl shadow-xl">
+            <h2 class="text-4xl font-bold text-white mb-8 text-center">About Raj Sir's Academy</h2>
+            <div class="prose max-w-none text-gray-300 leading-relaxed text-lg mx-auto">
                 <p>Welcome to **Raj Sir's Academy**, your premier destination for comprehensive math mock test preparation. We specialize in preparing students for competitive exams like **IIT JAM, WBJEE, CSIR NET, CUET PG, UP LT Grade, and BPSC**.</p>
                 <p>Our platform is meticulously designed to provide you with a realistic exam environment, helping you build confidence and master the necessary skills. With a wide range of mock tests, detailed solutions, and performance analytics, we help you identify your strengths and weaknesses to optimize your study strategy.</p>
                 <p>At Raj Sir's Academy, we believe in a student-centric approach. Our team of experienced educators is dedicated to guiding you through every step of your preparation journey. We are committed to making quality education accessible and empowering you to achieve your academic goals. Join us today and take the first step towards a successful future!</p>
             </div>
-        </div>
+        </section>
 
         <!-- Testimonials Section -->
-        <div id="testimonialsSection" class="bg-[#2d2572] p-10 max-w-4xl mx-auto rounded-xl shadow-lg border border-gray-900 text-white">
-            <h2 class="text-3xl font-semibold text-white mb-6 text-center">What Our Students Say</h2>
-            <div class="relative w-full overflow-hidden h-40">
-                <div class="testimonial-item text-center">
-                    <p class="text-lg italic text-gray-200">"The mock tests were incredibly helpful. They were challenging and perfectly simulated the real exam environment. I highly recommend Raj Sir's Academy!"</p>
-                    <p class="mt-4 font-bold text-indigo-300">- Anirban B.</p>
+        <section id="testimonialsSection" class="card-bg p-8 md:p-10 max-w-6xl mx-auto rounded-2xl shadow-xl">
+            <h2 class="text-4xl font-bold text-white mb-8 text-center">What Our Students Say</h2>
+            <div class="relative w-full overflow-hidden h-48 md:h-40">
+                <div class="testimonial-item text-center p-4 active">
+                    <p class="text-xl italic text-gray-300 mb-4">"The mock tests were incredibly helpful. They were challenging and perfectly simulated the real exam environment. I highly recommend Raj Sir's Academy!"</p>
+                    <p class="font-bold text-[#03DAC6] text-lg">- Anirban B.</p>
                 </div>
-                <div class="testimonial-item text-center">
-                    <p class="text-lg italic text-gray-200">"I improved my scores significantly after using this platform. The detailed feedback helped me focus on my weak areas and turn them into strengths."</p>
-                    <p class="mt-4 font-bold text-indigo-300">- Priya S.</p>
+                <div class="testimonial-item text-center p-4">
+                    <p class="text-xl italic text-gray-300 mb-4">"I improved my scores significantly after using this platform. The detailed feedback helped me focus on my weak areas and turn them into strengths."</p>
+                    <p class="font-bold text-[#03DAC6] text-lg">- Priya S.</p>
                 </div>
-                <div class="testimonial-item text-center">
-                    <p class="text-lg italic text-gray-200">"Raj Sir's Academy is the best resource for exam prep. The variety of tests for different exams is a game-changer!"</p>
-                    <p class="mt-4 font-bold text-indigo-300">- Rohit K.</p>
+                <div class="testimonial-item text-center p-4">
+                    <p class="text-xl italic text-gray-300 mb-4">"Raj Sir's Academy is the best resource for exam prep. The variety of tests for different exams is a game-changer!"</p>
+                    <p class="font-bold text-[#03DAC6] text-lg">- Rohit K.</p>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- Contact Details Section -->
-        <div id="contactDetails" class="bg-white p-10 max-w-4xl mx-auto rounded-xl shadow-lg border border-gray-100 text-gray-900">
-            <h2 class="text-3xl font-semibold text-gray-900 mb-6 text-center">Contact Us</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
-                <div>
-                    <h3 class="text-xl font-bold mb-2">Address</h3>
-                    <p class="text-gray-700">123 Main Street, Anytown, India</p>
+        <section id="contactDetails" class="card-bg p-8 md:p-10 max-w-6xl mx-auto rounded-2xl shadow-xl">
+            <h2 class="text-4xl font-bold text-white mb-8 text-center">Get in Touch</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                <div class="flex flex-col items-center">
+                    <i class="fas fa-map-marker-alt text-4xl text-[#BB86FC] mb-3"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">Address</h3>
+                    <p class="text-gray-300">123 Academy Lane, Exam City, India</p>
                 </div>
-                <div>
-                    <h3 class="text-xl font-bold mb-2">Email</h3>
-                    <a href="mailto: coachingmaathh2002@gmail.com" class="text-blue-600 hover:underline"> coachingmaathh2002@gmail.com</a>
+                <div class="flex flex-col items-center">
+                    <i class="fas fa-envelope text-4xl text-[#BB86FC] mb-3"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">Email</h3>
+                    <a href="mailto:coachingmaathh2002@gmail.com" class="text-[#03DAC6] hover:underline">coachingmaathh2002@gmail.com</a>
                 </div>
-                <div>
-                    <h3 class="text-xl font-bold mb-2">Phone</h3>
-                    <a href="tel:+9198765" class="text-blue-600 hover:underline">+91 9876</a>
+                <div class="flex flex-col items-center">
+                    <i class="fas fa-phone-alt text-4xl text-[#BB86FC] mb-3"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">Phone</h3>
+                    <a href="tel:+9198765" class="text-[#03DAC6] hover:underline">+91 98765 43210</a>
                 </div>
-                <div>
-                    <h3 class="text-xl font-bold mb-2">Follow Us</h3>
-                    <div class="flex justify-center space-x-4 mt-2">
-                        <a href="https://www.facebook.com/problam.charba" class="text-blue-600 hover:text-blue-800"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-instagram"></i></a>
+                <div class="flex flex-col items-center">
+                    <i class="fas fa-share-alt text-4xl text-[#BB86FC] mb-3"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">Follow Us</h3>
+                    <div class="flex justify-center space-x-5 mt-2">
+                        <a href="https://www.facebook.com/problam.charba" target="_blank" class="text-gray-400 hover:text-[#03DAC6] transition-colors duration-200 text-2xl"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" target="_blank" class="text-gray-400 hover:text-[#03DAC6] transition-colors duration-200 text-2xl"><i class="fab fa-twitter"></i></a>
+                        <a href="#" target="_blank" class="text-gray-400 hover:text-[#03DAC6] transition-colors duration-200 text-2xl"><i class="fab fa-instagram"></i></a>
+                        <a href="#" target="_blank" class="text-gray-400 hover:text-[#03DAC6] transition-colors duration-200 text-2xl"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </main>
 
-    <footer class="text-center p-6 text-sm text-gray-400 border-t border-gray-700 mt-12 bg-gray-900">
-        © 2025 Raj Sir's Academy | Designed for student success
+    <footer class="text-center p-6 text-sm text-gray-500 border-t border-[#2C2C2C] mt-16 bg-[#1E1E1E]">
+        © 2025 Raj Sir's Academy. All rights reserved. | Designed for student success.
     </footer>
 
     <!-- Success Message Box -->
-    <div id="successAlert" class="custom-alert-box bg-green-500 text-white font-bold">
+    <div id="successAlert" class="custom-alert-box bg-[#03DAC6] text-[#121212] font-bold">
         Login successful! Welcome.
     </div>
 
@@ -286,7 +361,8 @@
             slstSection.classList.add('hidden');
             mainDashboard.classList.remove('hidden');
             // Reset the login state and UI when returning to the dashboard
-            isLoggedIn = false;
+            // isLoggedIn = false; // Keep login state persistent for this session until explicit logout
+            // If you want to force re-login uncomment the above line
         }
 
         /**
@@ -323,8 +399,8 @@
 
             tests.forEach(test => {
                 const testItem = `
-                    <a href="${test.url}" class="block p-5 bg-indigo-900/50 text-indigo-200 rounded-lg text-center text-lg font-medium hover:bg-indigo-600 hover:text-white transition duration-300 shadow-sm hover:shadow-md">
-                        📘 ${test.title}
+                    <a href="${test.url}" class="block p-5 card-bg rounded-lg text-center text-lg font-medium hover:bg-[#BB86FC] hover:text-[#121212] transition duration-300 shadow-sm hover:shadow-md transform hover:-translate-y-1">
+                        <i class="fas fa-book-open mr-2 text-[#03DAC6]"></i> ${test.title}
                     </a>
                 `;
                 testListContainer.innerHTML += testItem;
@@ -347,12 +423,29 @@
          * @function handleSlstLogin
          * Handles the login form submission by checking credentials against the USERS_DATA array.
          */
-        function handleSlstLogin(event) {
+        async function handleSlstLogin(event) {
             event.preventDefault();
             const email = document.getElementById('slstEmail').value;
             const password = document.getElementById('slstPassword').value;
 
-            // Use the fetched USERS_DATA for validation
+            // Ensure USERS_DATA is loaded before attempting login
+            if (USERS_DATA.length === 0) {
+                 try {
+                    const response = await fetch('students.json');
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    USERS_DATA = await response.json();
+                    console.log("Successfully re-loaded student data from students.json for login attempt.");
+                } catch (error) {
+                    console.error('Could not load student data during login:', error);
+                    loginErrorMessage.textContent = "Error: Could not load user data. Please try again later.";
+                    loginErrorMessage.classList.remove('hidden');
+                    return; // Exit if data can't be loaded
+                }
+            }
+
+
             const user = USERS_DATA.find(u => u.email === email && u.password === password);
 
             if (user) {
@@ -362,7 +455,7 @@
                 slstLogin.classList.add('hidden');
                 mockTestList.classList.remove('hidden');
                 loadMockTests();
-                showSuccessAlert(`Login successful! Welcome, ${email}.`);
+                showSuccessAlert(`Login successful! Welcome, ${user.email}.`);
                 console.log(`Login successful for user: ${email}`);
             } else {
                 // Login failed
@@ -381,62 +474,4 @@
             slstLogin.classList.remove('hidden');
             mockTestList.classList.add('hidden');
             loadingMessage.classList.remove('hidden'); // Show loading message again
-            document.getElementById('slstEmail').value = '';
-            document.getElementById('slstPassword').value = '';
-            console.log("Logout successful.");
-        }
-        
-        /**
-         * @function attachEventListeners
-         * Attaches all UI event listeners.
-         * This is called after the data has been loaded.
-         */
-        function attachEventListeners() {
-            slstButton.addEventListener('click', showSlstSection);
-            backToDashboardButton.addEventListener('click', showMainDashboard);
-            slstLogoutButton.addEventListener('click', handleSlstLogout);
-            slstLoginForm.addEventListener('submit', handleSlstLogin);
-
-            // Testimonial Carousel Logic (Unchanged)
-            let currentTestimonialIndex = 0;
-            const testimonials = document.querySelectorAll('.testimonial-item');
-            const totalTestimonials = testimonials.length;
-            function showTestimonial(index) {
-                testimonials.forEach((testimonial, i) => {
-                    testimonial.style.opacity = (i === index) ? '1' : '0';
-                    testimonial.setAttribute('aria-hidden', i !== index);
-                });
-            }
-            function nextTestimonial() {
-                currentTestimonialIndex = (currentTestimonialIndex + 1) % totalTestimonials;
-                showTestimonial(currentTestimonialIndex);
-            }
-            if (totalTestimonials > 0) {
-                testimonials.forEach(t => t.classList.add('absolute', 'w-full', 'transition-opacity', 'duration-1000', 'ease-in-out'));
-                showTestimonial(currentTestimonialIndex);
-                setInterval(nextTestimonial, 5000); // Rotate every 5 seconds
-            }
-        }
-
-        // --- Event Listeners and Initial Setup ---
-        document.addEventListener('DOMContentLoaded', async () => {
-            // First, fetch the data asynchronously
-            try {
-                const response = await fetch('students.json');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                USERS_DATA = await response.json();
-                console.log("Successfully loaded student data from students.json");
-                // Once data is loaded, attach all event listeners and UI logic
-                attachEventListeners();
-            } catch (error) {
-                console.error('Could not load student data:', error);
-                // Display an error message if the data can't be fetched
-                loginErrorMessage.textContent = "Failed to load student data. Please ensure 'students.json' is in the same directory.";
-                loginErrorMessage.classList.remove('hidden');
-            }
-        });
-    </script>
-</body>
-</html>
+            document.getElementById('slstEmail').value
