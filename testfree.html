@@ -1,940 +1,877 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Probability Mock Test By Raj Sir</title>
-  <style>
-    :root {
-      --bg-dark: #0f172a;
-      --card-dark: #1e293b;
-      --text-light: #f1f5f9;
-      --text-muted: #94a3b8;
-      --accent-blue: #3b82f6;
-      --accent-green: #22c55e;
-      --accent-red: #ef4444;
-      --border-color: rgba(241, 245, 249, 0.1);
-    }
-
-    /* Base Styles */
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background-color: var(--bg-dark);
-      color: var(--text-light);
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      line-height: 1.6;
-      display: flex;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 1.5rem;
-    }
-
-    /* Layout & Components */
-    .app-container {
-      width: 100%;
-      max-width: 1000px;
-      display: grid;
-      gap: 1.5rem;
-      grid-template-columns: 1fr;
-    }
-    @media (min-width: 800px) {
-      body { align-items: center; }
-      .app-container {
-        grid-template-columns: 1.2fr 0.8fr;
-      }
-    }
-
-    .card {
-      background-color: var(--card-dark);
-      border-radius: 1rem;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-    .panel { padding: 1.5rem; }
-
-    /* Header */
-    .header {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      padding-bottom: 1.5rem;
-    }
-    .header h1 {
-      font-size: clamp(1.5rem, 4vw, 2.25rem);
-      margin: 0;
-      font-weight: 800;
-    }
-    .header .metadata {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      color: var(--text-muted);
-      font-size: 0.875rem;
-    }
-    .header .timer {
-      font-size: 2.5rem;
-      font-variant-numeric: tabular-nums;
-      font-weight: 800;
-      color: var(--accent-blue);
-      letter-spacing: 0.05em;
-    }
-    @media (min-width: 640px) {
-      .header {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
-    }
-
-    /* Buttons & UI Elements */
-    .btn {
-      appearance: none;
-      border: 0;
-      background-color: var(--accent-blue);
-      color: var(--card-dark);
-      padding: 0.75rem 1.25rem;
-      border-radius: 0.75rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s ease-in-out;
-      font-size: 1rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .btn:hover:not(:disabled) {
-      filter: brightness(1.1);
-      transform: translateY(-2px);
-    }
-    .btn:active:not(:disabled) {
-      transform: translateY(1px);
-    }
-    .btn:disabled {
-      background-color: var(--text-muted);
-      cursor: not-allowed;
-      opacity: 0.6;
-    }
-    .btn.secondary {
-      background: transparent;
-      color: var(--accent-blue);
-      border: 1px solid var(--accent-blue);
-    }
-    .btn.warn {
-      background: var(--accent-red);
-      color: var(--text-light);
-    }
-    .btn.ghost {
-      background: transparent;
-      color: var(--text-light);
-      border: 1px solid transparent;
-    }
-
-    .pill {
-      display: inline-flex;
-      padding: 0.5rem 0.75rem;
-      border-radius: 999px;
-      font-size: 0.875rem;
-      background-color: rgba(241, 245, 249, 0.05);
-      color: var(--text-light);
-      border: 1px solid var(--border-color);
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .badge {
-      font-size: 0.875rem;
-      padding: 0.375rem 0.75rem;
-      border-radius: 999px;
-      background-color: var(--accent-blue);
-      color: var(--card-dark);
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    /* Progress & Sidebar */
-    .progress-bar-wrap {
-      height: 0.5rem;
-      background: rgba(241, 245, 249, 0.1);
-      border-radius: 999px;
-      overflow: hidden;
-      margin-top: 0.5rem;
-    }
-    .progress-bar-wrap span {
-      display: block;
-      height: 100%;
-      background: var(--accent-blue);
-      width: 0%;
-      transition: width 0.3s ease-in-out;
-    }
-    .sidebar-meta { margin-top: 1.5rem; }
-    .sidebar-meta p { margin: 0; }
-
-    /* Questions & Options */
-    .question-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin: 1.5rem 0 1rem;
-    }
-    .options-grid {
-      display: grid;
-      gap: 0.75rem;
-      margin: 1rem 0;
-    }
-    .option {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      padding: 1rem;
-      border: 1px solid var(--border-color);
-      border-radius: 0.75rem;
-      background-color: rgba(241, 245, 249, 0.03);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .option:hover {
-      background-color: rgba(241, 245, 249, 0.05);
-      border-color: rgba(241, 245, 249, 0.2);
-    }
-    .option input {
-      margin-top: 0.25rem;
-      accent-color: var(--accent-blue);
-      cursor: inherit;
-    }
-    .option.correct {
-      background-color: rgba(34, 197, 94, 0.1);
-      border-color: var(--accent-green);
-    }
-    .option.incorrect {
-      background-color: rgba(239, 68, 68, 0.1);
-      border-color: var(--accent-red);
-    }
-
-    .footer-actions {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    /* Review & Results */
-    .review-details summary { cursor: pointer; }
-    .review-details summary::marker { color: var(--accent-blue); }
-    .review-details + .review-details { margin-top: 0.75rem; }
-    .review-item {
-      padding: 1rem;
-      border-radius: 0.75rem;
-      background-color: rgba(241, 245, 249, 0.05);
-    }
-    .review-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: 0.75rem;
-      margin-top: 1rem;
-    }
-
-    /* Custom Modal */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background-color: rgba(0, 0, 0, 0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-    .modal-backdrop.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .modal-content {
-      background-color: var(--card-dark);
-      padding: 2rem;
-      border-radius: 1rem;
-      max-width: 400px;
-      width: 90%;
-      border: 1px solid var(--border-color);
-      transform: translateY(-20px);
-      transition: transform 0.3s ease;
-    }
-    .modal-backdrop.show .modal-content { transform: translateY(0); }
-    .modal-content h3 { margin: 0 0 1rem; }
-    .modal-content .actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 0.75rem;
-      margin-top: 1.5rem;
-    }
-
-    /* Utility Classes */
-    .text-muted { color: var(--text-muted); }
-    .text-center { text-align: center; }
-  </style>
-  <!-- MathJax v3 -->
-  <script>
-    window.MathJax = {
-      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
-      svg: { fontCache: 'global' }
-    };
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
-</head>
-<body>
-  <div class="app-container">
-    <header class="card panel">
-      <div class="header">
-        <h1>Probability Mock Test By Raj Sir</h1>
-        <div class="metadata">
-          <span class="badge" id="meta-questions">0 Questions</span>
-          <span class="badge" id="meta-marks">0 Marks</span>
-          <span class="badge" id="meta-duration">0 min</span>
-        </div>
-      </div>
-    </header>
-
-    <main id="main-content" class="card panel"></main>
-
-    <aside class="card panel">
-      <div class="sidebar-info">
-        <h3 style="margin-top:0;">Progress</h3>
-        <p class="text-muted">Questions answered: <strong id="progress-count">0 / 0</strong></p>
-        <div class="progress-bar-wrap"><span id="progress-bar"></span></div>
-      </div>
-      <div class="sidebar-meta">
-        <h3 style="margin-top:0;">Settings</h3>
-        <p class="text-muted">Duration: <strong id="sidebar-duration">0</strong> minutes</p>
-        <p class="text-muted">Negative Marking: <strong id="sidebar-negative-marks">0</strong> per wrong answer</p>
-      </div>
-    </aside>
-  </div>
-
-  <!-- Confirmation Modal -->
-  <div id="confirmation-modal" class="modal-backdrop">
-    <div class="modal-content">
-      <h3 id="modal-title"></h3>
-      <p id="modal-message"></p>
-      <div class="actions">
-        <button id="modal-cancel" class="btn secondary">Cancel</button>
-        <button id="modal-confirm" class="btn warn">Confirm</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    /***************************
-     * 1. CONFIGURATION
-     ***************************/
-    const CONFIG = {
-      durationMinutes: 30,
-      shuffleOptions: true,
-      negativeMarking: 0,
-    };
-
-    /***************************
-     * 2. PROBABILITY QUESTIONS
-     ***************************/
-    const QUESTIONS = [
-      {
-        marks: 1,
-        question: 'A single standard six-sided die is rolled. What is the probability of rolling a number greater than 4?',
-        options: ['$\\frac{1}{6}$', '$\\frac{1}{3}$', '$\\frac{1}{2}$', '$\\frac{2}{3}$'],
-        correctIndex: 1
-      },
-      {
-        marks: 1,
-        question: 'Two coins are tossed. What is the probability of getting at least one head?',
-        options: ['$\\frac{1}{4}$', '$\\frac{1}{2}$', '$\\frac{3}{4}$', '1'],
-        correctIndex: 2
-      },
-      {
-        marks: 1,
-        question: 'A bag contains 5 red balls and 3 blue balls. What is the probability of drawing a red ball and then a blue ball without replacement?',
-        options: ['$\\frac{15}{64}$', '$\\frac{15}{56}$', '$\\frac{8}{15}$', '$\\frac{5}{24}$'],
-        correctIndex: 1
-      },
-      {
-        marks: 1,
-        question: 'In a group of 100 students, 60 like math and 40 like science. If 20 students like both, what is the probability that a randomly selected student likes either math or science?',
-        options: ['$\\frac{6}{10}$', '$\\frac{4}{10}$', '$\\frac{8}{10}$', '$\\frac{2}{10}$'],
-        correctIndex: 2
-      },
-      {
-        marks: 1,
-        question: 'What is the probability of rolling a sum of 7 with two standard six-sided dice?',
-        options: ['$\\frac{1}{6}$', '$\\frac{1}{12}$', '$\\frac{7}{36}$', '$\\frac{1}{9}$'],
-        correctIndex: 0
-      },
-      {
-        marks: 1,
-        question: 'A deck of 52 cards is used. What is the probability of drawing a Queen or a King?',
-        options: ['$\\frac{1}{13}$', '$\\frac{2}{13}$', '$\\frac{1}{26}$', '$\\frac{4}{13}$'],
-        correctIndex: 1
-      },
-      {
-        marks: 1,
-        question: 'What is the probability of getting exactly 3 heads in 5 coin tosses?',
-        options: ['$\\frac{5}{16}$', '$\\frac{3}{32}$', '$\\frac{1}{2}$', '$\\frac{1}{4}$'],
-        correctIndex: 0
-      },
-      {
-        marks: 1,
-        question: 'A box contains 4 green, 3 yellow, and 5 red marbles. If you select one marble at random, what is the probability that it is not green?',
-        options: ['$\\frac{4}{12}$', '$\\frac{8}{12}$', '$\\frac{3}{12}$', '$\\frac{5}{12}$'],
-        correctIndex: 1
-      },
-      {
-        marks: 1,
-        question: 'The probability of event A is 0.4 and event B is 0.6. The events are independent. What is the probability of both A and B occurring?',
-        options: ['0.24', '1.0', '0.4', '0.6'],
-        correctIndex: 0
-      },
-      {
-        marks: 1,
-        question: 'The probability that a student passes a math test is 0.7, and a physics test is 0.6. The probability of passing both is 0.5. What is the probability of passing at least one test?',
-        options: ['0.8', '0.7', '0.9', '0.6'],
-        correctIndex: 0
-      },
-      {
-        marks: 1,
-        question: 'What is the number of permutations of the letters in the word `PENCIL`?',
-        options: ['720', '360', '120', '24'],
-        correctIndex: 0
-      },
-      {
-        marks: 1,
-        question: 'From a group of 5 men and 4 women, a committee of 3 is to be formed. What is the probability that the committee consists of 2 men and 1 woman?',
-        options: ['$\\frac{1}{2}$', '$\\frac{5}{14}$', '$\\frac{10}{21}$', '$\\frac{2}{9}$'],
-        correctIndex: 2
-      },
-      {
-        marks: 1,
-        question: 'If $P(A) = 0.5$ and $P(B) = 0.4$, and $P(A|B) = 0.3$. What is $P(A \\cap B)$?',
-        options: ['0.15', '0.12', '0.2', '0.7'],
-        correctIndex: 1
-      },
-      {
-        marks: 1,
-        question: 'What is the probability of drawing a red face card from a standard deck of 52 cards?',
-        options: ['$\\frac{3}{26}$', '$\\frac{3}{52}$', '$\\frac{1}{13}$', '$\\frac{3}{13}$'],
-        correctIndex: 0
-      },
-      {
-        marks: 1,
-        question: 'A test for a disease is 99% accurate (i.e., 99% of people with the disease test positive and 99% of people without the disease test negative). 0.5% of the population has the disease. If a person tests positive, what is the probability they actually have the disease?',
-        options: ['$\\approx 0.047$', '$\\approx 0.99$', '$\\approx 0.95$', '$\\approx 0.5$'],
-        correctIndex: 0
-      },
-      {
-        marks: 1,
-        question: 'A fair coin is tossed 10 times. What is the expected number of heads?',
-        options: ['3', '5', '7', '10'],
-        correctIndex: 1
-      },
-      {
-        marks: 1,
-        question: 'In a lottery, there are 10 prizes and 90 blanks. What is the probability of winning a prize if you buy 2 tickets?',
-        options: ['$\\frac{1}{10}$', '$\\frac{1}{5}$', '$\\frac{19}{100}$', '$\\frac{1}{2}$'],
-        correctIndex: 2
-      },
-      {
-        marks: 1,
-        question: 'The probability of event A is $P(A)$, and event B is $P(B)$. The events are mutually exclusive. Which of the following is true?',
-        options: ['$P(A \\cup B) = P(A) + P(B)$', '$P(A \\cap B) = P(A)P(B)$', '$P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$', '$P(A) = 1 - P(B)$'],
-        correctIndex: 0
-      },
-      {
-        marks: 1,
-        question: 'A card is drawn from a standard deck. What is the probability that it is a spade, given that it is a black card?',
-        options: ['$\\frac{1}{2}$', '$\\frac{1}{4}$', '$\\frac{13}{52}$', '$\\frac{1}{13}$'],
-        correctIndex: 0
-      },
-      {
-        marks: 1,
-        question: 'What is the probability of a randomly chosen integer from 1 to 20 (inclusive) being a prime number?',
-        options: ['$\\frac{7}{20}$', '$\\frac{8}{20}$', '$\\frac{9}{20}$', '$\\frac{6}{20}$'],
-        correctIndex: 1
-      },
-      {
-        marks: 1,
-        question: 'If a family has three children, what is the probability that they have exactly two boys, assuming boys and girls are equally likely?',
-        options: ['$\\frac{1}{8}$', '$\\frac{3}{8}$', '$\\frac{1}{2}$', '$\\frac{5}{8}$'],
-        correctIndex: 1
-      },
-      {
-        marks: 1,
-        question: 'The weights of a population of cats are normally distributed with a mean of 4kg and a standard deviation of 0.5kg. What is the probability that a randomly selected cat weighs between 3.5kg and 4.5kg?',
-        options: ['$\\approx 0.68$', '$\\approx 0.95$', '$\\approx 0.99$', '$\\approx 0.50$'],
-        correctIndex: 0
-      },
-      {
-        marks: 1,
-        question: 'There are 12 items in a box, 4 of which are defective. What is the probability of picking 3 non-defective items in a row without replacement?',
-        options: ['$\\frac{1}{2}$', '$\\frac{21}{55}$', '$\\frac{8}{11}$', '$\\frac{14}{55}$'],
-        correctIndex: 1
-      },
-      {
-        marks: 1,
-        question: 'What is the probability of rolling a multiple of 3 on a standard six-sided die?',
-        options: ['$\\frac{1}{6}$', '$\\frac{1}{3}$', '$\\frac{1}{2}$', '$\\frac{2}{3}$'],
-        correctIndex: 1
-      },
-      {
-        marks: 1,
-        question: 'The probability of John hitting a target is 0.4. The probability of Mary hitting the target is 0.5. They shoot at the same time. What is the probability that at least one of them hits the target?',
-        options: ['0.2', '0.9', '0.7', '0.8'],
-        correctIndex: 2
-      },
-      {
-        marks: 1,
-        question: 'A basket contains 6 apples and 4 oranges. Two fruits are chosen at random without replacement. What is the probability that both are apples?',
-        options: ['$\\frac{1}{3}$', '$\\frac{1}{5}$', '$\\frac{3}{5}$', '$\\frac{1}{2}$'],
-        correctIndex: 0
-      },
-      {
-        marks: 1,
-        question: 'If $P(A) = 0.6$ and $P(B) = 0.5$, and $P(A \\cup B) = 0.8$, are A and B independent events?',
-        options: ['Yes', 'No', 'Cannot be determined', 'Mutually Exclusive'],
-        correctIndex: 1
-      },
-      {
-        marks: 1,
-        question: 'The probability of a customer buying a coffee is 0.7. If 10 customers enter the shop, what is the probability that exactly 8 of them buy a coffee?',
-        options: ['$\\binom{10}{8}(0.7)^8(0.3)^2$', '$\\binom{10}{8}(0.3)^8(0.7)^2$', '$(0.7)^8(0.3)^2$', '$8 \\times 0.7$'],
-        correctIndex: 0
-      },
-      {
-        marks: 1,
-        question: 'A factory produces items where 2% are defective. If 10 items are selected at random, what is the probability that none of them are defective?',
-        options: ['$(0.98)^{10}$', '$(0.02)^{10}$', '$1 - (0.98)^{10}$', '$0.98$'],
-        correctIndex: 0
-      },
-      {
-        marks: 1,
-        question: 'What is the probability of drawing a card from a standard deck that is either a Club or a Face card?',
-        options: ['$\\frac{22}{52}$', '$\\frac{16}{52}$', '$\\frac{11}{26}$', '$\\frac{25}{52}$'],
-        correctIndex: 2
-      }
-    ];
-
-    /***************************
-     * 3. STATE MANAGEMENT
-     ***************************/
-    const state = {
-      started: false,
-      currentQuestionIndex: 0,
-      answers: Array(QUESTIONS.length).fill(null), // Stores the shown option index
-      timeLeft: CONFIG.durationMinutes * 60,
-      optionMaps: [], // Shuffled order mapping
-      timerInterval: null,
-      submitted: false,
-      startedAt: null,
-    };
-
-    /***************************
-     * 4. DOM ELEMENTS
-     ***************************/
-    const DOM = {
-      mainContent: document.getElementById('main-content'),
-      progressBar: document.getElementById('progress-bar'),
-      progressCount: document.getElementById('progress-count'),
-      timer: document.getElementById('meta-duration'),
-      metaQuestions: document.getElementById('meta-questions'),
-      metaMarks: document.getElementById('meta-marks'),
-      sidebarDuration: document.getElementById('sidebar-duration'),
-      sidebarNegativeMarks: document.getElementById('sidebar-negative-marks'),
-      modal: document.getElementById('confirmation-modal'),
-      modalTitle: document.getElementById('modal-title'),
-      modalMessage: document.getElementById('modal-message'),
-      modalCancel: document.getElementById('modal-cancel'),
-      modalConfirm: document.getElementById('modal-confirm'),
-    };
-
-    /***************************
-     * 5. HELPER FUNCTIONS
-     ***************************/
-    /**
-     * Shuffles an array in place using the Fisher-Yates algorithm.
-     * @param {Array} a The array to shuffle.
-     */
-    function shuffleArray(a) {
-      for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-      }
-    }
-
-    /**
-     * Formats seconds into a MM:SS string.
-     * @param {number} s The number of seconds.
-     * @returns {string} The formatted time string.
-     */
-    function formatTime(s) {
-      const minutes = Math.floor(s / 60).toString().padStart(2, '0');
-      const seconds = (s % 60).toString().padStart(2, '0');
-      return `${minutes}:${seconds}`;
-    }
-
-    /**
-     * Prepares the option maps for shuffling.
-     */
-    function prepareOptionMaps() {
-      state.optionMaps = QUESTIONS.map(q => {
-        const indices = q.options.map((_, i) => i);
-        if (CONFIG.shuffleOptions) {
-          shuffleArray(indices);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STET Mock Test - 150 Unique Questions</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font */
+        body { font-family: 'Inter', sans-serif; background-color: #f7f9fc; }
+        /* Style for MathJax elements (Optional, but good practice) */
+        .math-container { margin-bottom: 1rem; }
+        .question-option { transition: background-color 0.15s ease; border: 1px solid #d1d5db; }
+        .question-option:hover:not(.selected):not(.correct):not(.incorrect) { background-color: #eff6ff; }
+        .selected { background-color: #bfdbfe; border-color: #3b82f6; }
+        .correct { background-color: #d1fae5; border-color: #10b981; }
+        .incorrect { background-color: #fee2e2; border-color: #ef4444; }
+        /* Sticky footer for navigation */
+        .nav-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
         }
-        return indices; // Map from shown order to original index
-      });
-    }
-
-    /**
-     * Renders the progress bar and count.
-     */
-    function renderProgress() {
-      const answeredCount = state.answers.filter(v => v !== null).length;
-      DOM.progressCount.textContent = `${answeredCount} / ${QUESTIONS.length}`;
-      const percentage = (answeredCount / QUESTIONS.length) * 100;
-      DOM.progressBar.style.width = `${percentage}%`;
-    }
-
-    /**
-     * Shows the custom confirmation modal.
-     * @param {string} title The modal title.
-     * @param {string} message The modal message.
-     * @param {Function} onConfirm The function to call on confirmation.
-     */
-    function showModal(title, message, onConfirm) {
-      DOM.modalTitle.textContent = title;
-      DOM.modalMessage.textContent = message;
-      DOM.modal.classList.add('show');
-
-      const handleConfirm = () => {
-        onConfirm();
-        DOM.modal.classList.remove('show');
-        DOM.modalConfirm.removeEventListener('click', handleConfirm);
-      };
-
-      DOM.modalConfirm.addEventListener('click', handleConfirm);
-      DOM.modalCancel.onclick = () => {
-        DOM.modal.classList.remove('show');
-        DOM.modalConfirm.removeEventListener('click', handleConfirm);
-      };
-    }
-
-    /***************************
-     * 6. RENDER FUNCTIONS
-     ***************************/
-    /**
-     * Renders the starting screen.
-     */
-    function renderStartScreen() {
-      DOM.mainContent.innerHTML = `
-        <div>
-          <h2>Welcome to the Probability Mock Test!</h2>
-          <p class="text-muted">This test contains ${QUESTIONS.length} questions and has a duration of <strong>${CONFIG.durationMinutes} minutes</strong>. You can navigate between questions and review your answers before submitting.</p>
-          <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem;">
-            <button id="btn-start" class="btn">Start Test</button>
-            <button id="btn-print" class="btn secondary">Print Questions</button>
-          </div>
-        </div>
-      `;
-      document.getElementById('btn-start').onclick = startTest;
-      document.getElementById('btn-print').onclick = () => window.print();
-    }
-
-    /**
-     * Renders a single question.
-     */
-    function renderQuestion() {
-      const qIndex = state.currentQuestionIndex;
-      const questionData = QUESTIONS[qIndex];
-      const optionMap = state.optionMaps[qIndex];
-
-      const optionsHtml = optionMap.map((originalIndex, shownIndex) => {
-        const isSelected = state.answers[qIndex] === shownIndex;
-        return `
-          <label class="option">
-            <input type="radio" name="question-${qIndex}" data-shown-index="${shownIndex}" ${isSelected ? 'checked' : ''} />
-            <div><span class="text-muted">[${String.fromCharCode(65 + shownIndex)}]</span> ${questionData.options[originalIndex]}</div>
-          </label>
-        `;
-      }).join('');
-
-      DOM.mainContent.innerHTML = `
-        <div>
-          <div class="pill">
-            Question ${qIndex + 1} of ${QUESTIONS.length}
-            <span style="font-weight: bold; margin-left: 0.5rem;">${questionData.marks} Mark${questionData.marks > 1 ? 's' : ''}</span>
-          </div>
-          <h3 class="question-title">${questionData.question}</h3>
-          <div class="options-grid" id="options-container">${optionsHtml}</div>
-          <div class="footer-actions">
-            <div style="display: flex; gap: 0.75rem;">
-              <button id="prev-btn" class="btn secondary" ${qIndex === 0 ? 'disabled' : ''}>&larr; Previous</button>
-              <button id="next-btn" class="btn">${qIndex === QUESTIONS.length - 1 ? 'Review & Submit' : 'Next &rarr;'}</button>
-            </div>
-            <div style="display: flex; gap: 0.75rem;">
-              <button id="clear-btn" class="btn ghost">Clear Answer</button>
-              <button id="submit-btn" class="btn warn">Submit Test</button>
-            </div>
-          </div>
-        </div>
-      `;
-
-      // Attach event listeners
-      document.getElementById('prev-btn').onclick = () => { state.currentQuestionIndex--; renderQuestion(); MathJax.typesetPromise(); renderProgress(); };
-      document.getElementById('next-btn').onclick = () => {
-        if (state.currentQuestionIndex < QUESTIONS.length - 1) {
-          state.currentQuestionIndex++;
-          renderQuestion();
-        } else {
-          renderReviewScreen();
-        }
-        MathJax.typesetPromise();
-        renderProgress();
-      };
-      document.getElementById('clear-btn').onclick = () => {
-        state.answers[qIndex] = null;
-        renderQuestion();
-        renderProgress();
-      };
-      document.getElementById('submit-btn').onclick = () => {
-        const unansweredCount = state.answers.filter(a => a === null).length;
-        showModal(
-          'Confirm Submission',
-          `Are you sure you want to submit? You have ${unansweredCount} unanswered question(s).`,
-          gradeAndShowResults
-        );
-      };
-
-      // Handle option selection
-      document.querySelectorAll('#options-container input').forEach(input => {
-        input.addEventListener('change', e => {
-          state.answers[qIndex] = Number(e.target.dataset.shownIndex);
-          renderProgress();
-        });
-      });
-
-      // Render math
-      MathJax.typesetPromise();
-    }
-
-    /**
-     * Renders the review screen.
-     */
-    function renderReviewScreen() {
-      const unansweredCount = state.answers.filter(a => a === null).length;
-      const answeredCount = QUESTIONS.length - unansweredCount;
-
-      const reviewButtonsHtml = QUESTIONS.map((_, i) => {
-        const isAnswered = state.answers[i] !== null;
-        return `
-          <button class="btn ${isAnswered ? '' : 'secondary'}" data-jump-to="${i}">
-            Q${i + 1} (${isAnswered ? 'Answered' : 'Unanswered'})
-          </button>
-        `;
-      }).join('');
-
-      DOM.mainContent.innerHTML = `
-        <div>
-          <h2>Review Answers</h2>
-          <p class="text-muted">You have answered <strong>${answeredCount}</strong> out of <strong>${QUESTIONS.length}</strong> questions. You can jump to any question below to make changes.</p>
-          <div class="review-grid">
-            ${reviewButtonsHtml}
-          </div>
-          <div class="footer-actions">
-            <button id="back-btn" class="btn secondary">&larr; Back to Questions</button>
-            <button id="submit-final-btn" class="btn warn">Submit Test</button>
-          </div>
-        </div>
-      `;
-
-      // Attach event listeners
-      document.getElementById('back-btn').onclick = () => {
-        state.currentQuestionIndex = Math.min(state.currentQuestionIndex, QUESTIONS.length - 1);
-        renderQuestion();
-        MathJax.typesetPromise();
-      };
-      document.getElementById('submit-final-btn').onclick = () => {
-        const unanswered = state.answers.filter(a => a === null).length;
-        showModal(
-          'Confirm Submission',
-          `Are you sure you want to submit? You have ${unanswered} unanswered question(s).`,
-          gradeAndShowResults
-        );
-      };
-      document.querySelectorAll('[data-jump-to]').forEach(btn => {
-        btn.onclick = (e) => {
-          state.currentQuestionIndex = Number(e.target.dataset.jumpTo);
-          renderQuestion();
-          MathJax.typesetPromise();
+    </style>
+    <!-- Load MathJax for LaTeX support -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        // Configure MathJax to re-render when needed
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEnvironments: true,
+                processRefs: true
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    window.renderMath = (element) => {
+                        MathJax.typesetPromise([element]).catch((err) => console.log('MathJax typeset error:', err));
+                    };
+                }
+            }
         };
-      });
-
-      MathJax.typesetPromise();
-    }
-
-    /**
-     * Grades the test and shows the results screen.
-     * @param {string} [reason] An optional reason for auto-submission.
-     */
-    function gradeAndShowResults(reason) {
-      if (state.submitted) return;
-      stopTimer();
-      state.submitted = true;
-
-      const spentSeconds = Math.floor((Date.now() - state.startedAt) / 1000);
-      let score = 0;
-      let correctCount = 0;
-      let wrongCount = 0;
-
-      const results = QUESTIONS.map((q, qIndex) => {
-        const chosenShownIndex = state.answers[qIndex];
-        const optionMap = state.optionMaps[qIndex];
-        const chosenOriginalIndex = chosenShownIndex !== null ? optionMap[chosenShownIndex] : null;
-        const isCorrect = chosenOriginalIndex === q.correctIndex;
-
-        if (chosenShownIndex !== null) {
-          if (isCorrect) {
-            score += q.marks;
-            correctCount++;
-          } else {
-            score -= CONFIG.negativeMarking;
-            wrongCount++;
-          }
-        }
-        return { q, chosenShownIndex, isCorrect };
-      });
-
-      const totalMarks = QUESTIONS.reduce((sum, q) => sum + q.marks, 0);
-      const percentage = Math.max(0, (score / totalMarks) * 100);
-
-      const reviewDetailsHtml = results.map((result, i) => {
-        const { q, chosenShownIndex, isCorrect } = result;
-        const optionMap = state.optionMaps[i];
-        const correctShownIndex = optionMap.indexOf(q.correctIndex);
-
-        const yourAnswerText = chosenShownIndex !== null
-          ? `${String.fromCharCode(65 + chosenShownIndex)}. ${q.options[optionMap[chosenShownIndex]]}`
-          : '<em class="text-muted">Not answered</em>';
-
-        const correctAnswerText = `${String.fromCharCode(65 + correctShownIndex)}. ${q.options[q.correctIndex]}`;
-
-        const optionHtml = optionMap.map((originalIndex, shownIndex) => {
-          const isChosen = shownIndex === chosenShownIndex;
-          const isCorrectOption = shownIndex === correctShownIndex;
-          const classList = isCorrectOption ? 'correct' : (isChosen ? 'incorrect' : '');
-          return `
-            <div class="option ${classList}">
-              <div><span class="text-muted">[${String.fromCharCode(65 + shownIndex)}]</span> ${q.options[originalIndex]}</div>
+    </script>
+</head>
+<body class="tex2jax_process">
+    <div id="app" class="min-h-screen flex flex-col items-center">
+        <!-- Loading Indicator -->
+        <div id="loading-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-[100] hidden">
+            <div class="p-6 bg-white rounded-xl shadow-2xl flex items-center">
+                <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500 mr-4"></div>
+                <span id="loading-message" class="text-gray-700 font-medium">Initializing app...</span>
             </div>
-          `;
-        }).join('');
-
-        return `
-          <div class="review-details">
-            <details ${!isCorrect ? 'open' : ''}>
-              <summary><strong>Question ${i + 1}</strong> (${isCorrect ? 'Correct' : 'Incorrect'})</summary>
-              <div style="padding-top: 1rem;">
-                <p>${q.question}</p>
-                <p><strong>Your Answer:</strong> ${yourAnswerText}</p>
-                <p><strong>Correct Answer:</strong> ${correctAnswerText}</p>
-                <div class="options-grid">${optionHtml}</div>
-              </div>
-            </details>
-          </div>
-        `;
-      }).join('');
-
-      DOM.mainContent.innerHTML = `
-        <div>
-          <h2 style="margin-bottom: 0;">Test Results <span class="badge" style="vertical-align: top;">${reason ? 'Auto-Submitted' : 'Submitted'}</span></h2>
-          <p class="text-muted">Completed in <strong>${formatTime(spentSeconds)}</strong>.</p>
-          <div style="display:flex; flex-wrap:wrap; gap: 1rem; margin: 1.5rem 0;">
-            <div class="pill">Score: <strong>${score.toFixed(2)} / ${totalMarks}</strong></div>
-            <div class="pill">Correct: <strong>${correctCount}</strong></div>
-            <div class="pill">Incorrect: <strong>${wrongCount}</strong></div>
-            <div class="pill">Unanswered: <strong>${QUESTIONS.length - correctCount - wrongCount}</strong></div>
-          </div>
-          <h3>Detailed Review</h3>
-          ${reviewDetailsHtml}
         </div>
-      `;
 
-      MathJax.typesetPromise();
-    }
+        <!-- Header -->
+        <header class="w-full bg-white shadow-md p-4 flex justify-between items-center sticky top-0 z-40">
+            <h1 class="text-2xl font-bold text-indigo-600">STET Mock Test BY RAJ SIR</h1>
+            <div id="user-info" class="flex items-center space-x-2">
+                <!-- User Avatar/Initial -->
+                <div id="user-avatar" class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-semibold text-sm cursor-pointer hidden" title="Sign Out"></div>
+                <button id="auth-button" class="bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-600 transition duration-150">Sign In</button>
+            </div>
+        </header>
 
-    /**
-     * Handles the test start logic.
-     */
-    function startTest() {
-      state.started = true;
-      state.startedAt = Date.now();
-      prepareOptionMaps();
-      renderQuestion();
-      startTimer();
-      renderProgress();
-    }
+        <!-- Main Content Area -->
+        <main class="w-full max-w-4xl p-6 flex-grow">
+            <!-- Screens will be injected here -->
+            <div id="login-screen" class="hidden"></div>
+            <div id="test-intro-screen" class="hidden"></div>
+            <div id="test-screen" class="hidden"></div>
+            <div id="result-screen" class="hidden"></div>
+            <div id="history-screen" class="hidden"></div>
+        </main>
 
-    /**
-     * Starts the test timer.
-     */
-    function startTimer() {
-      DOM.timer.textContent = formatTime(state.timeLeft);
-      state.timerInterval = setInterval(() => {
-        if (state.timeLeft <= 0) {
-          clearInterval(state.timerInterval);
-          state.timerInterval = null;
-          gradeAndShowResults('Time Expired');
-          return;
+        <!-- Navigation Footer (Only visible on test-screen) -->
+        <footer id="test-navigation" class="nav-footer w-full bg-white border-t border-gray-200 shadow-xl p-4 hidden">
+            <div class="max-w-4xl mx-auto flex justify-between items-center">
+                <button id="prev-button" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg disabled:opacity-50 hover:bg-gray-300 transition duration-150">
+                    &larr; Previous
+                </button>
+                <div id="timer" class="text-xl font-semibold text-gray-700">00:00</div>
+                <div id="question-index" class="text-lg font-medium text-indigo-600">Q 1 / 150</div>
+                <button id="next-button" class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 disabled:opacity-50 transition duration-150">
+                    Next &rarr;
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, query, orderBy, limit, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- GLOBAL VARIABLES (Provided by Canvas) ---
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-stet-app';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        
+        // --- FIREBASE INITIALIZATION VARIABLES ---
+        let app, db, auth;
+        let userId = null;
+
+        // --- APPLICATION STATE & CORE LOGIC ---
+        let currentScreenName = 'loading';
+        let currentQuestionIndex = 0;
+        let userAnswers = {}; // { questionId: selectedOptionIndex }
+        let timerInterval = null;
+        const totalDurationSeconds = 150 * 60; // 150 minutes
+        let timeRemaining = totalDurationSeconds;
+
+        // --- DATA STRUCTURE (150 UNIQUE QUESTIONS) ---
+        const allQuestions = [
+            // --- MATHEMATICS (Unique Questions 0-49 from previous version) ---
+            { id: 0, question: 'If $\\alpha$ and $\\beta$ are the roots of the quadratic equation $x^2 - 5x + 6 = 0$, find the value of $\\alpha^2 + \\beta^2$.', options: ['13', '15', '25', '18'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 1, question: 'What is the sum of the first 20 terms of the Arithmetic Progression (A.P.) $2, 5, 8, 11, \\dots$? The sum $S_n$ is given by $S_n = \\frac{n}{2}[2a + (n-1)d]$.', options: ['600', '610', '615', '620'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 2, question: 'Find the derivative of the function $f(x) = \\sin(x^2 + 1)$ with respect to $x$.', options: ['$\\cos(x^2+1)$', '$2x \\cos(x^2+1)$', '$2x \\sin(x^2+1)$', '$\\cos(2x)$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 3, question: 'Evaluate the definite integral $\\int_{0}^{\\frac{\\pi}{2}} \\cos(x) \\, dx$.', options: ['0', '$-1$', '1', '$\\frac{\\pi}{2}$'], answer: 2, section: 'Mathematics (Subject Specific)' },
+            { id: 4, question: 'The distance between the points $(2, 3)$ and $(4, 1)$ is: $$ D = \\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2} $$', options: ['$\\sqrt{8}$', '4', '$\\sqrt{20}$', '2'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 5, question: 'If a die is thrown, what is the probability of getting an even prime number?', options: ['$\\frac{1}{6}$', '$\\frac{1}{3}$', '$\\frac{1}{2}$', '$\\frac{2}{3}$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 6, question: 'Simplify: $\\frac{x^2 - 4}{x - 2}$.', options: ['$x+2$', '$x-2$', '$2x$', '$x^2$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 7, question: 'Find the area of the circle with equation $x^2 + y^2 = 9$.', options: ['$3\\pi$', '$9\\pi$', '$6\\pi$', '$18\\pi$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 8, question: 'If $\\sin \\theta = \\frac{3}{5}$ and $\\theta$ is acute, what is the value of $\\tan \\theta$?', options: ['$\\frac{4}{5}$', '$\\frac{3}{4}$', '$\\frac{5}{3}$', '$\\frac{4}{3}$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 9, question: 'Calculate $P(5, 2)$. The permutation formula is $P(n, r) = \\frac{n!}{(n-r)!}$.', options: ['10', '20', '30', '120'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 10, question: 'The modulus of the complex number $3 + 4i$ is:', options: ['3', '4', '5', '7'], answer: 2, section: 'Mathematics (Subject Specific)' },
+            { id: 11, question: 'Find the determinant of the matrix $A = \\begin{pmatrix} 2 & 1 \\\\ 3 & 2 \\end{pmatrix}$.', options: ['1', '0', '-1', '4'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 12, question: 'The general solution of the differential equation $\\frac{dy}{dx} = y$ is:', options: ['$y = C$', '$y = Cx$', '$y = C e^x$', '$y = e^{Cx}$'], answer: 2, section: 'Mathematics (Subject Specific)' },
+            { id: 13, question: 'Find the domain of the function $f(x) = \\sqrt{x - 4}$.', options: ['$x \\ge 4$', '$x > 4$', '$x \\le 4$', 'All real numbers'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 14, question: 'If $r=3$ and $h=7$, find the volume of a cone. Formula: $V = \\frac{1}{3}\\pi r^2 h$.', options: ['$21\\pi$', '$42\\pi$', '$63\\pi$', '$7\\pi$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 15, question: 'If $A$ and $B$ are two non-empty sets, then $A \\cap (A \\cup B)$ is equal to:', options: ['$A$', '$B$', '$A \\cup B$', '$\\emptyset$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 16, question: 'What is the value of $\\log_{10}(1000)$?', options: ['1', '2', '3', '4'], answer: 2, section: 'Mathematics (Subject Specific)' },
+            { id: 17, question: 'Find the area enclosed by the parabola $y^2 = 4ax$ and its latus rectum.', options: ['$\\frac{8a^2}{3}$', '$\\frac{4a^2}{3}$', '$8a^2$', '$4a^2$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 18, question: 'The maximum value of $f(x) = x^3 - 12x + 1$ in the interval $[-1, 3]$ is:', options: ['17', '-15', '1', '-8'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 19, question: 'If the vectors $\\mathbf{a} = 2\\mathbf{i} + \\mathbf{j} - 3\\mathbf{k}$ and $\\mathbf{b} = \\mathbf{i} + 2\\mathbf{j} - 5\\mathbf{k}$ are given, find the dot product $\\mathbf{a} \\cdot \\mathbf{b}$.', options: ['19', '20', '21', '22'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 20, question: 'Find the equation of the straight line passing through the point $(1, 2)$ and parallel to the line $2x + 3y = 5$.', options: ['$3x+2y=7$', '$2x+3y=8$', '$2x-3y=-4$', '$3x-2y=-1$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 21, question: 'Evaluate the limit: $\\lim_{x \\to 0} \\frac{\\sin(3x)}{x}$.', options: ['1', '0', '3', '$\\frac{1}{3}$'], answer: 2, section: 'Mathematics (Subject Specific)' },
+            { id: 22, question: 'What is the eccentricity of the ellipse $\\frac{x^2}{25} + \\frac{y^2}{16} = 1$?', options: ['$\\frac{3}{5}$', '$\\frac{4}{5}$', '$\\frac{5}{3}$', '$\\frac{1}{5}$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 23, question: 'The value of $\\tan^{-1}(1) + \\cos^{-1}(\\frac{1}{2}) + \\sin^{-1}(\\frac{1}{2})$ is:', options: ['$\\frac{7\\pi}{12}$', '$\\pi$', '$\\frac{11\\pi}{12}$', '$\\frac{5\\pi}{4}$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 24, question: 'If $A$ and $B$ are independent events with $P(A) = 0.3$ and $P(B) = 0.6$, what is $P(A \\cap B)$?', options: ['0.18', '0.9', '0.3', '0.2'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 25, question: 'Find the area of the triangle whose vertices are $(0, 0)$, $(1, 0)$, and $(0, 5)$.', options: ['1 unit$^2$', '2.5 units$^2$', '5 units$^2$', '10 units$^2$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 26, question: 'The degree of the differential equation $(\\frac{d^3y}{dx^3})^2 + x^2 (\\frac{d^2y}{dx^2})^3 = 0$ is:', options: ['2', '3', '5', '6'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 27, question: 'Find the cofactor $C_{12}$ of the matrix $\\begin{pmatrix} 1 & 2 & 3 \\\\ 4 & 5 & 6 \\\\ 7 & 8 & 9 \\end{pmatrix}$.', options: ['-12', '12', '-6', '6'], answer: 3, section: 'Mathematics (Subject Specific)' },
+            { id: 28, question: 'The median of the data set $10, 5, 8, 12, 15$ is:', options: ['8', '10', '12', '15'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 29, question: 'The slope of the tangent to the curve $y = x^3 - x$ at $x=2$ is:', options: ['11', '12', '15', '7'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 30, question: 'Find the interval in which $f(x) = 2x^2 - 3x$ is increasing.', options: ['$(-\\infty, \\frac{3}{4})$', '$(\\frac{3}{4}, \\infty)$', '$(-\\infty, 0)$', '$(0, \\infty)$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 31, question: 'The projection of vector $\\mathbf{a} = 2\\mathbf{i} + 3\\mathbf{j} + 2\\mathbf{k}$ on vector $\\mathbf{b} = \\mathbf{i} + 2\\mathbf{j} + \\mathbf{k}$ is:', options: ['$\\frac{10}{\\sqrt{6}}$', '$\\frac{9}{\\sqrt{6}}$', '$\\frac{11}{\\sqrt{6}}$', '$\\frac{12}{\\sqrt{6}}$'], answer: 2, section: 'Mathematics (Subject Specific)' },
+            { id: 32, question: 'What is the sum of the coefficients in the expansion of $(1 + x - 3x^2)^{314}$?', options: ['1', '-1', '0', '314'], answer: 2, section: 'Mathematics (Subject Specific)' },
+            { id: 33, question: 'The maximum value of the objective function $Z = 3x + 4y$, subject to $x \\ge 0$, $y \\ge 0$, $x+y \\le 4$, occurs at:', options: ['$(0, 4)$', '$(4, 0)$', '$(0, 0)$', '$(2, 2)$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 34, question: 'If $y = e^{\\sqrt{x}}$, find $\\frac{dy}{dx}$.', options: ['$e^{\\sqrt{x}}$', '$\\frac{e^{\\sqrt{x}}}{2\\sqrt{x}}$', '$2\\sqrt{x}e^{\\sqrt{x}}$', '$\\frac{e^{\\sqrt{x}}}{\\sqrt{x}}$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 35, question: 'The value of $\\int \\frac{1}{x^2+a^2} dx$ is:', options: ['$\\tan^{-1}(\\frac{x}{a}) + C$', '$\\frac{1}{a}\\tan^{-1}(\\frac{x}{a}) + C$', '$\\log|x^2+a^2| + C$', '$\\frac{1}{2a}\\log|\\frac{x-a}{x+a}| + C$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 36, question: 'Find the radius of the circle given by the equation $x^2 + y^2 + 4x - 6y - 3 = 0$.', options: ['3', '4', '5', '$\\sqrt{16}$'], answer: 2, section: 'Mathematics (Subject Specific)' },
+            { id: 37, question: 'What is the length of the latus rectum of the parabola $y^2 = 8x$?', options: ['4', '2', '8', '16'], answer: 2, section: 'Mathematics (Subject Specific)' },
+            { id: 38, question: 'If $f(x) = \\begin{cases} kx+1, & x \\le 5 \\\\ 3x-5, & x > 5 \\end{cases}$ is continuous at $x=5$, then the value of $k$ is:', options: ['$\\frac{9}{5}$', '$\\frac{1}{5}$', '$3$', '$5$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 39, question: 'If $A$ and $B$ are matrices such that $AB$ is defined, then $(AB)^T$ is equal to:', options: ['$A^T B^T$', '$B^T A^T$', '$AB$', '$BA$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 40, question: 'The general solution of $\\cos \\theta = \\frac{1}{2}$ is:', options: ['$\\theta = n\\pi \\pm \\frac{\\pi}{3}$', '$\\theta = 2n\\pi \\pm \\frac{\\pi}{3}$', '$\\theta = n\\pi + (-1)^n \\frac{\\pi}{3}$', '$\\theta = n\\pi \\pm \\frac{\\pi}{6}$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 41, question: 'Find the area of the region bounded by the curve $y^2 = x$ and the lines $x=1$ and $x=4$.', options: ['$\\frac{14}{3}$', '$\\frac{16}{3}$', '$\\frac{28}{3}$', '$\\frac{32}{3}$'], answer: 2, section: 'Mathematics (Subject Specific)' },
+            { id: 42, question: 'The equation of the plane passing through the origin and having direction ratios $(1, 2, 3)$ is:', options: ['$x+2y+3z=14$', '$x+2y+3z=0$', '$2x+y+3z=0$', '$3x+2y+z=0$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 43, question: 'A bag contains 5 red and 3 black balls. If 2 balls are drawn without replacement, what is the probability that both are red?', options: ['$\\frac{5}{14}$', '$\\frac{10}{28}$', '$\\frac{5}{28}$', '$\\frac{20}{56}$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 44, question: 'If $z = 1 + i$, then $\\bar{z}$ is:', options: ['$1-i$', '$-1+i$', '$1+i$', '$-1-i$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 45, question: 'The interval for which $f(x) = x^2$ is strictly decreasing is:', options: ['$(0, \\infty)$', '$(-\\infty, 0)$', '$(-\\infty, \\infty)$', 'None of these'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 46, question: 'The order of the differential equation of all circles passing through the origin is:', options: ['1', '2', '3', '4'], answer: 2, section: 'Mathematics (Subject Specific)' },
+            { id: 47, question: 'The volume of a cuboid is $V = lwh$. If $l=5, w=3, h=4$, what is $V$?', options: ['60', '48', '50', '30'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 48, question: 'Find the principal value of $\\sin^{-1}(-\\frac{1}{2})$.', options: ['$\\frac{\\pi}{6}$', '$\\frac{\\pi}{3}$', '$-\\frac{\\pi}{6}$', '$-\\frac{\\pi}{3}$'], answer: 2, section: 'Mathematics (Subject Specific)' },
+            { id: 49, question: 'The range of the function $f(x) = |x-1|$ is:', options: ['$[0, \\infty)$', '$(-\\infty, 0)$', '$[1, \\infty)$', '$(-\\infty, \\infty)$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            
+            // --- NEW UNIQUE MATHEMATICS QUESTIONS (50-99) ---
+            { id: 50, question: 'Find the shortest distance between the lines $\\vec{r} = \\mathbf{i} + 2\\mathbf{j} + 3\\mathbf{k} + \\lambda(\\mathbf{i} - 3\\mathbf{j} + 2\\mathbf{k})$ and $\\vec{r} = 4\\mathbf{i} + 5\\mathbf{j} + 6\\mathbf{k} + \\mu(2\\mathbf{i} + 3\\mathbf{j} + \\mathbf{k})$.', options: ['$\\frac{7}{\\sqrt{59}}$', '$\\frac{3}{\\sqrt{19}}$', '$\\frac{1}{\\sqrt{25}}$', '$\\frac{23\\sqrt{19}}{19}$'], answer: 3, section: 'Mathematics (Subject Specific)' },
+            { id: 51, question: 'The eigenvalues of the matrix $A = \\begin{pmatrix} 1 & 4 \\\\ 2 & 3 \\end{pmatrix}$ are:', options: ['$5, -1$', '$1, 3$', '$2, 4$', '$5, 0$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 52, question: 'The variance of the first $n$ natural numbers is given by:', options: ['$\\frac{n^2 - 1}{12}$', '$\\frac{n^2 + 1}{12}$', '$\\frac{(n+1)^2}{12}$', '$\\frac{n(n+1)}{2}$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 53, question: 'If $f(x) = x^2 - 4x + 3$ on the interval $[1, 3]$, verify Rolle\'s Theorem. The value of $c \\in (1, 3)$ such that $f\'(c)=0$ is:', options: ['$2$', '$1$', '$3$', '$\\frac{4}{3}$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 54, question: 'The polar form of the complex number $1 - i$ is:', options: ['$\\sqrt{2} (\\cos \\frac{\\pi}{4} + i \\sin \\frac{\\pi}{4})$', '$\\sqrt{2} (\\cos \\frac{\\pi}{4} - i \\sin \\frac{\\pi}{4})$', '$\\sqrt{2} (\\cos \\frac{\\pi}{2} - i \\sin \\frac{\\pi}{2})$', '$\\sqrt{2} (\\cos (-\\frac{\\pi}{4}) + i \\sin (-\\frac{\\pi}{4}))$'], answer: 3, section: 'Mathematics (Subject Specific)' },
+            { id: 55, question: 'If $\\mathbf{a} = 2\\mathbf{i}, \\mathbf{b} = \\mathbf{j}, \\mathbf{c} = \\mathbf{k}$, find the scalar triple product $[\\mathbf{a} \\mathbf{b} \\mathbf{c}]$.', options: ['1', '2', '0', '3'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 56, question: 'If $f(x)$ is an even function, then the value of the definite integral $\\int_{-a}^{a} f(x) \\, dx$ is equal to:', options: ['$0$', '$2\\int_{0}^{a} f(x) \\, dx$', '$\\int_{0}^{a} f(x) \\, dx$', '$2\\int_{-a}^{0} f(x) \\, dx$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 57, question: 'The inverse of the matrix $A = \\begin{pmatrix} 2 & 5 \\\\ -3 & -7 \\end{pmatrix}$ is:', options: ['$\\begin{pmatrix} 7 & 5 \\\\ -3 & -2 \\end{pmatrix}$', '$\\begin{pmatrix} -7 & -5 \\\\ 3 & 2 \\end{pmatrix}$', '$\\begin{pmatrix} -7 & -5 \\\\ -3 & -2 \\end{pmatrix}$', '$\\begin{pmatrix} 7 & 5 \\\\ 3 & 2 \\end{pmatrix}$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 58, question: 'Simplify the trigonometric expression: $\\frac{\\sin A + \\sin B}{\\cos A + \\cos B}$.', options: ['$\\tan(A+B)$', '$\\tan(\\frac{A+B}{2})$', '$\\cot(\\frac{A+B}{2})$', '$\\tan(A-B)$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 59, question: 'Find the geometric mean (G.M.) of $4$ and $9$.', options: ['$6.5$', '$6$', '$13$', '$5$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 60, question: 'If $P(A) = 0.8, P(B) = 0.5,$ and $P(B|A) = 0.4$, find $P(A \\cap B)$.', options: ['$0.4$', '$0.32$', '$0.2$', '$0.12$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 61, question: 'The equations of the asymptotes of the hyperbola $\\frac{x^2}{4} - \\frac{y^2}{9} = 1$ are:', options: ['$y = \\pm \\frac{2}{3}x$', '$y = \\pm \\frac{3}{2}x$', '$y = \\pm \\frac{4}{9}x$', '$y = \\pm x$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 62, question: 'The function $f(x) = x^3 - \sin x + x$ is:', options: ['Odd', 'Even', 'Neither odd nor even', 'Periodic'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 63, question: 'The integrating factor (I.F.) of the differential equation $x \\frac{dy}{dx} - y = x^2$ is:', options: ['$\\frac{1}{x}$', '$x$', '$-x$', '$\\log|x|$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 64, question: 'If $A$ and $B$ are non-empty sets such that $A \\cap B = \\emptyset$, then $A - B$ is equal to:', options: ['$A$', '$B$', '$\\emptyset$', '$A \\cup B$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 65, question: 'If $f(x) = \\begin{cases} 3x-8, & x \\le 5 \\\\ 2k, & x > 5 \\end{cases}$ is continuous at $x=5$, find the value of $k$.', options: ['$7$', '$\\frac{7}{2}$', '$3$', '$5$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 66, question: 'The equation of the locus of a point which is equidistant from the points $(3, 4)$ and $(-1, 2)$ is:', options: ['$2x+y=1$', '$2x-y=1$', '$4x+2y=10$', '$4x+2y=1$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 67, question: 'Evaluate the limit: $\\lim_{n \\to \\infty} (\\sqrt{n^2 + n} - n)$.', options: ['$1$', '$\\frac{1}{2}$', '$0$', '$\\infty$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 68, question: 'If $x^y = y^x$, find $\\frac{dy}{dx}$.', options: ['$x \\log y / y \\log x$', '$\\frac{y(x \\log y - y)}{x(y \\log x - x)}$', '$\\frac{y(y \\log x - x)}{x(x \\log y - y)}$', '$\\frac{x \\log y}{y \\log x}$'], answer: 2, section: 'Mathematics (Subject Specific)' },
+            { id: 69, question: 'Evaluate $\\int \\frac{1}{(x-1)(x-2)} dx$.', options: ['$\\log|\\frac{x-2}{x-1}| + C$', '$\\log|\\frac{x-1}{x-2}| + C$', '$\\frac{1}{2}\\log|\\frac{x-1}{x-2}| + C$', '$-\\log|\\frac{x-1}{x-2}| + C$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 70, question: 'The middle term in the expansion of $(x + \\frac{1}{x})^{10}$ is:', options: ['$C(10, 5)$', '$C(10, 5) x^{10}$', '$C(10, 5) x^5$', '$C(10, 6)$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 71, question: 'Which of the following points satisfies the linear inequation $2x + 3y > 6$?', options: ['$(1, 1)$', '$(0, 2)$', '$(3, 0)$', '$(4, 1)$'], answer: 3, section: 'Mathematics (Subject Specific)' },
+            { id: 72, question: 'Find the equation of the line passing through $(2, 3)$ and $(4, 5)$.', options: ['$x+y=5$', '$x-y=1$', '$x-y=-1$', '$2x-y=1$'], answer: 2, section: 'Mathematics (Subject Specific)' },
+            { id: 73, question: 'The endpoints of a diameter of a circle are $(-2, 3)$ and $(4, -1)$. Find the center of the circle.', options: ['$(1, 1)$', '$(2, 2)$', '$(-1, 1)$', '$(-2, -1)$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 74, question: 'The equation of the tangent to the parabola $y^2 = 4x$ at the point $(1, 2)$ is:', options: ['$x+y+1=0$', '$y=x+1$', '$y=x-1$', '$x-y+1=0$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 75, question: 'For an ellipse $\\frac{x^2}{a^2} + \\frac{y^2}{b^2} = 1$ with $a > b$, the relation between $a, b,$ and eccentricity $e$ is:', options: ['$b^2 = a^2 (1 - e^2)$', '$a^2 = b^2 (1 - e^2)$', '$b^2 = a^2 (e^2 - 1)$', '$a^2 = b^2 e^2$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 76, question: 'How many different necklaces can be formed using 5 distinct beads?', options: ['120', '24', '12', '6'], answer: 2, section: 'Mathematics (Subject Specific)' },
+            { id: 77, question: 'A random variable $X$ has the following probability distribution: $P(X=0)=0.2, P(X=1)=k, P(X=2)=2k, P(X=3)=0.3$. Find $k$.', options: ['$0.1$', '$0.2$', '$0.3$', '$0.4$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 78, question: 'A person has to choose between two mutually exclusive investments $A$ and $B$. If $P(A)=0.4, P(B)=0.3$, then $P(A \\text{ or } B)$ is:', options: ['$0.7$', '$0.12$', '$0.5$', '$0.9$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 79, question: 'If $R$ is a relation on the set of integers $\\mathbb{Z}$ defined by $xRy \\iff x-y$ is divisible by 5. The relation $R$ is:', options: ['Reflexive only', 'Symmetric and Transitive only', 'Equivalence Relation', 'Transitive only'], answer: 2, section: 'Mathematics (Subject Specific)' },
+            { id: 80, question: 'The value of $\\tan^{-1}(\\frac{1}{2}) + \\tan^{-1}(\\frac{1}{3})$ is:', options: ['$\\frac{\\pi}{2}$', '$\\frac{\\pi}{4}$', '$1$', '$0$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 81, question: 'If $A$ is a skew-symmetric matrix, then $A^T$ is equal to:', options: ['$A$', '$-A$', '$A^{-1}$', 'None of these'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 82, question: 'If $|\\mathbf{a}| = 2, |\\mathbf{b}| = 3$ and $|\\mathbf{a} \\times \\mathbf{b}| = 4$, then $|\\mathbf{a} \\cdot \\mathbf{b}|$ is equal to:', options: ['$\\sqrt{10}$', '$\\sqrt{20}$', '$\\sqrt{30}$', '$\\sqrt{40}$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 83, question: 'Find the area of the region bounded by the curve $y = x^2$ and the line $y = 4$.', options: ['$\\frac{8}{3}$ sq. units', '$\\frac{16}{3}$ sq. units', '$\\frac{32}{3}$ sq. units', '$\\frac{64}{3}$ sq. units'], answer: 2, section: 'Mathematics (Subject Specific)' },
+            { id: 84, question: 'The solution of the differential equation $\\frac{dy}{dx} = e^{x+y}$ is:', options: ['$e^x + e^{-y} = C$', '$e^x - e^{-y} = C$', '$e^x + e^y = C$', '$e^x - e^y = C$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 85, question: 'Find the coordinates of the point that divides the line segment joining $A(1, -3)$ and $B(-3, 9)$ internally in the ratio $1:3$.', options: ['$(0, 0)$', '$(0, 3)$', '$(-2, 6)$', '$(1, 0)$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 86, question: 'The value of $\\sin 15^\circ$ is:', options: ['$\\frac{\\sqrt{3}+1}{2\\sqrt{2}}$', '$\\frac{\\sqrt{3}-1}{2\\sqrt{2}}$', '$\\frac{1}{2}$', '$\\frac{\\sqrt{3}}{2}$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 87, question: 'The sum of $n$ terms of an A.P. is $S_n = 2n^2 + 3n$. The $n$-th term is:', options: ['$4n-1$', '$4n+1$', '$4n+5$', '$4n$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 88, question: 'The sum of the infinite geometric series $1 + \\frac{1}{3} + \\frac{1}{9} + \\frac{1}{27} + \\dots$ is:', options: ['$\\frac{3}{2}$', '$3$', '$2$', '$\\frac{5}{2}$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 89, question: 'If $a, b, c$ are in H.P., then $\\frac{1}{a}, \\frac{1}{b}, \\frac{1}{c}$ are in:', options: ['A.P.', 'G.P.', 'H.P.', 'None of these'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            { id: 90, question: 'The function $f: \\mathbb{R} \\to \\mathbb{R}$ defined by $f(x) = x^2$ is:', options: ['One-one and Onto', 'One-one but not Onto', 'Neither One-one nor Onto', 'Onto but not One-one'], answer: 2, section: 'Mathematics (Subject Specific)' },
+            { id: 91, question: 'Evaluate $\\lim_{x \\to 0} \\frac{e^x - 1}{x}$.', options: ['$0$', '$1$', '$e$', '$\\infty$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 92, question: 'Find the derivative of $y = x^x$.', options: ['$x^x (1)$', '$x^x (1 + \\log x)$', '$x^{x-1}$', '$x^x \\log x$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 93, question: 'Evaluate $\\int \\frac{1}{x^2 - 4} dx$.', options: ['$\\frac{1}{2}\\log|\\frac{x-2}{x+2}| + C$', '$\\frac{1}{4}\\log|\\frac{x-2}{x+2}| + C$', '$\\frac{1}{4}\\log|\\frac{x+2}{x-2}| + C$', '$\\log|x^2-4| + C$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 94, question: 'The direction cosines of the line joining $P(1, 2, -3)$ and $Q(-1, -2, 1)$ are proportional to:', options: ['$-2, -4, 4$', '$2, 4, -4$', '$1, 2, -2$', 'All of the above'], answer: 3, section: 'Mathematics (Subject Specific)' },
+            { id: 95, question: 'The equation of the plane whose intercepts on the axes are $a, b, c$ is:', options: ['$\\frac{x}{a} + \\frac{y}{b} + \\frac{z}{c} = 0$', '$\\frac{x}{a} + \\frac{y}{b} + \\frac{z}{c} = 1$', '$ax+by+cz=1$', '$x+y+z=abc$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 96, question: 'If $A$ and $B$ are mutually exclusive events, then $P(A \\cup B)$ is equal to:', options: ['$P(A) P(B)$', '$P(A) + P(B)$', '$P(A) + P(B) - P(A \\cap B)$', '$P(A|B)$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 97, question: 'If $\\omega$ is a cube root of unity, then the value of $1 + \\omega + \\omega^2$ is:', options: ['$1$', '$0$', '$-1$', '$\\omega$'], answer: 1, section: 'Mathematics (Subject Specific)' },
+            { id: 98, question: 'The minimum value of $f(x) = x^2 + \\frac{4}{x}$ for $x > 0$ is:', options: ['$2$', '$3$', '$4$', '$6$'], answer: 2, section: 'Mathematics (Subject Specific)' },
+            { id: 99, question: 'Find the derivative of $\\sec^{-1}(x)$ with respect to $x$.', options: ['$\\frac{1}{x\\sqrt{x^2-1}}$', '$\\frac{1}{\\sqrt{1-x^2}}$', '$-\\frac{1}{x\\sqrt{x^2-1}}$', '$\\frac{1}{1+x^2}$'], answer: 0, section: 'Mathematics (Subject Specific)' },
+            
+            // --- GENERAL SKILLS (Unique Questions 100-129 from previous version) ---
+            { id: 100, question: 'Which of the following is the most important quality of a teacher?', options: ['Punctuality', 'Strictness in discipline', 'Knowledge of the subject and pedagogical skill', 'Good dressing sense'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 101, question: 'Who was the first President of India?', options: ['Jawaharlal Nehru', 'Dr. Rajendra Prasad', 'Sardar Vallabhbhai Patel', 'Sarvepalli Radhakrishnan'], answer: 1, section: 'Art of Teaching & Other Skills' },
+            { id: 102, question: 'If CROW is coded as 3181523, what is the code for LION?', options: ['1291514', '1281513', '1191514', '1291415'], answer: 0, section: 'Art of Teaching & Other Skills' },
+            { id: 103, question: 'What is the primary function of a formative assessment in a classroom?', options: ['To assign final grades', 'To compare students against a benchmark', 'To provide feedback on learning in progress', 'To test memory skills'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 104, question: 'The National Policy on Education (NPE) in India was introduced in which year?', options: ['1968', '1986', '1992', '2005'], answer: 1, section: 'Art of Teaching & Other Skills' },
+            { id: 105, question: 'In the context of reasoning, choose the odd one out: Car, Bus, Bicycle, Aeroplane.', options: ['Car', 'Bus', 'Bicycle', 'Aeroplane'], answer: 3, section: 'Art of Teaching & Other Skills' },
+            { id: 106, question: 'The capital city of Bihar is:', options: ['Gaya', 'Patna', 'Bhagalpur', 'Muzaffarpur'], answer: 1, section: 'Art of Teaching & Other Skills' },
+            { id: 107, question: 'Which pedagogical approach emphasizes learning by doing and problem-solving?', options: ['Lecture Method', 'Drill and Practice', 'Project Method', 'Storytelling'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 108, question: 'If A is the father of B, and B is the sister of C, how is C related to A?', options: ['Son', 'Daughter', 'Son or Daughter', 'Niece'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 109, question: 'The acronym UNESCO stands for:', options: ['United Nations Educational, Scientific and Cultural Organization', 'United Nations Environmental, Social and Community Organization', 'Universal National Education and Scientific Corporation', 'United Nations Economic and Security Council Organization'], answer: 0, section: 'Art of Teaching & Other Skills' },
+            { id: 110, question: 'According to Piaget, at which stage does a child begin to think logically about concrete events?', options: ['Sensorimotor stage', 'Preoperational stage', 'Concrete operational stage', 'Formal operational stage'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 111, question: 'Which committee provided the concept of "Continuous and Comprehensive Evaluation" (CCE) in the Indian education system?', options: ['Kothari Commission', 'Radhakrishnan Commission', 'National Curriculum Framework (NCF) 2005', 'National Education Policy (NEP) 2020'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 112, question: 'The process of drawing conclusions from specific instances to general principles is known as:', options: ['Inductive reasoning', 'Deductive reasoning', 'Analogical reasoning', 'Critical thinking'], answer: 0, section: 'Art of Teaching & Other Skills' },
+            { id: 113, question: 'In the number series $2, 5, 9, 14, 20, \\dots$, what is the next number?', options: ['25', '26', '27', '28'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 114, question: 'Which river is often called the "Sorrow of Bihar"?', options: ['Ganga', 'Yamuna', 'Kosi', 'Son'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 115, question: 'Who is the author of the book "Wings of Fire"?', options: ['Jawaharlal Nehru', 'A.P.J. Abdul Kalam', 'Mahatma Gandhi', 'Arun Joshi'], answer: 1, section: 'Art of Teaching & Other Skills' },
+            { id: 116, question: 'If the day before yesterday was Thursday, what will be the day after tomorrow?', options: ['Sunday', 'Monday', 'Saturday', 'Tuesday'], answer: 1, section: 'Art of Teaching & Other Skills' },
+            { id: 117, question: 'The term "Zone of Proximal Development" (ZPD) is associated with which psychologist?', options: ['B.F. Skinner', 'Lev Vygotsky', 'Jerome Bruner', 'Jean Piaget'], answer: 1, section: 'Art of Teaching & Other Skills' },
+            { id: 118, question: 'The main purpose of a lesson plan is:', options: ['To impress the school administration', 'To provide a road map for effective teaching', 'To complete the syllabus quickly', 'To restrict student discussion'], answer: 1, section: 'Art of Teaching & Other Skills' },
+            { id: 119, question: 'Which Indian State has the highest literacy rate?', options: ['Maharashtra', 'Kerala', 'Tamil Nadu', 'Bihar'], answer: 1, section: 'Art of Teaching & Other Skills' },
+            { id: 120, question: 'Find the missing number: $3, 9, 27, 81, \\dots$', options: ['162', '243', '216', '180'], answer: 1, section: 'Art of Teaching & Other Skills' },
+            { id: 121, question: 'The Right of Children to Free and Compulsory Education (RTE) Act was enacted in which year?', options: ['2005', '2009', '2010', '2012'], answer: 1, section: 'Art of Teaching & Other Skills' },
+            { id: 122, question: 'If CLOCK is written as KCOL C, how is STEPS written?', options: ['SPETS', 'SPETS E', 'SETPS', 'SPET S'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 123, question: 'Which pedagogical principle involves starting teaching from known concepts to unknown concepts?', options: ['Principle of correlation', 'Principle of definite aim', 'Principle of proceeding from concrete to abstract', 'Principle of motivation'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 124, question: 'The term "multiple intelligence" theory was proposed by:', options: ['Daniel Goleman', 'Howard Gardner', 'Robert Sternberg', 'Jean Piaget'], answer: 1, section: 'Art of Teaching & Other Skills' },
+            { id: 125, question: 'Analogous to "Bird is to Nest," what is "Man" to?', options: ['Home', 'Cave', 'Hut', 'Shelter'], answer: 0, section: 'Art of Teaching & Other Skills' },
+            { id: 126, question: 'The main objective of a field trip for students is:', options: ['To provide entertainment', 'To complete the academic syllabus', 'To provide first-hand experience and concrete learning', 'To save time in the classroom'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 127, question: 'The famous Bodh Gaya temple is located in which district of Bihar?', options: ['Nalanda', 'Patna', 'Gaya', 'Vaishali'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 128, question: 'The legislative capital of India is:', options: ['New Delhi', 'Mumbai', 'Kolkata', 'Bengaluru'], answer: 0, section: 'Art of Teaching & Other Skills' },
+            { id: 129, question: 'Find the next term in the series: A, C, F, J, O, $\\dots$', options: ['U', 'T', 'V', 'S'], answer: 0, section: 'Art of Teaching & Other Skills' },
+
+            // --- NEW UNIQUE GENERAL SKILLS QUESTIONS (130-149) ---
+            { id: 130, question: 'Which level of Bloom\'s Taxonomy (revised edition) corresponds to "using knowledge in a new situation" or "solving problems"?', options: ['Remembering', 'Understanding', 'Applying', 'Analyzing'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 131, question: 'Which article of the Indian Constitution is related to the abolition of untouchability?', options: ['Article 15', 'Article 16', 'Article 17', 'Article 18'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 132, question: 'A person walks 10m North, then turns right and walks 5m, and finally turns left and walks 5m. In which direction is he from the starting point?', options: ['North', 'North-East', 'East', 'North-West'], answer: 1, section: 'Art of Teaching & Other Skills' },
+            { id: 133, question: 'A teacher who believes in **Constructivism** would prioritize which of the following teaching methods?', options: ['Rote memorization and drill exercises', 'Lecture and passive listening', 'Group projects and student-led inquiry', 'Strict adherence to textbooks'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 134, question: 'Which of the following is an East flowing river of the Indian Peninsula?', options: ['Narmada', 'Tapti', 'Mahanadi', 'Luni'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 135, question: 'Pointing to a photograph, a man said, "He is the son of the only daughter of my father." How is the man related to the person in the photograph?', options: ['Father', 'Uncle', 'Brother', 'Grandfather'], answer: 1, section: 'Art of Teaching & Other Skills' },
+            { id: 136, question: 'The core principle of Inclusive Education is:', options: ['Segregation of students based on their intelligence quotient', 'Teaching all students in the same class regardless of their differences', 'Focusing only on high-achieving students', 'Providing special classes outside the regular school system'], answer: 1, section: 'Art of Teaching & Other Skills' },
+            { id: 137, question: 'Which international organization is responsible for promoting cooperation in areas like international law, peace, and security?', options: ['WTO', 'IMF', 'UNICEF', 'United Nations (UN)'], answer: 3, section: 'Art of Teaching & Other Skills' },
+            { id: 138, question: 'Find the analogous pair: **Pen : Write :: Knife : ?**', options: ['Cut', 'Injury', 'Blade', 'Sharp'], answer: 0, section: 'Art of Teaching & Other Skills' },
+            { id: 139, question: 'What is the duration of the **"Reinforcement"** phase in the standard Micro-teaching cycle?', options: ['10 minutes', '6 minutes', '12 minutes', '15 minutes'], answer: 1, section: 'Art of Teaching & Other Skills' },
+            { id: 140, question: 'The Mughal Emperor who built the famous Red Fort in Delhi was:', options: ['Akbar', 'Jahangir', 'Shah Jahan', 'Aurangzeb'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 141, question: 'Complete the letter series: **Z, X, T, N, ?**', options: ['E', 'F', 'H', 'G'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 142, question: 'Designing lessons that cater to diverse learning styles and readiness levels of students is known as:', options: ['Remedial teaching', 'Differentiated instruction', 'Integrated curriculum', 'Team teaching'], answer: 1, section: 'Art of Teaching & Other Skills' },
+            { id: 143, question: 'Gross Domestic Product (GDP) primarily measures:', options: ['Total value of goods exported', 'Total income of the citizens abroad', 'Total value of all final goods and services produced within a country\'s borders in a specific period', 'Total government expenditure'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 144, question: 'Five friends P, Q, R, S, T are sitting in a row facing North. S is sitting exactly between P and Q. R is sitting to the immediate left of P. Who is sitting at the extreme left end?', options: ['P', 'R', 'S', 'T'], answer: 1, section: 'Art of Teaching & Other Skills' },
+            { id: 145, question: 'According to NCF 2005, the role of a teacher should be that of a:', options: ['Dictator', 'Friend, philosopher, and guide', 'Passive observer', 'Commander'], answer: 1, section: 'Art of Teaching & Other Skills' },
+            { id: 146, question: 'Which ancient site in Bihar is famous for its university, which was destroyed in the 12th century?', options: ['Vikramshila', 'Rajgir', 'Nalanda', 'Patliputra'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 147, question: 'If today is Monday, what will be the day 61 days from today?', options: ['Tuesday', 'Wednesday', 'Thursday', 'Friday'], answer: 2, section: 'Art of Teaching & Other Skills' },
+            { id: 148, question: 'The term **"Assessment for Learning"** focuses on:', options: ['Assigning grades at the end of the term', 'Using assessment information to modify teaching and learning activities', 'Comparing one student\'s performance to another', 'Testing the curriculum coverage'], answer: 1, section: 'Art of Teaching & Other Skills' },
+            { id: 149, question: 'A deficiency of Vitamin C in the diet causes which disease?', options: ['Rickets', 'Night Blindness', 'Scurvy', 'Anaemia'], answer: 2, section: 'Art of Teaching & Other Skills' },
+        ];
+
+        // --- UI/AUTH FUNCTIONS (MUST BE DEFINED AS FUNCTION DECLARATIONS TO AVOID HOISTING ERRORS) ---
+        
+        /** Shows the global loading overlay. */
+        function showLoading(message = 'Loading...') {
+            document.getElementById('loading-message').textContent = message;
+            document.getElementById('loading-overlay').classList.remove('hidden');
+        };
+
+        /** Hides the global loading overlay. */
+        function hideLoading() {
+            document.getElementById('loading-overlay').classList.add('hidden');
+        };
+
+        /** Hides all app screens and shows the target screen, triggering its render function. */
+        function showScreen(screenName, message = null) {
+            currentScreenName = screenName;
+            const screens = ['login-screen', 'test-intro-screen', 'test-screen', 'result-screen', 'history-screen'];
+            screens.forEach(id => document.getElementById(id).classList.add('hidden'));
+
+            if (screenName === 'loading') {
+                showLoading(message);
+                return;
+            } else {
+                hideLoading();
+            }
+
+            const targetScreen = document.getElementById(screenName + (screenName.endsWith('screen') ? '' : '-screen'));
+            if (targetScreen) {
+                targetScreen.classList.remove('hidden');
+            }
+            
+            // Toggle footer visibility
+            document.getElementById('test-navigation').classList.toggle('hidden', screenName !== 'test-screen');
+
+            // Render specific screen content
+            switch (screenName) {
+                case 'login':
+                    renderLoginScreen();
+                    break;
+                case 'test-intro':
+                    renderTestIntroScreen();
+                    break;
+                case 'test-screen':
+                    renderQuestion(currentQuestionIndex);
+                    startTimer();
+                    break;
+                case 'result-screen':
+                    calculateAndRenderResult();
+                    break;
+                case 'history-screen':
+                    renderHistoryScreen();
+                    break;
+            }
+        };
+
+        /** Updates the header UI based on the authenticated user status. */
+        function updateUI(user) {
+            const authButton = document.getElementById('auth-button');
+            const userAvatar = document.getElementById('user-avatar');
+            const authMessage = document.getElementById('auth-message');
+            
+            if (user && user.uid !== 'mock-user') {
+                authButton.textContent = 'Sign Out';
+                authButton.onclick = handleSignOut;
+                
+                let initial = user.displayName ? user.displayName[0] : (user.email ? user.email[0] : 'U');
+                userAvatar.textContent = initial.toUpperCase();
+                userAvatar.title = `Signed in as: ${user.displayName || user.email || 'User'}. Click to Sign Out.`;
+                userAvatar.classList.remove('hidden');
+                
+                if (authMessage) authMessage.innerHTML = `<p class="text-sm text-gray-600">Welcome, ${user.displayName || 'User'}! (ID: ${user.uid})</p><p class="mt-2 text-xs text-red-500">Note: Mobile number login UI is mocked; full flow requires backend support.</p>`;
+            } else {
+                authButton.textContent = 'Sign In';
+                authButton.onclick = () => showScreen('login');
+                userAvatar.classList.add('hidden');
+            }
+        };
+        
+        /** Handles Firebase Sign Out. */
+        const handleSignOut = async () => {
+            if (db && !db.mock) {
+                try {
+                    await signOut(auth);
+                } catch (error) {
+                    console.error("Sign Out Error:", error);
+                }
+            }
+        };
+
+        /** Handles Google Sign-In pop-up. */
+        const handleGoogleSignIn = async () => {
+            showScreen('loading', 'Signing in with Google...');
+            try {
+                const provider = new GoogleAuthProvider();
+                await signInWithPopup(auth, provider);
+            } catch (error) {
+                console.error("Google Sign-In Error:", error);
+                // AuthStateChanged handles screen transition
+            } finally {
+                hideLoading();
+            }
+        };
+
+
+        // --- TIMER LOGIC ---
+        const updateTimerDisplay = () => {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            document.getElementById('timer').textContent = 
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        };
+
+        const startTimer = () => {
+            if (timerInterval) clearInterval(timerInterval);
+            if (timeRemaining <= 0) {
+                 // Reset time if it ran out
+                 timeRemaining = totalDurationSeconds;
+            }
+            updateTimerDisplay();
+
+            timerInterval = setInterval(() => {
+                if (timeRemaining > 0) {
+                    timeRemaining--;
+                    updateTimerDisplay();
+                } else {
+                    clearInterval(timerInterval);
+                    submitTest();
+                }
+            }, 1000);
+        };
+        
+        const stopTimer = () => {
+             if (timerInterval) clearInterval(timerInterval);
         }
-        state.timeLeft--;
-        DOM.timer.textContent = formatTime(state.timeLeft);
-      }, 1000);
-      window.addEventListener('beforeunload', preventUnload);
-    }
 
-    /**
-     * Stops the test timer.
-     */
-    function stopTimer() {
-      if (state.timerInterval) {
-        clearInterval(state.timerInterval);
-        state.timerInterval = null;
-      }
-      window.removeEventListener('beforeunload', preventUnload);
-    }
+        // --- QUESTION RENDERING & NAVIGATION ---
+        const renderQuestion = (index) => {
+            stopTimer(); // Stop timer while rendering to prevent jank
+            currentQuestionIndex = index;
+            const q = allQuestions[index];
+            if (!q) return;
 
-    /**
-     * Prevents the user from accidentally leaving the page during the test.
-     * @param {Event} e The beforeunload event.
-     */
-    function preventUnload(e) {
-      if (!state.submitted) {
-        e.preventDefault();
-        e.returnValue = '';
-      }
-    }
+            const testScreen = document.getElementById('test-screen');
+            testScreen.innerHTML = `
+                <div class="bg-white p-8 rounded-xl shadow-lg mb-4">
+                    <p class="text-sm font-semibold text-indigo-500 mb-2">${q.section} | Question ${index + 1} of ${allQuestions.length}</p>
+                    <div class="text-xl font-semibold text-gray-800 mb-6 border-b pb-4">
+                        <span class="tex2jax_process">${q.question}</span>
+                    </div>
+                    <div id="options-container" class="space-y-4">
+                        ${q.options.map((option, i) => `
+                            <div class="question-option p-4 rounded-lg cursor-pointer flex items-start text-gray-700 ${userAnswers[q.id] === i ? 'selected' : ''}" data-index="${i}">
+                                <span class="font-medium mr-3 w-6 shrink-0">${String.fromCharCode(65 + i)}.</span>
+                                <span class="tex2jax_process">${option}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div id="question-palette" class="bg-white p-4 rounded-xl shadow-lg mt-6">
+                    <h3 class="text-lg font-semibold mb-3">Question Palette</h3>
+                    <div class="grid grid-cols-10 gap-2">
+                        ${allQuestions.map((_, i) => `
+                            <button class="palette-button w-8 h-8 rounded text-sm font-medium ${
+                                i === currentQuestionIndex ? 'bg-indigo-600 text-white shadow-md' :
+                                userAnswers[allQuestions[i].id] !== undefined ? 'bg-green-100 text-green-700 border border-green-300' :
+                                'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            }" data-index="${i}">${i + 1}</button>
+                        `).join('')}
+                    </div>
+                    <button id="submit-button-inline" class="mt-4 w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-150 font-semibold shadow-md">
+                        End Test & Submit
+                    </button>
+                </div>
+            `;
 
-    /**
-     * Initializes the application.
-     */
-    function initialize() {
-      DOM.metaQuestions.textContent = `${QUESTIONS.length} Questions`;
-      DOM.metaMarks.textContent = `${QUESTIONS.reduce((sum, q) => sum + q.marks, 0)} Marks`;
-      DOM.timer.textContent = formatTime(CONFIG.durationMinutes * 60);
-      DOM.sidebarDuration.textContent = CONFIG.durationMinutes;
-      DOM.sidebarNegativeMarks.textContent = CONFIG.negativeMarking;
-      DOM.progressCount.textContent = `0 / ${QUESTIONS.length}`;
-      renderStartScreen();
-    }
+            // Update navigation
+            document.getElementById('question-index').textContent = `Q ${index + 1} / ${allQuestions.length}`;
+            document.getElementById('prev-button').disabled = index === 0;
+            document.getElementById('next-button').textContent = index === allQuestions.length - 1 ? 'Submit Test' : 'Next →';
+            
+            // Attach event listeners
+            document.getElementById('next-button').onclick = index === allQuestions.length - 1 ? confirmSubmitTest : goToNextQuestion;
+            document.getElementById('prev-button').onclick = goToPrevQuestion;
+            document.getElementById('submit-button-inline').onclick = confirmSubmitTest;
 
-    // Initialize the app on page load
-    document.addEventListener('DOMContentLoaded', initialize);
-  </script>
+            document.getElementById('options-container').querySelectorAll('.question-option').forEach(el => {
+                el.onclick = () => selectOption(q.id, parseInt(el.dataset.index));
+            });
+            document.querySelectorAll('.palette-button').forEach(el => {
+                el.onclick = () => renderQuestion(parseInt(el.dataset.index));
+            });
+
+            // Re-render MathJax
+            if (window.renderMath) {
+                window.renderMath(testScreen);
+            }
+            startTimer(); // Resume timer
+        };
+
+        const selectOption = (questionId, optionIndex) => {
+            userAnswers[questionId] = optionIndex;
+            // Re-render the current question to update the selected style and palette
+            renderQuestion(currentQuestionIndex);
+        };
+
+        const goToNextQuestion = () => {
+            if (currentQuestionIndex < allQuestions.length - 1) {
+                renderQuestion(currentQuestionIndex + 1);
+            }
+        };
+
+        const goToPrevQuestion = () => {
+            if (currentQuestionIndex > 0) {
+                renderQuestion(currentQuestionIndex - 1);
+            }
+        };
+        
+        const confirmSubmitTest = () => {
+            stopTimer(); // Pause timer while confirmation is up
+            const answeredCount = Object.keys(userAnswers).length;
+            const totalCount = allQuestions.length;
+            const remaining = totalCount - answeredCount;
+            
+            // Custom Modal UI instead of alert/confirm
+            const dialog = document.createElement('div');
+            dialog.className = 'fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[100]';
+            dialog.innerHTML = `
+                <div class="bg-white p-8 rounded-xl shadow-2xl max-w-sm w-full text-center">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Confirm Submission</h3>
+                    <p class="text-gray-600 mb-4">You have answered ${answeredCount} out of ${totalCount} questions. ${remaining > 0 ? `<span class="font-semibold text-red-600">${remaining} are unanswered.</span>` : ''}</p>
+                    <p class="text-sm text-gray-500 mb-6">Are you sure you want to submit the test now?</p>
+                    <div class="flex justify-around space-x-4">
+                        <button id="cancel-submit" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 font-medium transition duration-150">
+                            Cancel & Continue
+                        </button>
+                        <button id="confirm-submit" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 font-medium transition duration-150">
+                            Submit Test
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app').appendChild(dialog);
+
+            document.getElementById('cancel-submit').onclick = () => {
+                dialog.remove();
+                startTimer(); // Resume timer
+            };
+            document.getElementById('confirm-submit').onclick = () => {
+                dialog.remove();
+                submitTest();
+            };
+        }
+
+        // --- SUBMISSION & SCORING ---
+        const calculateScore = () => {
+            let correct = 0;
+            let incorrect = 0;
+            let unanswered = 0;
+
+            allQuestions.forEach(q => {
+                const selected = userAnswers[q.id];
+                if (selected === undefined) {
+                    unanswered++;
+                } else if (selected === q.answer) {
+                    correct++;
+                } else {
+                    incorrect++;
+                }
+            });
+
+            return { correct, incorrect, unanswered, total: allQuestions.length };
+        };
+        
+        const submitTest = async () => {
+            stopTimer();
+            showLoading('Submitting test and calculating results...');
+            const results = calculateScore();
+            
+            if (db && !db.mock) {
+                await saveTestResult(results);
+            }
+            
+            // Set current results globally for the result screen
+            window.currentResults = { 
+                ...results, 
+                duration: totalDurationSeconds - timeRemaining,
+                attemptedAt: new Date().toLocaleString()
+            };
+
+            // Reset state for a fresh test next time
+            userAnswers = {};
+            timeRemaining = totalDurationSeconds;
+            currentQuestionIndex = 0;
+
+            showScreen('result-screen');
+        };
+
+        // --- FIREBASE DATA STORAGE ---
+        const getCollectionPath = () => {
+            if (!userId) {
+                console.error("Cannot save data: User not logged in.");
+                return null;
+            }
+            // Private data storage path: /artifacts/{appId}/users/{userId}/{collectionName}
+            return `artifacts/${appId}/users/${userId}/test_results`;
+        };
+        
+        const saveTestResult = async (results) => {
+             const collectionPath = getCollectionPath();
+             if (!collectionPath) return;
+
+             try {
+                const resultsRef = collection(db, collectionPath);
+                
+                await setDoc(doc(resultsRef), { 
+                    score: results.correct,
+                    totalQuestions: results.total,
+                    correct: results.correct,
+                    incorrect: results.incorrect,
+                    unanswered: results.unanswered,
+                    timeTakenSeconds: totalDurationSeconds - timeRemaining,
+                    timestamp: serverTimestamp(),
+                    userAnswers: JSON.stringify(userAnswers) // Serialize answers to handle complex types if necessary
+                });
+                console.log("Test result saved successfully.");
+             } catch (e) {
+                console.error("Error saving document: ", e);
+             }
+        };
+
+        const fetchTestHistory = async () => {
+             const collectionPath = getCollectionPath();
+             if (!collectionPath) return [];
+
+             try {
+                // Sorting client-side is safer, but Firestore sorting is more scalable. 
+                // We'll keep the orderBy but acknowledge potential index requirements.
+                const q = query(collection(db, collectionPath), orderBy("timestamp", "desc"), limit(10));
+                const querySnapshot = await getDocs(q);
+                const history = [];
+                querySnapshot.forEach((doc) => {
+                    history.push({ id: doc.id, ...doc.data() });
+                });
+                console.log("History fetched successfully:", history.length);
+                return history;
+             } catch (e) {
+                console.error("Error fetching history: ", e);
+                return [];
+             }
+        };
+
+        // --- SCREEN RENDERING FUNCTIONS (Initial load is handled by showScreen calls) ---
+        const renderLoginScreen = () => {
+            const loginScreen = document.getElementById('login-screen');
+            loginScreen.className = 'flex flex-col items-center justify-center p-10 bg-white rounded-xl shadow-2xl mt-16 mx-auto max-w-lg';
+            loginScreen.innerHTML = `
+                <h2 class="text-3xl font-bold text-indigo-700 mb-6">Welcome to STET Mock Test</h2>
+                <p class="text-gray-600 mb-8 text-center">Sign in to save your test results and track your progress.</p>
+                
+                <!-- Google Sign-In -->
+                ${db && !db.mock ? `
+                    <button id="google-login-button" class="flex items-center justify-center w-full bg-red-500 text-white py-3 rounded-lg text-lg font-semibold hover:bg-red-600 transition duration-150 shadow-md mb-4">
+                        <svg class="w-5 h-5 mr-3" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20h-20v8h11.832c-1.636 4.673-6.177 8-11.832 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.003 0 5.672 1.197 7.78 3.14l5.244-5.068C34.613 5.488 28.98 3 22 3 12.516 3 4.5 10.516 4.5 20s8.016 17 17.5 17c9.554 0 16.79-6.326 17.29-15.542h-1.55c-.5 8.41-6.85 14.542-15.74 14.542-7.73 0-14-6.27-14-14s6.27-14 14-14c3.565 0 6.733 1.332 9.227 3.513l-5.027 4.887H43.611z"/></svg>
+                        Sign in with Google (Gmail)
+                    </button>
+                ` : `<p class="text-sm text-gray-500 mb-4">Firebase not configured. Running in Mock Mode. Please refresh if configuration is provided.</p>`}
+
+                <!-- Mock Mobile Login Section -->
+                <div class="w-full border-t border-gray-300 pt-6 mt-4">
+                    <p id="auth-message" class="text-center text-sm text-gray-600 mb-4">
+                        Note: Full Mobile Number login requires backend integration (not supported in this single-file preview).
+                    </p>
+                    <div class="flex space-x-2">
+                        <input type="text" placeholder="Mobile Number (Mock)" class="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" disabled>
+                        <button class="bg-gray-400 text-white px-4 py-3 rounded-lg font-semibold cursor-not-allowed" disabled>
+                            OTP
+                        </button>
+                    </div>
+                </div>
+                
+                ${db && !db.mock ? `<p class="mt-6 text-sm text-gray-500">You may be signed in anonymously. Sign in with Google to save history.</p>` : ''}
+                <button id="continue-intro-button" class="mt-4 text-indigo-600 hover:text-indigo-800 font-medium">
+                    Continue to Test Introduction
+                </button>
+            `;
+            if (db && !db.mock) {
+                 document.getElementById('google-login-button').onclick = handleGoogleSignIn;
+            }
+            // Attach listener for the button that was throwing the ReferenceError
+            document.getElementById('continue-intro-button').onclick = () => showScreen('test-intro');
+        };
+
+        const renderTestIntroScreen = () => {
+            const introScreen = document.getElementById('test-intro-screen');
+            introScreen.className = 'p-8 bg-white rounded-xl shadow-2xl mt-10 mx-auto max-w-2xl';
+            introScreen.innerHTML = `
+                <h2 class="text-3xl font-bold text-indigo-700 mb-6 border-b pb-3">Bihar STET Mock Test - Paper I (Mathematics)</h2>
+                <div class="space-y-4 text-gray-700">
+                    <p class="font-semibold text-lg text-red-600">Total Questions: ${allQuestions.length}</p>
+                    <p class="font-semibold text-lg">Total Duration: 150 Minutes</p>
+                    
+                    <div class="bg-indigo-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-indigo-700 mb-2">Sections:</h3>
+                        <ul class="list-disc list-inside ml-4 space-y-1">
+                            <li>Subject Specific (Mathematics): 100 Questions (Q 1 - 100)</li>
+                            <li>Art of Teaching & Other Skills (GK, Aptitude): 50 Questions (Q 101 - 150)</li>
+                        </ul>
+                        <p class="text-xs mt-2 text-indigo-600">Note: This test now contains 150 unique, complete questions for a full mock experience.</p>
+                    </div>
+                    
+                    <div class="bg-yellow-100 p-4 rounded-lg">
+                        <h3 class="font-bold text-yellow-800 mb-2">MathJax (LaTeX) Support:</h3>
+                        <p class="text-sm">Mathematical expressions are correctly rendered using LaTeX syntax (e.g., $\\frac{dy}{dx}$ or $$x^2+y^2=r^2$$). All 100 math questions use this formatting.</p>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between mt-8">
+                    <button id="view-history-button" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 transition duration-150">
+                        View Past Attempts
+                    </button>
+                    <button id="start-test-button" class="bg-indigo-600 text-white px-8 py-3 rounded-lg text-xl font-semibold hover:bg-indigo-700 transition duration-150 shadow-lg">
+                        Start Test Now
+                    </button>
+                </div>
+            `;
+            document.getElementById('view-history-button').onclick = () => showScreen('history-screen');
+            document.getElementById('start-test-button').onclick = () => showScreen('test-screen');
+        };
+
+        const calculateAndRenderResult = () => {
+             const { correct, incorrect, unanswered, total, duration } = window.currentResults;
+             const percentage = ((correct / total) * 100).toFixed(2);
+             const timeTakenMinutes = Math.floor(duration / 60);
+             const timeTakenSeconds = duration % 60;
+             const timeDisplay = `${timeTakenMinutes}m ${timeTakenSeconds}s`;
+
+             const resultScreen = document.getElementById('result-screen');
+             resultScreen.className = 'p-8 bg-white rounded-xl shadow-2xl mt-10 mx-auto max-w-2xl text-center';
+             resultScreen.innerHTML = `
+                 <h2 class="text-3xl font-bold text-indigo-700 mb-6">Test Submitted Successfully!</h2>
+                 
+                 <div class="mb-8 p-6 bg-green-50 rounded-lg border-2 border-green-300">
+                     <p class="text-5xl font-extrabold text-green-700 mb-2">${percentage}%</p>
+                     <p class="text-lg font-semibold text-green-700">Your Overall Score</p>
+                 </div>
+
+                 <div class="grid grid-cols-2 gap-4 text-left mb-8">
+                     <div class="p-3 bg-gray-100 rounded-lg">
+                         <p class="text-sm text-gray-600">Total Questions</p>
+                         <p class="text-xl font-bold text-gray-800">${total}</p>
+                     </div>
+                     <div class="p-3 bg-gray-100 rounded-lg">
+                         <p class="text-sm text-gray-600">Time Taken</p>
+                         <p class="text-xl font-bold text-gray-800">${timeDisplay}</p>
+                     </div>
+                     <div class="p-3 bg-green-100 rounded-lg">
+                         <p class="text-sm text-green-700">Correct Answers</p>
+                         <p class="text-xl font-bold text-green-800">${correct}</p>
+                     </div>
+                     <div class="p-3 bg-red-100 rounded-lg">
+                         <p class="text-sm text-red-700">Incorrect Answers</p>
+                         <p class="text-xl font-bold text-red-800">${incorrect}</p>
+                     </div>
+                     <div class="col-span-2 p-3 bg-yellow-100 rounded-lg">
+                         <p class="text-sm text-yellow-700">Unanswered</p>
+                         <p class="text-xl font-bold text-yellow-800">${unanswered}</p>
+                     </div>
+                 </div>
+
+                 <button id="back-home-button" class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-150 shadow-md">
+                     Go Back to Home
+                 </button>
+             `;
+             document.getElementById('back-home-button').onclick = () => showScreen('test-intro');
+        };
+        
+        const renderHistoryScreen = async () => {
+             const historyScreen = document.getElementById('history-screen');
+             historyScreen.className = 'p-8 bg-white rounded-xl shadow-2xl mt-10 mx-auto max-w-3xl';
+             historyScreen.innerHTML = `
+                 <h2 class="text-3xl font-bold text-indigo-700 mb-6 border-b pb-3">Past Test Attempts</h2>
+                 <button id="back-to-intro-button" class="mb-4 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-300 transition duration-150">
+                     &larr; Back to Test Intro
+                 </button>
+                 <div id="history-list">
+                     <p class="text-gray-500">Loading history...</p>
+                 </div>
+             `;
+             document.getElementById('back-to-intro-button').onclick = () => showScreen('test-intro');
+
+             if (db && !db.mock) {
+                 const historyList = document.getElementById('history-list');
+                 const history = await fetchTestHistory();
+                 
+                 if (history.length === 0) {
+                     historyList.innerHTML = `<p class="text-gray-600 p-4 bg-gray-50 rounded-lg">No past attempts found. Start a test to see your history!</p>`;
+                     return;
+                 }
+
+                 historyList.innerHTML = `
+                     <div class="space-y-4">
+                         ${history.map((attempt, index) => {
+                             const date = attempt.timestamp ? new Date(attempt.timestamp.seconds * 1000).toLocaleString() : 'N/A';
+                             const timeTakenMinutes = Math.floor(attempt.timeTakenSeconds / 60);
+                             const timeTakenSeconds = attempt.timeTakenSeconds % 60;
+                             const scorePercentage = ((attempt.correct / attempt.totalQuestions) * 100).toFixed(2);
+                             
+                             return `
+                                 <div class="p-5 bg-gray-50 border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition duration-150 flex justify-between items-center">
+                                     <div>
+                                         <p class="text-xl font-semibold text-indigo-600">Attempt #${history.length - index}</p>
+                                         <p class="text-sm text-gray-500">Completed on: ${date}</p>
+                                         <p class="text-sm text-gray-500">Time Taken: ${timeTakenMinutes}m ${timeTakenSeconds}s</p>
+                                     </div>
+                                     <div class="text-right">
+                                         <p class="text-3xl font-bold text-green-700">${scorePercentage}%</p>
+                                         <p class="text-lg text-gray-700">${attempt.correct} / ${attempt.totalQuestions} Correct</p>
+                                     </div>
+                                 </div>
+                             `;
+                         }).join('')}
+                     </div>
+                 `;
+             } else {
+                 document.getElementById('history-list').innerHTML = `<p class="text-red-600 p-4 bg-red-50 rounded-lg">Cannot fetch history: Firebase Firestore is not available (running in mock mode).</p>`;
+             }
+        };
+
+
+        // --- FIREBASE INITIALIZATION & AUTHENTICATION (NOW DEFINED AFTER ALL CORE FUNCTIONS) ---
+        try {
+            if (Object.keys(firebaseConfig).length > 0) {
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                
+                // Set the onclick for the avatar now that handleSignOut is defined
+                document.getElementById('user-avatar').onclick = handleSignOut;
+
+
+                // --- INITIAL AUTHENTICATION & STATE MANAGEMENT ---
+                showScreen('loading');
+                const loadingMessage = document.getElementById('loading-message');
+
+                // 1. Set persistence to local to remember the user (Google/Anonymous)
+                await setPersistence(auth, browserLocalPersistence);
+                
+                // 2. Initial Auth Check (using token or falling back to anonymous/existing)
+                const authenticate = async () => {
+                    if (initialAuthToken) {
+                        loadingMessage.textContent = 'Authenticating with custom token...';
+                        await signInWithCustomToken(auth, initialAuthToken);
+                    } else if (!auth.currentUser) {
+                        loadingMessage.textContent = 'Signing in anonymously...';
+                        await signInAnonymously(auth);
+                    }
+                };
+                
+                await authenticate();
+
+                // 3. Set up the state change listener
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        updateUI(user);
+                        // Only change screen if we're stuck on loading, otherwise keep the user where they were (e.g., in the middle of a test)
+                        if (currentScreenName === 'loading') {
+                            showScreen('test-intro');
+                        }
+                    } else {
+                        userId = null;
+                        updateUI(null);
+                        showScreen('login');
+                    }
+                });
+
+            } else {
+                console.error("Firebase config is missing. Running in non-persistent, mock mode.");
+                // Fallback for mock mode without Firebase
+                window.db = { mock: true };
+                updateUI({ uid: 'mock-user', displayName: 'Mock User' });
+                showScreen('test-intro');
+            }
+        } catch (error) {
+            console.error("Firebase initialization failed:", error);
+            document.getElementById('loading-message').textContent = 'Error: App failed to load Firebase. Check console.';
+            // Fallback to mock mode if initialization fails
+            window.db = { mock: true };
+            updateUI(null); // Pass null to show a signed-out state
+            showScreen('login');
+        }
+
+    </script>
 </body>
 </html>
