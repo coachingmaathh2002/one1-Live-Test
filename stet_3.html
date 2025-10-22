@@ -1,194 +1,1200 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mock Test – Art of Teaching & Other Skills</title>
+    <meta name="description" content="Bihar STET Mock Test - Art of Teaching & Other Skills">
+    <title>Bihar STET Mock Test - Art of Teaching & Other Skills</title>
+    
+    <!-- External Resources -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        .correct-answer { background-color: #d1fae5; border-left: 4px solid #10b981; }
-        .incorrect-answer { background-color: #fee2e2; border-left: 4px solid #ef4444; }
-        .unanswered { background-color: #feefc3; border-left: 4px solid #f59e0b; }
+        /* CSS Variables for Theme - Matching main index */
+        :root {
+            --color-bg-deep: #0F0F14;
+            --color-card-dark: #1A1A24;
+            --color-primary: #5B5FFF;
+            --color-accent: #D4AF37;
+            --color-text-light: #E8E8F0;
+            --color-text-muted: #A0A0B8;
+            --color-gradient-start: #1A1A24;
+            --color-gradient-end: #0F0F14;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--color-bg-deep);
+            color: var(--color-text-light);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Container Styles */
+        .test-container {
+            background-color: var(--color-card-dark);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Timer Styles */
+        .timer-container {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #4A4AFF 100%);
+            color: var(--color-bg-deep);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .timer-display {
+            font-family: 'Courier New', monospace;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 0.05em;
+        }
+
+        .timer-warning {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        /* Question Styles */
+        .question-block {
+            background-color: rgba(26, 26, 36, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .option-label {
+            transition: all 0.2s ease;
+            background-color: rgba(15, 15, 20, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .option-label:hover {
+            background-color: rgba(91, 95, 255, 0.1);
+            border-color: rgba(91, 95, 255, 0.3);
+        }
+
+        .option-label.selected {
+            background-color: rgba(91, 95, 255, 0.2);
+            border-color: var(--color-primary);
+        }
+
+        /* Button Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #4A4AFF 100%);
+            color: var(--color-bg-deep);
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(91, 95, 255, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(91, 95, 255, 0.6);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--color-accent);
+            color: var(--color-accent);
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Answer Feedback Styles */
+        .correct-answer {
+            background-color: rgba(16, 185, 129, 0.2);
+            border-left: 4px solid var(--success-color);
+        }
+
+        .incorrect-answer {
+            background-color: rgba(239, 68, 68, 0.2);
+            border-left: 4px solid var(--error-color);
+        }
+
+        .unanswered {
+            background-color: rgba(245, 158, 11, 0.2);
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .review-block .options-list label {
+            cursor: default;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Question Navigation */
+        .question-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .question-indicator {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .indicator-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .indicator-dot.active {
+            background-color: var(--color-primary);
+            transform: scale(1.2);
+        }
+
+        .indicator-dot.answered {
+            background-color: var(--color-accent);
+        }
+
+        /* Result Styles */
+        .score-summary {
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(26, 26, 36, 0.8) 0%, rgba(26, 26, 36, 0.6) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 640px) {
+            .timer-display {
+                font-size: 1.5rem;
+            }
+        }
     </style>
 </head>
-<body class="bg-gray-100 font-sans">
-    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
-        <div id="test-container" class="bg-white p-8 rounded-lg shadow-lg">
-            <header class="border-b pb-4 mb-6">
-                <h1 class="text-3xl font-bold text-gray-800 text-center">Mock Test – Art of Teaching & Other Skills</h1>
-                <div class="mt-4 p-4 bg-indigo-100 rounded-md text-center">
-                    <div id="timer" class="text-2xl font-mono font-bold text-indigo-700"></div>
-                    <p class="text-sm text-gray-600">Time Remaining</p>
+<body>
+    <!-- Navigation Header -->
+    <header class="p-4 flex justify-between items-center">
+        <h1 class="text-2xl font-extrabold text-white flex items-center">
+            <span class="text-accent mr-2">P</span>ijus Sir's Academy
+        </h1>
+        <button id="backToDashboard" class="btn-secondary py-2 px-4 rounded-lg font-bold">
+            <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+        </button>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto p-4 sm:p-6 lg:p-8 max-w-4xl">
+        <!-- Test Container -->
+        <div id="test-container" class="test-container p-8 rounded-lg">
+            <header class="border-b border-gray-700 pb-4 mb-6">
+                <h1 class="text-3xl font-bold text-white text-center">Bihar STET Mock Test</h1>
+                <h2 class="text-xl text-gray-400 text-center mt-2">Art of Teaching & Other Skills</h2>
+                
+                <!-- Timer Section -->
+                <div class="timer-container mt-6">
+                    <div id="timer" class="timer-display">45:00</div>
+                    <p class="text-sm opacity-90">Time Remaining</p>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="progress-container">
+                    <div id="progress-bar" class="progress-bar"></div>
+                </div>
+                <div class="flex justify-between text-sm text-gray-400">
+                    <span>Question <span id="current-question">1</span> of <span id="total-questions">41</span></span>
+                    <span id="answered-count">0 answered</span>
                 </div>
             </header>
             
-            <form id="quiz-form">
-                <div id="questions-container" class="space-y-8">
-                    <!-- Questions will be injected here by JavaScript -->
+            <!-- Single Question Container -->
+            <div id="question-container" class="question-block p-6 rounded-lg">
+                <div id="question-content">
+                    <!-- Question will be injected here by JavaScript -->
                 </div>
-                <div class="mt-8 text-center">
-                    <button type="submit" id="submit-btn" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-700 transition-colors duration-300 shadow-md">
-                        Submit Test
+                
+                <div class="question-nav">
+                    <button id="prev-btn" class="btn-secondary py-2 px-4 rounded-lg font-bold" disabled>
+                        <i class="fas fa-arrow-left mr-2"></i>Previous
+                    </button>
+                    
+                    <div class="question-indicator" id="question-indicator">
+                        <!-- Question indicators will be injected here -->
+                    </div>
+                    
+                    <button id="next-btn" class="btn-primary py-2 px-4 rounded-lg font-bold">
+                        Next<i class="fas fa-arrow-right ml-2"></i>
                     </button>
                 </div>
-            </form>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <button type="button" id="submit-btn" class="btn-primary py-3 px-8 rounded-lg">
+                    <i class="fas fa-paper-plane mr-2"></i>Submit Test
+                </button>
+            </div>
         </div>
 
-        <div id="results-container" class="hidden bg-white p-8 rounded-lg shadow-lg">
-            <h2 class="text-3xl font-bold text-gray-800 text-center mb-4">Test Results</h2>
-            <div id="score-summary" class="text-center text-2xl font-semibold mb-6 p-4 rounded-md"></div>
+        <!-- Results Container -->
+        <div id="results-container" class="test-container p-8 rounded-lg hidden">
+            <header class="text-center mb-6">
+                <h2 class="text-3xl font-bold text-white">Test Results</h2>
+                <p class="text-gray-400 mt-2">Art of Teaching & Other Skills</p>
+            </header>
+            
+            <div id="score-summary" class="score-summary text-center text-2xl font-semibold mb-6 p-4 rounded-md">
+                <!-- Score will be displayed here -->
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="stat-card text-center">
+                    <div class="text-2xl font-bold text-green-400" id="correct-count">0</div>
+                    <div class="text-sm text-gray-400">Correct Answers</div>
+                </div>
+                <div class="stat-card text-center">
+                    <div class="text-2xl font-bold text-red-400" id="incorrect-count">0</div>
+                    <div class="text-sm text-gray-400">Incorrect Answers</div>
+                </div>
+                <div class="stat-card text-center">
+                    <div class="text-2xl font-bold text-yellow-400" id="unanswered-count">0</div>
+                    <div class="text-sm text-gray-400">Unanswered</div>
+                </div>
+            </div>
+            
             <div id="answers-review" class="space-y-6">
                 <!-- Review of answers will be injected here -->
             </div>
+            
+            <div class="mt-8 text-center space-x-4">
+                <button id="retake-btn" class="btn-primary py-3 px-8 rounded-lg">
+                    <i class="fas fa-redo mr-2"></i>Retake Test
+                </button>
+                <button id="backToDashboardBtn" class="btn-secondary py-3 px-8 rounded-lg">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+                </button>
+            </div>
         </div>
-    </div>
+    </main>
 
     <script>
-        const testData = {"sectionA":[{"question":"What is the primary purpose of teaching?","options":["To complete the syllabus","To facilitate learning and development","To maintain discipline in the classroom","To secure high grades for students"],"answer":"To facilitate learning and development"},{"question":"Which characteristic best describes active learning?","options":["Students passively receiving information","Students engaging in discussions, problem-solving, and activities","Teacher lecturing without interruption","Emphasis on rote memorization"],"answer":"Students engaging in discussions, problem-solving, and activities"},{"question":"The process of learning is primarily influenced by:","options":["Teacher's salary","Student's motivation and environment","School building infrastructure","Number of holidays in a year"],"answer":"Student's motivation and environment"},{"question":"According to Bloom's Taxonomy, which domain deals with emotional responses and attitudes?","options":["Cognitive Domain","Affective Domain","Psychomotor Domain","Evaluative Domain"],"answer":"Affective Domain"},{"question":"'To list the main rivers of India' is an example of an objective at which level of Bloom's Cognitive Domain?","options":["Synthesis","Application","Knowledge/Remembering","Analysis"],"answer":"Knowledge/Remembering"},{"question":"Instructional objectives should be SMART. What does 'A' stand for?","options":["Ambitious","Attainable/Achievable","Accurate","Academic"],"answer":"Attainable/Achievable"},{"question":"Which teaching method encourages self-learning and critical thinking through problem-solving?","options":["Lecture Method","Demonstration Method","Project Method","Dictation Method"],"answer":"Project Method"},{"question":"A lecture method is most suitable for:","options":["Promoting practical skills","Introducing new topics to a large audience","Facilitating individual learning styles","Encouraging peer collaboration"],"answer":"Introducing new topics to a large audience"},{"question":"What is a characteristic of a democratic teaching method?","options":["Teacher-centric approach","Students have a voice in decision-making","Strict adherence to textbooks only","Individual competitive learning"],"answer":"Students have a voice in decision-making"},{"question":"What is the main purpose of a lesson plan?","options":["To provide a script for the teacher to read","To ensure systematic and organized teaching-learning activities","To evaluate student performance at the end of the lesson","To impress school administrators"],"answer":"To ensure systematic and organized teaching-learning activities"},{"question":"Herbartian approach to lesson planning involves how many steps?","options":["Three","Four","Five","Six"],"answer":"Five"},{"question":"Which element is typically NOT a part of a traditional lesson plan format?","options":["Learning Objectives","Assessment Criteria","Teacher's Personal Biography","Teaching Aids"],"answer":"Teacher's Personal Biography"},{"question":"What is the typical duration of a microteaching 'teach' session?","options":["30-45 minutes","1-2 hours","5-10 minutes","20-25 minutes"],"answer":"5-10 minutes"},{"question":"The main objective of microteaching is to:","options":["Teach an entire chapter efficiently","Develop and refine specific teaching skills","Substitute for regular classroom teaching","Prepare students for final exams"],"answer":"Develop and refine specific teaching skills"},{"question":"What does instructional analysis primarily involve?","options":["Analyzing student attendance records","Breaking down a learning task into smaller components","Evaluating the teacher's speaking skills","Summarizing the textbook content"],"answer":"Breaking down a learning task into smaller components"},{"question":"Which factor is crucial for creating an effective classroom ecosystem?","options":["Uniform seating arrangement for all students","Strict silence at all times","Mutual respect and positive teacher-student relationships","Competitive environment among students"],"answer":"Mutual respect and positive teacher-student relationships"},{"question":"A positive classroom environment promotes:","options":["Anxiety and stress among students","Passive listening and rote learning","Student engagement and motivation","Teacher-dominated interactions"],"answer":"Student engagement and motivation"},{"question":"What is the main role of a textbook in the learning process?","options":["To replace the teacher's instruction","To provide structured content and a foundation for learning","To serve as the only source of information","To test students' memorization skills"],"answer":"To provide structured content and a foundation for learning"},{"question":"A school library primarily facilitates:","options":["Social gatherings","Rote learning and memorization","Access to diverse information and independent learning","Competitive sports activities"],"answer":"Access to diverse information and independent learning"},{"question":"Which quality is most essential for an effective teacher?","options":["Strict discipline enforcement","Deep subject matter knowledge and pedagogical skills","High speaking volume","Ability to assign a lot of homework"],"answer":"Deep subject matter knowledge and pedagogical skills"},{"question":"A teacher's ability to adapt teaching methods to diverse learners demonstrates:","options":["Rigidity","Flexibility and inclusivity","Inconsistency","Lack of preparation"],"answer":"Flexibility and inclusivity"},{"question":"Formative assessment is primarily used for:","options":["Assigning final grades","Monitoring student learning and providing ongoing feedback","Comparing students' performance nationally","Ranking students for scholarships"],"answer":"Monitoring student learning and providing ongoing feedback"},{"question":"What does 'assessment for learning' focus on?","options":["Measuring what students have learned at the end of a unit","Providing diagnostic feedback to improve teaching and learning","Judging the overall effectiveness of a curriculum","Standardizing test scores across different schools"],"answer":"Providing diagnostic feedback to improve teaching and learning"},{"question":"What is the primary function of a curriculum?","options":["To decide teacher salaries","To outline the learning experiences and content of an educational program","To manage school finances","To schedule extracurricular activities"],"answer":"To outline the learning experiences and content of an educational program"},{"question":"A spiral curriculum design implies:","options":["Teaching all topics once and never revisiting them","Introducing concepts at simple levels and revisiting them in increasing complexity","Teaching topics in a random order","Curriculum designed in a circular classroom"],"answer":"Introducing concepts at simple levels and revisiting them in increasing complexity"},{"question":"Which of these is a psychological factor affecting learning?","options":["Availability of textbooks","Student's motivation and interest","Classroom lighting","Teacher's attire"],"answer":"Student's motivation and interest"},{"question":"The teacher's attitude towards students is a significant factor affecting:","options":["School budget allocation","Student engagement and self-esteem","Duration of school hours","Number of parent-teacher meetings"],"answer":"Student engagement and self-esteem"},{"question":"Which teaching aid is best for explaining abstract concepts visually?","options":["Chalkboard","Flashcards","Models and diagrams","Worksheets"],"answer":"Models and diagrams"},{"question":"Hands-on learning is most effective for developing:","options":["Rote memorization skills","Conceptual understanding and practical skills","Passive listening habits","Abstract theoretical knowledge"],"answer":"Conceptual understanding and practical skills"},{"question":"The use of projectors, smartboards, and computers in teaching falls under which category of teaching aids?","options":["Traditional aids","Audio-visual aids","Print media aids","Physical models"],"answer":"Audio-visual aids"}],"sectionB":[{"question":"Who wrote the Indian National Anthem?","options":["Bankim Chandra Chatterjee","Rabindranath Tagore","Mahatma Gandhi","Subhash Chandra Bose"],"answer":"Rabindranath Tagore"},{"question":"The 'Green Revolution' in India is associated with which sector?","options":["Industrial Production","Agricultural Production","Information Technology","Space Exploration"],"answer":"Agricultural Production"},{"question":"What is the capital of Japan?","options":["Beijing","Seoul","Tokyo","Bangkok"],"answer":"Tokyo"},{"question":"Which planet is known as the 'Red Planet'?","options":["Venus","Mars","Jupiter","Saturn"],"answer":"Mars"},{"question":"The largest democracy in the world is:","options":["United States","India","Canada","Australia"],"answer":"India"},{"question":"Which gas is primarily responsible for the greenhouse effect?","options":["Oxygen","Nitrogen","Carbon Dioxide","Hydrogen"],"answer":"Carbon Dioxide"},{"question":"What is deforestation?","options":["Planting new trees","The clearing of forests for other land uses","Protecting endangered species","Recycling waste materials"],"answer":"The clearing of forests for other land uses"},{"question":"The term 'biodiversity' refers to:","options":["The variety of food in a grocery store","The number of books in a library","The variety of life on Earth at all its levels","The different types of weather patterns"],"answer":"The variety of life on Earth at all its levels"},{"question":"Acid rain is caused by the emission of:","options":["Methane and Ammonia","Carbon Monoxide and Ozone","Sulfur Dioxide and Nitrogen Oxides","Oxygen and Water Vapor"],"answer":"Sulfur Dioxide and Nitrogen Oxides"},{"question":"The protective layer that absorbs most of the sun's harmful ultraviolet (UV) radiation is called the:","options":["Troposphere","Stratosphere","Ozone Layer","Ionosphere"],"answer":"Ozone Layer"},{"question":"If a car travels 60 km in 3 hours, what is its average speed?","options":["15 km/hr","20 km/hr","30 km/hr","60 km/hr"],"answer":"20 km/hr"},{"question":"What is 25% of 200?","options":["25","50","75","100"],"answer":"50"},{"question":"The sum of the first 5 natural numbers (1, 2, 3, 4, 5) is:","options":["10","12","15","20"],"answer":"15"},{"question":"A square has a side length of 5 cm. What is its area?","options":["10 sq cm","15 sq cm","20 sq cm","25 sq cm"],"answer":"25 sq cm"},{"question":"If x + 7 = 15, what is the value of x?","options":["7","8","9","10"],"answer":"8"},{"question":"Complete the series: 2, 4, 6, 8, ____","options":["9","10","11","12"],"answer":"10"},{"question":"If 'CAT' is coded as '3120', how would 'DOG' be coded? (Assuming A=1, B=2... and T=20 etc. letters represented by their position)","options":["4157","40157","41507","41517"],"answer":"41507"},{"question":"Find the odd one out: Apple, Orange, Potato, Banana.","options":["Apple","Orange","Potato","Banana"],"answer":"Potato"},{"question":"A is the father of B. B is the sister of C. C is the son of D. How is D related to A?","options":["Brother","Son","Wife","Daughter"],"answer":"Wife"},{"question":"If all 'A's are 'B's, and some 'B's are 'C's, then:","options":["All 'A's are 'C's","Some 'A's are 'C's","No 'A's are 'C's","It cannot be determined if any 'A's are 'C's"],"answer":"It cannot be determined if any 'A's are 'C's"}]};
-        const testDurationMinutes = 60;
-        let timerInterval;
-        let shuffledQuestions;
+        // Test Data
+const testData = {
+    "sectionA": [
+        {
+            "question": "What is the primary purpose of teaching?",
+            "options": [
+                "To complete the syllabus",
+                "To facilitate learning and development",
+                "To maintain discipline in the classroom",
+                "To secure high grades for students"
+            ],
+            "answer": "To facilitate learning and development"
+        },
+        {
+            "question": "Which characteristic best describes active learning?",
+            "options": [
+                "Students passively receiving information",
+                "Students engaging in discussions, problem-solving, and activities",
+                "Teacher lecturing without interruption",
+                "Emphasis on rote memorization"
+            ],
+            "answer": "Students engaging in discussions, problem-solving, and activities"
+        },
+        {
+            "question": "The process of learning is primarily influenced by:",
+            "options": [
+                "Teacher's salary",
+                "Student's motivation and environment",
+                "School building infrastructure",
+                "Number of holidays in a year"
+            ],
+            "answer": "Student's motivation and environment"
+        },
+        {
+            "question": "According to Bloom's Taxonomy, which domain deals with emotional responses and attitudes?",
+            "options": [
+                "Cognitive Domain",
+                "Affective Domain",
+                "Psychomotor Domain",
+                "Evaluative Domain"
+            ],
+            "answer": "Affective Domain"
+        },
+        {
+            "question": "'To list the main rivers of India' is an example of an objective at which level of Bloom's Cognitive Domain?",
+            "options": [
+                "Synthesis",
+                "Application",
+                "Knowledge/Remembering",
+                "Analysis"
+            ],
+            "answer": "Knowledge/Remembering"
+        },
+        {
+            "question": "Instructional objectives should be SMART. What does 'A' stand for?",
+            "options": [
+                "Ambitious",
+                "Attainable/Achievable",
+                "Accurate",
+                "Academic"
+            ],
+            "answer": "Attainable/Achievable"
+        },
+        {
+            "question": "Which teaching method encourages self-learning and critical thinking through problem-solving?",
+            "options": [
+                "Lecture Method",
+                "Demonstration Method",
+                "Project Method",
+                "Dictation Method"
+            ],
+            "answer": "Project Method"
+        },
+        {
+            "question": "A lecture method is most suitable for:",
+            "options": [
+                "Promoting practical skills",
+                "Introducing new topics to a large audience",
+                "Facilitating individual learning styles",
+                "Encouraging peer collaboration"
+            ],
+            "answer": "Introducing new topics to a large audience"
+        },
+        {
+            "question": "What is a characteristic of a democratic teaching method?",
+            "options": [
+                "Teacher-centric approach",
+                "Students have a voice in decision-making",
+                "Strict adherence to textbooks only",
+                "Individual competitive learning"
+            ],
+            "answer": "Students have a voice in decision-making"
+        },
+        {
+            "question": "What is the main purpose of a lesson plan?",
+            "options": [
+                "To provide a script for the teacher to read",
+                "To ensure systematic and organized teaching-learning activities",
+                "To evaluate student performance at the end of the lesson",
+                "To impress school administrators"
+            ],
+            "answer": "To ensure systematic and organized teaching-learning activities"
+        },
+        {
+            "question": "Herbartian approach to lesson planning involves how many steps?",
+            "options": [
+                "Three",
+                "Four",
+                "Five",
+                "Six"
+            ],
+            "answer": "Five"
+        },
+        {
+            "question": "Which element is typically NOT a part of a traditional lesson plan format?",
+            "options": [
+                "Learning Objectives",
+                "Assessment Criteria",
+                "Teacher's Personal Biography",
+                "Teaching Aids"
+            ],
+            "answer": "Teacher's Personal Biography"
+        },
+        {
+            "question": "What is the typical duration of a microteaching 'teach' session?",
+            "options": [
+                "30-45 minutes",
+                "1-2 hours",
+                "5-10 minutes",
+                "20-25 minutes"
+            ],
+            "answer": "5-10 minutes"
+        },
+        {
+            "question": "The main objective of microteaching is to:",
+            "options": [
+                "Teach an entire chapter efficiently",
+                "Develop and refine specific teaching skills",
+                "Substitute for regular classroom teaching",
+                "Prepare students for final exams"
+            ],
+            "answer": "Develop and refine specific teaching skills"
+        },
+        {
+            "question": "What does instructional analysis primarily involve?",
+            "options": [
+                "Analyzing student attendance records",
+                "Breaking down a learning task into smaller components",
+                "Evaluating the teacher's speaking skills",
+                "Summarizing the textbook content"
+            ],
+            "answer": "Breaking down a learning task into smaller components"
+        },
+        {
+            "question": "Which factor is crucial for creating an effective classroom ecosystem?",
+            "options": [
+                "Uniform seating arrangement for all students",
+                "Strict silence at all times",
+                "Mutual respect and positive teacher-student relationships",
+                "Competitive environment among students"
+            ],
+            "answer": "Mutual respect and positive teacher-student relationships"
+        },
+        {
+            "question": "A positive classroom environment promotes:",
+            "options": [
+                "Anxiety and stress among students",
+                "Passive listening and rote learning",
+                "Student engagement and motivation",
+                "Teacher-dominated interactions"
+            ],
+            "answer": "Student engagement and motivation"
+        },
+        {
+            "question": "What is the main role of a textbook in the learning process?",
+            "options": [
+                "To replace the teacher's instruction",
+                "To provide structured content and a foundation for learning",
+                "To serve as the only source of information",
+                "To test students' memorization skills"
+            ],
+            "answer": "To provide structured content and a foundation for learning"
+        },
+        {
+            "question": "A school library primarily facilitates:",
+            "options": [
+                "Social gatherings",
+                "Rote learning and memorization",
+                "Access to diverse information and independent learning",
+                "Competitive sports activities"
+            ],
+            "answer": "Access to diverse information and independent learning"
+        },
+        {
+            "question": "Which quality is most essential for an effective teacher?",
+            "options": [
+                "Strict discipline enforcement",
+                "Deep subject matter knowledge and pedagogical skills",
+                "High speaking volume",
+                "Ability to assign a lot of homework"
+            ],
+            "answer": "Deep subject matter knowledge and pedagogical skills"
+        },
+        {
+            "question": "A teacher's ability to adapt teaching methods to diverse learners demonstrates:",
+            "options": [
+                "Rigidity",
+                "Flexibility and inclusivity",
+                "Inconsistency",
+                "Lack of preparation"
+            ],
+            "answer": "Flexibility and inclusivity"
+        },
+        {
+            "question": "Formative assessment is primarily used for:",
+            "options": [
+                "Assigning final grades",
+                "Monitoring student learning and providing ongoing feedback",
+                "Comparing students' performance nationally",
+                "Ranking students for scholarships"
+            ],
+            "answer": "Monitoring student learning and providing ongoing feedback"
+        },
+        {
+            "question": "What does 'assessment for learning' focus on?",
+            "options": [
+                "Measuring what students have learned at the end of a unit",
+                "Providing diagnostic feedback to improve teaching and learning",
+                "Judging the overall effectiveness of a curriculum",
+                "Standardizing test scores across different schools"
+            ],
+            "answer": "Providing diagnostic feedback to improve teaching and learning"
+        },
+        {
+            "question": "What is the primary function of a curriculum?",
+            "options": [
+                "To decide teacher salaries",
+                "To outline the learning experiences and content of an educational program",
+                "To manage school finances",
+                "To schedule extracurricular activities"
+            ],
+            "answer": "To outline the learning experiences and content of an educational program"
+        },
+        {
+            "question": "A spiral curriculum design implies:",
+            "options": [
+                "Teaching all topics once and never revisiting them",
+                "Introducing concepts at simple levels and revisiting them in increasing complexity",
+                "Teaching topics in a random order",
+                "Curriculum designed in a circular classroom"
+            ],
+            "answer": "Introducing concepts at simple levels and revisiting them in increasing complexity"
+        },
+        {
+            "question": "Which of these is a psychological factor affecting learning?",
+            "options": [
+                "Availability of textbooks",
+                "Student's motivation and interest",
+                "Classroom lighting",
+                "Teacher's attire"
+            ],
+            "answer": "Student's motivation and interest"
+        },
+        {
+            "question": "The teacher's attitude towards students is a significant factor affecting:",
+            "options": [
+                "School budget allocation",
+                "Student engagement and self-esteem",
+                "Duration of school hours",
+                "Number of parent-teacher meetings"
+            ],
+            "answer": "Student engagement and self-esteem"
+        },
+        {
+            "question": "Which teaching aid is best for explaining abstract concepts visually?",
+            "options": [
+                "Chalkboard",
+                "Flashcards",
+                "Models and diagrams",
+                "Worksheets"
+            ],
+            "answer": "Models and diagrams"
+        },
+        {
+            "question": "Hands-on learning is most effective for developing:",
+            "options": [
+                "Rote memorization skills",
+                "Conceptual understanding and practical skills",
+                "Passive listening habits",
+                "Abstract theoretical knowledge"
+            ],
+            "answer": "Conceptual understanding and practical skills"
+        },
+        {
+            "question": "The use of projectors, smartboards, and computers in teaching falls under which category of teaching aids?",
+            "options": [
+                "Traditional aids",
+                "Audio-visual aids",
+                "Print media aids",
+                "Physical models"
+            ],
+            "answer": "Audio-visual aids"
+        }
+    ],
+    "sectionB": [
+        {
+            "question": "Who wrote the Indian National Anthem?",
+            "options": [
+                "Bankim Chandra Chatterjee",
+                "Rabindranath Tagore",
+                "Mahatma Gandhi",
+                "Subhash Chandra Bose"
+            ],
+            "answer": "Rabindranath Tagore"
+        },
+        {
+            "question": "The 'Green Revolution' in India is associated with which sector?",
+            "options": [
+                "Industrial Production",
+                "Agricultural Production",
+                "Information Technology",
+                "Space Exploration"
+            ],
+            "answer": "Agricultural Production"
+        },
+        {
+            "question": "What is the capital of Japan?",
+            "options": [
+                "Beijing",
+                "Seoul",
+                "Tokyo",
+                "Bangkok"
+            ],
+            "answer": "Tokyo"
+        },
+        {
+            "question": "Which planet is known as the 'Red Planet'?",
+            "options": [
+                "Venus",
+                "Mars",
+                "Jupiter",
+                "Saturn"
+            ],
+            "answer": "Mars"
+        },
+        {
+            "question": "The largest democracy in the world is:",
+            "options": [
+                "United States",
+                "India",
+                "Canada",
+                "Australia"
+            ],
+            "answer": "India"
+        },
+        {
+            "question": "Which gas is primarily responsible for the greenhouse effect?",
+            "options": [
+                "Oxygen",
+                "Nitrogen",
+                "Carbon Dioxide",
+                "Hydrogen"
+            ],
+            "answer": "Carbon Dioxide"
+        },
+        {
+            "question": "What is deforestation?",
+            "options": [
+                "Planting new trees",
+                "The clearing of forests for other land uses",
+                "Protecting endangered species",
+                "Recycling waste materials"
+            ],
+            "answer": "The clearing of forests for other land uses"
+        },
+        {
+            "question": "The term 'biodiversity' refers to:",
+            "options": [
+                "The variety of food in a grocery store",
+                "The number of books in a library",
+                "The variety of life on Earth at all its levels",
+                "The different types of weather patterns"
+            ],
+            "answer": "The variety of life on Earth at all its levels"
+        },
+        {
+            "question": "Acid rain is caused by the emission of:",
+            "options": [
+                "Methane and Ammonia",
+                "Carbon Monoxide and Ozone",
+                "Sulfur Dioxide and Nitrogen Oxides",
+                "Oxygen and Water Vapor"
+            ],
+            "answer": "Sulfur Dioxide and Nitrogen Oxides"
+        },
+        {
+            "question": "The protective layer that absorbs most of the sun's harmful ultraviolet (UV) radiation is called the:",
+            "options": [
+                "Troposphere",
+                "Stratosphere",
+                "Ozone Layer",
+                "Ionosphere"
+            ],
+            "answer": "Ozone Layer"
+        },
+        {
+            "question": "If a car travels 60 km in 3 hours, what is its average speed?",
+            "options": [
+                "15 km/hr",
+                "20 km/hr",
+                "30 km/hr",
+                "60 km/hr"
+            ],
+            "answer": "20 km/hr"
+        },
+        {
+            "question": "What is 25% of 200?",
+            "options": [
+                "25",
+                "50",
+                "75",
+                "100"
+            ],
+            "answer": "50"
+        },
+        {
+            "question": "The sum of the first 5 natural numbers (1, 2, 3, 4, 5) is:",
+            "options": [
+                "10",
+                "12",
+                "15",
+                "20"
+            ],
+            "answer": "15"
+        },
+        {
+            "question": "A square has a side length of 5 cm. What is its area?",
+            "options": [
+                "10 sq cm",
+                "15 sq cm",
+                "20 sq cm",
+                "25 sq cm"
+            ],
+            "answer": "25 sq cm"
+        },
+        {
+            "question": "If x + 7 = 15, what is the value of x?",
+            "options": [
+                "7",
+                "8",
+                "9",
+                "10"
+            ],
+            "answer": "8"
+        },
+        {
+            "question": "Complete the series: 2, 4, 6, 8, ____",
+            "options": [
+                "9",
+                "10",
+                "11",
+                "12"
+            ],
+            "answer": "10"
+        },
+        {
+            "question": "If 'CAT' is coded as '3120', how would 'DOG' be coded? (Assuming A=1, B=2... and T=20 etc. letters represented by their position)",
+            "options": [
+                "4157",
+                "40157",
+                "41507",
+                "41517"
+            ],
+            "answer": "41507"
+        },
+        {
+            "question": "Find the odd one out: Apple, Orange, Potato, Banana.",
+            "options": [
+                "Apple",
+                "Orange",
+                "Potato",
+                "Banana"
+            ],
+            "answer": "Potato"
+        },
+        {
+            "question": "A is the father of B. B is the sister of C. C is the son of D. How is D related to A?",
+            "options": [
+                "Brother",
+                "Son",
+                "Wife",
+                "Daughter"
+            ],
+            "answer": "Wife"
+        },
+        {
+            "question": "If all 'A's are 'B's, and some 'B's are 'C's, then:",
+            "options": [
+                "All 'A's are 'C's",
+                "Some 'A's are 'C's",
+                "No 'A's are 'C's",
+                "It cannot be determined if any 'A's are 'C's"
+            ],
+            "answer": "It cannot be determined if any 'A's are 'C's"
+        }
+    ]
+};
+        // Application State
+        const app = {
+            testDurationMinutes: 45,
+            timerInterval: null,
+            shuffledQuestions: [],
+            userAnswers: {},
+            currentQuestionIndex: 0,
+            isSubmitted: false
+        };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const quizForm = document.getElementById('quiz-form');
-            const questionsContainer = document.getElementById('questions-container');
+        // DOM Elements
+        const elements = {
+            questionContent: document.getElementById('question-content'),
+            questionIndicator: document.getElementById('question-indicator'),
+            timer: document.getElementById('timer'),
+            testContainer: document.getElementById('test-container'),
+            resultsContainer: document.getElementById('results-container'),
+            scoreSummary: document.getElementById('score-summary'),
+            answersReview: document.getElementById('answers-review'),
+            submitBtn: document.getElementById('submit-btn'),
+            retakeBtn: document.getElementById('retake-btn'),
+            backToDashboard: document.getElementById('backToDashboard'),
+            backToDashboardBtn: document.getElementById('backToDashboardBtn'),
+            prevBtn: document.getElementById('prev-btn'),
+            nextBtn: document.getElementById('next-btn'),
+            progressBar: document.getElementById('progress-bar'),
+            currentQuestion: document.getElementById('current-question'),
+            totalQuestions: document.getElementById('total-questions'),
+            answeredCount: document.getElementById('answered-count'),
+            correctCount: document.getElementById('correct-count'),
+            incorrectCount: document.getElementById('incorrect-count'),
+            unansweredCount: document.getElementById('unanswered-count')
+        };
+
+        // Utility Functions
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function updateProgress() {
+            const total = app.shuffledQuestions.length;
+            const answered = Object.keys(app.userAnswers).length;
+            const percentage = (answered / total) * 100;
             
-            function shuffleArray(array) {
-                for (let i = array.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [array[i], array[j]] = [array[j], array[i]];
+            elements.progressBar.style.width = `${percentage}%`;
+            elements.answeredCount.textContent = `${answered} answered`;
+        }
+
+        // Navigation Functions
+        function backToDashboard() {
+            if (confirm('Are you sure you want to go back to the dashboard? Your current progress will be lost.')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Quiz Functions
+        function initializeQuiz() {
+            const allQuestions = [...testData.sectionA, ...testData.sectionB];
+            app.shuffledQuestions = shuffleArray(allQuestions);
+            
+            elements.totalQuestions.textContent = app.shuffledQuestions.length;
+            
+            // Create question indicators
+            elements.questionIndicator.innerHTML = '';
+            for (let i = 0; i < app.shuffledQuestions.length; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'indicator-dot';
+                dot.setAttribute('data-index', i);
+                elements.questionIndicator.appendChild(dot);
+            }
+            
+            renderQuestion();
+            updateProgress();
+        }
+
+        function renderQuestion() {
+            const question = app.shuffledQuestions[app.currentQuestionIndex];
+            
+            // Update question number
+            elements.currentQuestion.textContent = app.currentQuestionIndex + 1;
+            
+            // Update question indicators
+            document.querySelectorAll('.indicator-dot').forEach((dot, index) => {
+                dot.classList.remove('active');
+                if (index === app.currentQuestionIndex) {
+                    dot.classList.add('active');
                 }
-                return array;
-            }
-
-            function renderQuiz() {
-                const allQuestions = [...testData.sectionA, ...testData.sectionB];
-                shuffledQuestions = shuffleArray(allQuestions);
-
-                shuffledQuestions.forEach((q, index) => {
-                    const questionDiv = document.createElement('div');
-                    questionDiv.className = 'question-block border border-gray-200 p-6 rounded-lg';
-                    
-                    const questionText = document.createElement('p');
-                    questionText.className = 'text-lg font-semibold text-gray-800 mb-4';
-                    questionText.textContent = `${index + 1}. ${q.question}`;
-                    questionDiv.appendChild(questionText);
-
-                    const optionsDiv = document.createElement('div');
-                    optionsDiv.className = 'options-list space-y-3';
-                    
-                    const shuffledOptions = shuffleArray([...q.options]);
-                    shuffledOptions.forEach(option => {
-                        const label = document.createElement('label');
-                        label.className = 'flex items-center p-3 border rounded-md hover:bg-gray-50 cursor-pointer transition-colors';
-                        
-                        const radio = document.createElement('input');
-                        radio.type = 'radio';
-                        radio.name = `question-${index}`;
-                        radio.value = option;
-                        radio.className = 'h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300';
-                        
-                        const span = document.createElement('span');
-                        span.textContent = option;
-                        span.className = 'ml-3 text-gray-700';
-                        
-                        label.appendChild(radio);
-                        label.appendChild(span);
-                        optionsDiv.appendChild(label);
-                    });
-
-                    questionDiv.appendChild(optionsDiv);
-                    questionsContainer.appendChild(questionDiv);
-                });
-            }
-            
-            function startTimer() {
-                let timeLeft = testDurationMinutes * 60;
-                const timerEl = document.getElementById('timer');
-
-                timerInterval = setInterval(() => {
-                    if (timeLeft <= 0) {
-                        clearInterval(timerInterval);
-                        alert("Time’s up! Your test has been submitted.");
-                        handleSubmit();
-                        return;
-                    }
-
-                    timeLeft--;
-                    const minutes = Math.floor(timeLeft / 60);
-                    const seconds = timeLeft % 60;
-                    timerEl.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-                }, 1000);
-            }
-
-            function handleSubmit() {
-                clearInterval(timerInterval);
-                const formData = new FormData(quizForm);
-                let score = 0;
-                
-                const answersReviewContainer = document.getElementById('answers-review');
-                answersReviewContainer.innerHTML = ''; // Clear previous review
-
-                shuffledQuestions.forEach((q, index) => {
-                    const originalQuestionBlock = document.querySelectorAll('.question-block')[index];
-                    if (!originalQuestionBlock) return;
-
-                    const reviewBlock = originalQuestionBlock.cloneNode(true);
-                    reviewBlock.id = `review-q-${index}`;
-
-                    const selectedOption = formData.get(`question-${index}`);
-                    const isCorrect = selectedOption === q.answer;
-
-                    if (isCorrect) {
-                        score++;
-                    }
-
-                    const optionsInReview = reviewBlock.querySelectorAll('.options-list label');
-                    optionsInReview.forEach(label => {
-                        const radio = label.querySelector('input');
-                        radio.disabled = true;
-                        
-                        if (radio.value === q.answer) {
-                            label.classList.add('correct-answer');
-                        }
-                        if (radio.value === selectedOption && !isCorrect) {
-                            label.classList.add('incorrect-answer');
-                        }
-                    });
-
-                    if (!selectedOption) {
-                      reviewBlock.classList.add('unanswered');
-                    } else if (isCorrect) {
-                       reviewBlock.classList.add('correct-answer');
-                    } else {
-                       reviewBlock.classList.add('incorrect-answer');
-                    }
-                    
-                    answersReviewContainer.appendChild(reviewBlock);
-                });
-
-                document.getElementById('test-container').classList.add('hidden');
-                document.getElementById('results-container').classList.remove('hidden');
-
-                const scoreSummary = document.getElementById('score-summary');
-                const totalQuestions = shuffledQuestions.length;
-                scoreSummary.textContent = `You scored ${score} out of ${totalQuestions}`;
-                if(score/totalQuestions > 0.5) {
-                    scoreSummary.classList.add('bg-green-100', 'text-green-800');
+                if (app.userAnswers[index] !== undefined) {
+                    dot.classList.add('answered');
                 } else {
-                    scoreSummary.classList.add('bg-red-100', 'text-red-800');
-                }
-            }
-
-            quizForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                if (confirm('Are you sure you want to submit the test?')) {
-                  handleSubmit();
+                    dot.classList.remove('answered');
                 }
             });
+            
+            // Update navigation buttons
+            elements.prevBtn.disabled = app.currentQuestionIndex === 0;
+            elements.nextBtn.disabled = app.currentQuestionIndex === app.shuffledQuestions.length - 1;
+            
+            // Render question content
+            elements.questionContent.innerHTML = '';
+            
+            const questionText = document.createElement('p');
+            questionText.className = 'text-lg font-semibold text-white mb-6';
+            questionText.textContent = `${app.currentQuestionIndex + 1}. ${question.question}`;
+            elements.questionContent.appendChild(questionText);
 
-            renderQuiz();
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options-list space-y-3 flex-grow';
+            
+            // Store shuffled options to use them in the review
+            if (!question.shuffledOptions) {
+                question.shuffledOptions = shuffleArray([...question.options]);
+            }
+
+            question.shuffledOptions.forEach((option, optionIndex) => {
+                const label = document.createElement('label');
+                label.className = 'option-label flex items-center p-3 rounded-md cursor-pointer';
+                
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'current-question';
+                radio.value = option;
+                radio.id = `option-${optionIndex}`;
+                radio.className = 'h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300';
+                
+                // Check if this option was previously selected
+                if (app.userAnswers[app.currentQuestionIndex] === option) {
+                    radio.checked = true;
+                    label.classList.add('selected');
+                }
+                
+                // Add event listener to track answer
+                radio.addEventListener('change', function() {
+                    // Store the answer
+                    app.userAnswers[app.currentQuestionIndex] = this.value;
+                    
+                    // Update visual feedback
+                    document.querySelectorAll('.option-label').forEach(label => {
+                        label.classList.remove('selected');
+                    });
+                    this.closest('.option-label').classList.add('selected');
+                    
+                    // Update progress and indicators
+                    updateProgress();
+                    document.querySelector(`.indicator-dot[data-index="${app.currentQuestionIndex}"]`).classList.add('answered');
+                });
+                
+                const span = document.createElement('span');
+                span.textContent = option;
+                span.className = 'ml-3 text-gray-300';
+                
+                label.appendChild(radio);
+                label.appendChild(span);
+                optionsDiv.appendChild(label);
+            });
+
+            elements.questionContent.appendChild(optionsDiv);
+        }
+        
+        function nextQuestion() {
+            if (app.currentQuestionIndex < app.shuffledQuestions.length - 1) {
+                app.currentQuestionIndex++;
+                renderQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (app.currentQuestionIndex > 0) {
+                app.currentQuestionIndex--;
+                renderQuestion();
+            }
+        }
+        
+        function startTimer() {
+            let timeLeft = app.testDurationMinutes * 60;
+            
+            app.timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(app.timerInterval);
+                    alert("Time's up! Your test has been submitted.");
+                    handleSubmit();
+                    return;
+                }
+
+                timeLeft--;
+                elements.timer.textContent = formatTime(timeLeft);
+                
+                // Add warning class when time is running out
+                if (timeLeft <= 300) { // 5 minutes
+                    elements.timer.parentElement.classList.add('timer-warning');
+                }
+            }, 1000);
+        }
+
+        function handleSubmit() {
+            if (app.isSubmitted) return;
+            app.isSubmitted = true;
+            
+            clearInterval(app.timerInterval);
+            
+            let score = 0;
+            let correct = 0;
+            let incorrect = 0;
+            let unanswered = 0;
+            
+            elements.answersReview.innerHTML = ''; // Clear previous review
+
+            app.shuffledQuestions.forEach((q, index) => {
+                const selectedOption = app.userAnswers[index] || null;
+                const isCorrect = selectedOption === q.answer;
+
+                if (isCorrect) {
+                    score++;
+                    correct++;
+                } else if (selectedOption) {
+                    incorrect++;
+                } else {
+                    unanswered++;
+                }
+
+                const reviewBlock = document.createElement('div');
+                reviewBlock.className = 'review-block question-block p-6 rounded-lg';
+                
+                const questionText = document.createElement('p');
+                questionText.className = 'text-lg font-semibold text-white mb-4';
+                questionText.textContent = `${index + 1}. ${q.question}`;
+                reviewBlock.appendChild(questionText);
+
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options-list space-y-3';
+
+                const options = q.shuffledOptions || q.options; // Fallback to original options
+                options.forEach(option => {
+                    const label = document.createElement('label');
+                    label.className = 'flex items-center p-3 rounded-md';
+                    
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = `review-question-${index}`;
+                    radio.value = option;
+                    radio.className = 'h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300';
+                    radio.disabled = true;
+
+                    if (option === selectedOption) {
+                        radio.checked = true;
+                    }
+                    
+                    const span = document.createElement('span');
+                    span.textContent = option;
+                    span.className = 'ml-3 text-gray-300';
+                    
+                    label.appendChild(radio);
+                    label.appendChild(span);
+
+                    // Apply highlighting for feedback
+                    if (option === q.answer) {
+                        label.classList.add('correct-answer');
+                    } else if (option === selectedOption) { // The user's incorrect choice
+                        label.classList.add('incorrect-answer');
+                    }
+                    
+                    optionsDiv.appendChild(label);
+                });
+                
+                reviewBlock.appendChild(optionsDiv);
+
+                // Add a border to the whole block for quick visual scanning
+                if (!selectedOption) {
+                    reviewBlock.classList.add('unanswered');
+                } else if (isCorrect) {
+                    reviewBlock.classList.add('correct-answer');
+                } else {
+                    reviewBlock.classList.add('incorrect-answer');
+                }
+                
+                elements.answersReview.appendChild(reviewBlock);
+            });
+
+            // Update statistics
+            elements.correctCount.textContent = correct;
+            elements.incorrectCount.textContent = incorrect;
+            elements.unansweredCount.textContent = unanswered;
+
+            // Show results
+            elements.testContainer.classList.add('hidden');
+            elements.resultsContainer.classList.remove('hidden');
+
+            const totalQuestions = app.shuffledQuestions.length;
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            elements.scoreSummary.textContent = `You scored ${score} out of ${totalQuestions} (${percentage}%)`;
+            
+            // Clear existing color classes before adding new ones
+            elements.scoreSummary.classList.remove('bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800', 'bg-yellow-100', 'text-yellow-800');
+
+            if (percentage >= 70) {
+                elements.scoreSummary.classList.add('bg-green-100', 'text-green-800');
+            } else if (percentage >= 40) {
+                elements.scoreSummary.classList.add('bg-yellow-100', 'text-yellow-800');
+            } else {
+                elements.scoreSummary.classList.add('bg-red-100', 'text-red-800');
+            }
+        }
+
+        function resetQuiz() {
+            app.userAnswers = {};
+            app.currentQuestionIndex = 0;
+            app.isSubmitted = false;
+            elements.answersReview.innerHTML = '';
+            elements.testContainer.classList.remove('hidden');
+            elements.resultsContainer.classList.add('hidden');
+            elements.timer.textContent = formatTime(app.testDurationMinutes * 60);
+            elements.timer.parentElement.classList.remove('timer-warning');
+            initializeQuiz();
+            startTimer();
+        }
+
+        // Event Listeners
+        elements.nextBtn.addEventListener('click', nextQuestion);
+        elements.prevBtn.addEventListener('click', prevQuestion);
+        
+        elements.submitBtn.addEventListener('click', () => {
+            // Save current answer before submitting
+            const selectedOption = document.querySelector('input[name="current-question"]:checked');
+            if (selectedOption) {
+                app.userAnswers[app.currentQuestionIndex] = selectedOption.value;
+            }
+            
+            if (confirm('Are you sure you want to submit the test?')) {
+                handleSubmit();
+            }
+        });
+
+        elements.retakeBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to retake the test? Your current progress will be lost.')) {
+                resetQuiz();
+            }
+        });
+
+        elements.backToDashboard.addEventListener('click', backToDashboard);
+        elements.backToDashboardBtn.addEventListener('click', backToDashboard);
+
+        // Initialize Quiz
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeQuiz();
             startTimer();
         });
     </script>
