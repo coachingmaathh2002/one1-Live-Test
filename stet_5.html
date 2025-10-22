@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Test – Art of Teaching & Other Skills</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Styles for individual answer options */
+        .correct-answer { background-color: #d1fae5 !important; border-left: 4px solid #10b981; }
+        .incorrect-answer { background-color: #fee2e2 !important; border-left: 4px solid #ef4444; }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <div id="test-container" class="bg-white p-8 rounded-lg shadow-lg">
+            <header class="border-b pb-4 mb-6">
+                <h1 class="text-3xl font-bold text-gray-800 text-center">Mock Test – Art of Teaching & Other Skills</h1>
+                <div class="mt-4 p-4 bg-indigo-100 rounded-md text-center">
+                    <div id="timer" class="text-2xl font-mono font-bold text-indigo-700"></div>
+                    <p class="text-sm text-gray-600">Time Remaining</p>
+                </div>
+            </header>
+            
+            <form id="quiz-form">
+                <div id="questions-container" class="space-y-8">
+                    <!-- Questions will be injected here by JavaScript -->
+                </div>
+                <div class="mt-8 text-center">
+                    <button type="submit" id="submit-btn" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-700 transition-colors duration-300 shadow-md">
+                        Submit Test
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div id="results-container" class="hidden bg-white p-8 rounded-lg shadow-lg">
+            <h2 class="text-3xl font-bold text-gray-800 text-center mb-4">Test Results</h2>
+            <div id="score-summary" class="text-center text-2xl font-semibold mb-6 p-4 rounded-md"></div>
+            <div id="answers-review" class="space-y-6">
+                <!-- Review of answers will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const testData = {"sectionA":[{"question":"Which of the following best describes the primary goal of teaching?","options":["To impart knowledge and skills","To facilitate learning and development","To ensure high test scores","To maintain classroom discipline"],"answer":"To facilitate learning and development"},{"question":"Learning is primarily a process of:","options":["Memorizing facts","Acquiring new understanding and behavior","Passive reception of information","Completing assignments"],"answer":"Acquiring new understanding and behavior"},{"question":"A key characteristic of effective teaching is its focus on:","options":["Teacher-centered instruction","Strict adherence to textbooks","Student engagement and active participation","Minimizing classroom discussions"],"answer":"Student engagement and active participation"},{"question":"According to Bloom's Taxonomy, which cognitive level involves breaking down information into parts to understand its structure?","options":["Knowledge","Comprehension","Analysis","Synthesis"],"answer":"Analysis"},{"question":"An instructional objective should always be:","options":["Vague and broad","Measurable and specific","Difficult for students to achieve","Focused only on teacher actions"],"answer":"Measurable and specific"},{"question":"Which type of objective focuses on the ultimate long-term goals of education?","options":["Behavioral objectives","Instructional objectives","General objectives","Specific objectives"],"answer":"General objectives"},{"question":"The lecture method is most effective when:","options":["Students are actively involved in discussions","The content is complex and requires deep critical thinking","Conveying a large amount of information to a large group","Promoting hands-on experimentation"],"answer":"Conveying a large amount of information to a large group"},{"question":"Project-based learning primarily promotes:","options":["Rote memorization","Teacher-directed instruction","Deep understanding and problem-solving skills","Individual silent work"],"answer":"Deep understanding and problem-solving skills"},{"question":"Which teaching method encourages student autonomy and problem-solving through real-world scenarios?","options":["Demonstration method","Drill and practice method","Inquiry-based learning","Recitation method"],"answer":"Inquiry-based learning"},{"question":"What is the main purpose of a lesson plan?","options":["To assess student performance","To guide the teacher through the instructional process","To record attendance","To replace the textbook"],"answer":"To guide the teacher through the instructional process"},{"question":"The Herbartian approach to lesson planning emphasizes:","options":["Student-led discovery","A five-step formal structure","Flexible, spontaneous teaching","Technology integration"],"answer":"A five-step formal structure"},{"question":"Which component is typically found at the beginning of a lesson plan?","options":["Assessment criteria","Learning objectives","Homework assignments","Teacher reflection"],"answer":"Learning objectives"},{"question":"Microteaching is a technique used for:","options":["Teaching a large class effectively","Practicing specific teaching skills","Delivering full course content","Developing curriculum"],"answer":"Practicing specific teaching skills"},{"question":"The \"skill of questioning\" is a common focus in:","options":["Macro teaching","Online teaching","Microteaching","Distance learning"],"answer":"Microteaching"},{"question":"What is the typical duration of a microteaching session?","options":["45-60 minutes","1-2 hours","5-10 minutes","More than 2 hours"],"answer":"5-10 minutes"},{"question":"A positive classroom ecosystem is characterized by:","options":["Strict silence and no interaction","Competition among students","Mutual respect and supportive relationships","Teacher dominance and control"],"answer":"Mutual respect and supportive relationships"},{"question":"How does a teacher best foster a democratic classroom environment?","options":["By making all decisions independently","By allowing students to participate in decision-making","By assigning all students the same tasks","By avoiding any form of student feedback"],"answer":"By allowing students to participate in decision-making"},{"question":"What role does physical arrangement play in an effective classroom ecosystem?","options":["It is irrelevant to learning outcomes","It primarily serves aesthetic purposes","It can facilitate interaction and collaboration","It only helps in managing misbehavior"],"answer":"It can facilitate interaction and collaboration"},{"question":"A good textbook should primarily:","options":["Contain only factual information","Be highly theoretical and abstract","Be well-organized, accurate, and age-appropriate","Focus solely on assessment"],"answer":"Be well-organized, accurate, and age-appropriate"},{"question":"The main function of a school library is to:","options":["Store old books","Provide a quiet place for detention","Support the curriculum and promote reading habits","Manage school records"],"answer":"Support the curriculum and promote reading habits"},{"question":"How do textbooks primarily support student learning?","options":["By replacing the teacher's role","By providing a structured source of information","By encouraging creative writing only","By limiting access to diverse perspectives"],"answer":"By providing a structured source of information"},{"question":"Which quality is most essential for a teacher to manage a diverse classroom effectively?","options":["Strictness","Favoritism","Empathy and adaptability","Uniform teaching methods"],"answer":"Empathy and adaptability"},{"question":"A teacher's reflective practice involves:","options":["Criticizing other teachers' methods","Ignoring student feedback","Analyzing one's own teaching for improvement","Following a rigid curriculum without deviation"],"answer":"Analyzing one's own teaching for improvement"},{"question":"What is a primary ethical responsibility of a teacher?","options":["To always agree with parents","To promote personal political views","To maintain professional conduct and student well-being","To prioritize extracurricular activities over academics"],"answer":"To maintain professional conduct and student well-being"},{"question":"Formative assessment is primarily used for:","options":["Assigning final grades","Certifying student achievement","Monitoring student learning and providing ongoing feedback","Comparing students to a national standard"],"answer":"Monitoring student learning and providing ongoing feedback"},{"question":"Which type of assessment compares a student's performance against a pre-defined standard?","options":["Norm-referenced assessment","Criterion-referenced assessment","Portfolio assessment","Self-assessment"],"answer":"Criterion-referenced assessment"},{"question":"What is the main purpose of diagnostic assessment?","options":["To provide a summary of learning","To identify students' strengths and weaknesses for intervention","To compare students' performance with their peers","To motivate students with high grades"],"answer":"To identify students' strengths and weaknesses for intervention"},{"question":"The term 'curriculum' generally refers to:","options":["Only the textbooks used in a course","The formal sequence of courses offered by an institution","All the planned and unplanned learning experiences","The school building and its facilities"],"answer":"All the planned and unplanned learning experiences"},{"question":"A student-centered curriculum emphasizes:","options":["The teacher as the sole authority","Rigid content delivery","Active student involvement and individual needs","Memorization of facts"],"answer":"Active student involvement and individual needs"},{"question":"The hidden curriculum refers to:","options":["Subjects taught only to gifted students","Official course syllabi","Unstated values, norms, and beliefs conveyed in school","Optional extracurricular activities"],"answer":"Unstated values, norms, and beliefs conveyed in school"}],"sectionB":[{"question":"Who is known as the \"Father of the Indian Constitution\"?","options":["Mahatma Gandhi","Jawaharlal Nehru","Dr. B.R. Ambedkar","Sardar Vallabhbhai Patel"],"answer":"Dr. B.R. Ambedkar"},{"question":"Which planet is known as the \"Red Planet\"?","options":["Earth","Mars","Jupiter","Venus"],"answer":"Mars"},{"question":"The famous Konark Sun Temple is located in which Indian state?","options":["Tamil Nadu","Odisha","Kerala","Rajasthan"],"answer":"Odisha"},{"question":"Which of the following is not a UN permanent member of the Security Council?","options":["China","Germany","France","United States"],"answer":"Germany"},{"question":"The capital of Japan is:","options":["Seoul","Beijing","Tokyo","Bangkok"],"answer":"Tokyo"},{"question":"Which gas is primarily responsible for the greenhouse effect?","options":["Oxygen","Nitrogen","Carbon Dioxide","Hydrogen"],"answer":"Carbon Dioxide"},{"question":"What is the main cause of acid rain?","options":["Excessive use of pesticides","Emissions of sulfur dioxide and nitrogen oxides","Deforestation","Plastic pollution"],"answer":"Emissions of sulfur dioxide and nitrogen oxides"},{"question":"Biodiversity refers to:","options":["The variety of climates on Earth","The amount of water on Earth","The variety of life on Earth at all levels","The different types of rocks"],"answer":"The variety of life on Earth at all levels"},{"question":"The term 'ecosystem' was coined by:","options":["Ernst Haeckel","Arthur Tansley","Charles Darwin","Rachel Carson"],"answer":"Arthur Tansley"},{"question":"Which of the following is a non-renewable resource?","options":["Solar energy","Wind energy","Coal","Water"],"answer":"Coal"},{"question":"If a car travels at 60 km/h, how long will it take to cover 180 km?","options":["2 hours","3 hours","4 hours","5 hours"],"answer":"3 hours"},{"question":"What is 25% of 200?","options":["25","50","75","100"],"answer":"50"},{"question":"The average of 10, 20, 30, 40, and 50 is:","options":["20","25","30","35"],"answer":"30"},{"question":"If x + 5 = 12, then x = ?","options":["5","7","10","12"],"answer":"7"},{"question":"What is the area of a square with a side of 7 cm?","options":["14 sq cm","28 sq cm","49 sq cm","35 sq cm"],"answer":"49 sq cm"},{"question":"Complete the series: 2, 4, 8, 16, ?","options":["20","24","32","64"],"answer":"32"},{"question":"If 'BAT' is coded as '2120', how is 'CAT' coded?","options":["3120","3121","4120","3220"],"answer":"3120"},{"question":"Find the odd one out: Apple, Banana, Potato, Grape.","options":["Apple","Banana","Potato","Grape"],"answer":"Potato"},{"question":"Ram is older than Shyam. Shyam is older than Rohan. Who is the youngest?","options":["Ram","Shyam","Rohan","Cannot be determined"],"answer":"Rohan"},{"question":"A, B, C, D, E are sitting in a row. C is to the immediate left of D. B is at one end. A is to the immediate right of B. Who is in the middle?","options":["A","B","C","E"],"answer":"E"}]};
+        const testDurationMinutes = 60;
+        let timerInterval;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const quizForm = document.getElementById('quiz-form');
+            const questionsContainer = document.getElementById('questions-container');
+            
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            function renderQuiz() {
+                const allQuestions = [...testData.sectionA, ...testData.sectionB];
+                const shuffledQuestions = shuffleArray(allQuestions);
+
+                shuffledQuestions.forEach((q, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question-block border border-gray-200 p-6 rounded-lg';
+                    
+                    const questionText = document.createElement('p');
+                    questionText.className = 'text-lg font-semibold text-gray-800 mb-4';
+                    questionText.textContent = `${index + 1}. ${q.question}`;
+                    questionDiv.appendChild(questionText);
+
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options-list space-y-3';
+                    
+                    const shuffledOptions = shuffleArray([...q.options]);
+                    shuffledOptions.forEach(option => {
+                        const label = document.createElement('label');
+                        label.className = 'flex items-center p-3 border rounded-md hover:bg-gray-50 cursor-pointer transition-colors';
+                        
+                        const radio = document.createElement('input');
+                        radio.type = 'radio';
+                        radio.name = `question-${index}`;
+                        radio.value = option;
+                        radio.className = 'h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300';
+                        
+                        const span = document.createElement('span');
+                        span.textContent = option;
+                        span.className = 'ml-3 text-gray-700';
+                        
+                        label.appendChild(radio);
+                        label.appendChild(span);
+                        optionsDiv.appendChild(label);
+                    });
+
+                    questionDiv.appendChild(optionsDiv);
+                    questionsContainer.appendChild(questionDiv);
+                });
+            }
+            
+            function startTimer() {
+                let timeLeft = testDurationMinutes * 60;
+                const timerEl = document.getElementById('timer');
+
+                timerInterval = setInterval(() => {
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        alert("Time’s up! Your test has been submitted.");
+                        handleSubmit();
+                        return;
+                    }
+
+                    timeLeft--;
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    timerEl.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                }, 1000);
+            }
+
+            function handleSubmit() {
+                clearInterval(timerInterval);
+                const formData = new FormData(quizForm);
+                let score = 0;
+                
+                const allQuestions = [...testData.sectionA, ...testData.sectionB];
+                
+                const answersReviewContainer = document.getElementById('answers-review');
+                answersReviewContainer.innerHTML = ''; // Clear previous review
+
+                allQuestions.forEach((q, index) => {
+                    const originalQuestionBlock = document.querySelectorAll('.question-block')[index];
+                    if (!originalQuestionBlock) return;
+
+                    const reviewBlock = originalQuestionBlock.cloneNode(true);
+                    reviewBlock.id = `review-q-${index}`;
+
+                    const selectedOption = formData.get(`question-${index}`);
+                    const isCorrect = selectedOption === q.answer;
+
+                    if (isCorrect) {
+                        score++;
+                    }
+
+                    const optionsInReview = reviewBlock.querySelectorAll('.options-list label');
+                    optionsInReview.forEach(label => {
+                        const radio = label.querySelector('input');
+                        radio.disabled = true;
+                        
+                        // Always highlight the correct answer in green
+                        if (radio.value === q.answer) {
+                            label.classList.add('correct-answer');
+                        }
+                        
+                        // If an incorrect option was selected by the user, highlight it in red
+                        if (selectedOption !== null && radio.value === selectedOption && !isCorrect) {
+                            label.classList.add('incorrect-answer');
+                        }
+                    });
+                    
+                    answersReviewContainer.appendChild(reviewBlock);
+                });
+
+                document.getElementById('test-container').classList.add('hidden');
+                document.getElementById('results-container').classList.remove('hidden');
+
+                const scoreSummary = document.getElementById('score-summary');
+                const totalQuestions = allQuestions.length;
+                scoreSummary.textContent = `You scored ${score} out of ${totalQuestions}`;
+                if(score/totalQuestions > 0.5) {
+                    scoreSummary.classList.add('bg-green-100', 'text-green-800');
+                } else {
+                    scoreSummary.classList.add('bg-red-100', 'text-red-800');
+                }
+            }
+
+            quizForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                handleSubmit();
+            });
+
+            renderQuiz();
+            startTimer();
+        });
+    </script>
+</body>
+</html>
