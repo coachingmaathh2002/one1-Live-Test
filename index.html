@@ -510,7 +510,7 @@
                     <p class="text-[var(--color-text-muted)]">Students Enrolled</p>
                 </div>
                 <div class="text-center" data-aos="fade-up" data-aos-delay="100">
-                    <div class="stats-counter" data-count="100">0</div>
+                    <div class="stats-counter" data-count="150">0</div>
                     <p class="text-[var(--color-text-muted)]">Mock Tests</p>
                 </div>
                 <div class="text-center" data-aos="fade-up" data-aos-delay="200">
@@ -576,6 +576,24 @@
                         <span role="img" aria-label="books" class="text-5xl mb-3 inline-block transition-transform group-hover:scale-110 text-accent">📚</span>
                         <h3 class="text-xl font-bold text-white group-hover:text-accent">WB SLST</h3>
                         <p class="text-[var(--color-text-muted)] text-sm">20 Exclusive Tests</p>
+                        <div class="mt-3">
+                            <span class="premium-badge">Premium</span>
+                        </div>
+                    </button>
+                    <!-- Bihar STET Card - Now calls the showStetSection function -->
+                    <button id="stetButton" class="block p-6 card-bg rounded-xl shadow-lg hover:shadow-xl hover:border-[var(--color-primary)] transition-all duration-300 transform hover:-translate-y-2 text-center group focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] border border-transparent premium-card" data-aos="fade-up" data-aos-delay="900">
+                        <span role="img" aria-label="teacher" class="text-5xl mb-3 inline-block transition-transform group-hover:scale-110 text-accent">👨‍🏫</span>
+                        <h3 class="text-xl font-bold text-white group-hover:text-accent">Bihar STET</h3>
+                        <p class="text-[var(--color-text-muted)] text-sm">10 General Paper Tests</p>
+                        <div class="mt-3">
+                            <span class="premium-badge">Premium</span>
+                        </div>
+                    </button>
+                    <!-- UGC NET Card - Now calls the showUgcSection function -->
+                    <button id="ugcButton" class="block p-6 card-bg rounded-xl shadow-lg hover:shadow-xl hover:border-[var(--color-primary)] transition-all duration-300 transform hover:-translate-y-2 text-center group focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] border border-transparent premium-card" data-aos="fade-up" data-aos-delay="1000">
+                        <span role="img" aria-label="university" class="text-5xl mb-3 inline-block transition-transform group-hover:scale-110 text-accent">🏫</span>
+                        <h3 class="text-xl font-bold text-white group-hover:text-accent">UGC NET</h3>
+                        <p class="text-[var(--color-text-muted)] text-sm">10 General Paper Tests</p>
                         <div class="mt-3">
                             <span class="premium-badge">Premium</span>
                         </div>
@@ -660,11 +678,107 @@
             </div>
         </section>
 
+        <!-- Bihar STET Section (Hidden by default) -->
+        <section id="stetSection" class="hidden">
+            <!-- Email/Password Login Section -->
+            <div id="stetLogin" class="max-w-md mx-auto login-card-bg p-8 md:p-10 rounded-2xl shadow-2xl text-white" data-aos="fade-up">
+                <h2 class="text-3xl font-bold text-white mb-4 text-center">
+                    <span role="img" aria-label="lock" class="text-accent">🔐</span> Bihar STET Login
+                </h2>
+                <p class="text-md text-[var(--color-text-muted)] mb-8 text-center">
+                    This section is for registered students only. Please log in to access the tests.
+                </p>
+                <form id="stetLoginForm" class="space-y-6">
+                    <div>
+                        <label for="stetEmail" class="block mb-2 text-sm font-medium text-gray-400">Email</label>
+                        <input type="email" id="stetEmail" class="w-full" placeholder="student@example.com" required>
+                    </div>
+                    <div>
+                        <label for="stetPassword" class="block mb-2 text-sm font-medium text-gray-400">Password</label>
+                        <input type="password" id="stetPassword" class="w-full" placeholder="••••••••" required>
+                    </div>
+                    <p id="stetLoginErrorMessage" class="text-red-500 text-center text-sm hidden"></p>
+                    <button type="submit" class="w-full btn-primary btn-hover-effect py-3 rounded-lg text-lg">
+                        Login
+                    </button>
+                </form>
+                <p class="text-center text-xs text-gray-500 mt-4">Demo credentials: Email: <strong>stet@student.com</strong> | Pass: <strong>test1234</strong></p>
+                <button id="backToDashboardFromStetButton" class="w-full mt-6 btn-secondary btn-hover-effect py-3 rounded-lg text-lg">
+                    Back to Dashboard
+                </button>
+            </div>
+
+            <!-- Mock Test List for STET (Initially hidden) -->
+            <div id="stetMockTestList" class="card-bg p-8 md:p-10 max-w-4xl mx-auto rounded-2xl shadow-lg hidden text-white" data-aos="fade-up">
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4 border-b border-[#3A3A45] pb-4">
+                    <h2 class="text-3xl font-semibold text-white">
+                        <span role="img" aria-label="teacher" class="text-accent">👨‍🏫</span> Bihar STET Mock Tests
+                    </h2>
+                    <!-- Logout Button for this section -->
+                    <button id="stetLogoutButton" class="py-2 px-5 bg-red-700 text-white font-bold rounded-lg hover:bg-red-800 transition-all duration-300 shadow-md transform hover:scale-105">
+                        Logout
+                    </button>
+                </div>
+                <div id="stetTestListContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Test links will be dynamically loaded here by the script -->
+                    <p class="text-center col-span-full text-[var(--color-text-muted)]" id="stetLoadingMessage">Loading tests...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- UGC NET Section (Hidden by default) -->
+        <section id="ugcSection" class="hidden">
+            <!-- Email/Password Login Section -->
+            <div id="ugcLogin" class="max-w-md mx-auto login-card-bg p-8 md:p-10 rounded-2xl shadow-2xl text-white" data-aos="fade-up">
+                <h2 class="text-3xl font-bold text-white mb-4 text-center">
+                    <span role="img" aria-label="lock" class="text-accent">🔐</span> UGC NET Login
+                </h2>
+                <p class="text-md text-[var(--color-text-muted)] mb-8 text-center">
+                    This section is for registered students only. Please log in to access the tests.
+                </p>
+                <form id="ugcLoginForm" class="space-y-6">
+                    <div>
+                        <label for="ugcEmail" class="block mb-2 text-sm font-medium text-gray-400">Email</label>
+                        <input type="email" id="ugcEmail" class="w-full" placeholder="student@example.com" required>
+                    </div>
+                    <div>
+                        <label for="ugcPassword" class="block mb-2 text-sm font-medium text-gray-400">Password</label>
+                        <input type="password" id="ugcPassword" class="w-full" placeholder="••••••••" required>
+                    </div>
+                    <p id="ugcLoginErrorMessage" class="text-red-500 text-center text-sm hidden"></p>
+                    <button type="submit" class="w-full btn-primary btn-hover-effect py-3 rounded-lg text-lg">
+                        Login
+                    </button>
+                </form>
+                <p class="text-center text-xs text-gray-500 mt-4">Demo credentials: Email: <strong>ugc@student.com</strong> | Pass: <strong>test1234</strong></p>
+                <button id="backToDashboardFromUgcButton" class="w-full mt-6 btn-secondary btn-hover-effect py-3 rounded-lg text-lg">
+                    Back to Dashboard
+                </button>
+            </div>
+
+            <!-- Mock Test List for UGC (Initially hidden) -->
+            <div id="ugcMockTestList" class="card-bg p-8 md:p-10 max-w-4xl mx-auto rounded-2xl shadow-lg hidden text-white" data-aos="fade-up">
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4 border-b border-[#3A3A45] pb-4">
+                    <h2 class="text-3xl font-semibold text-white">
+                        <span role="img" aria-label="university" class="text-accent">🏫</span> UGC NET Mock Tests
+                    </h2>
+                    <!-- Logout Button for this section -->
+                    <button id="ugcLogoutButton" class="py-2 px-5 bg-red-700 text-white font-bold rounded-lg hover:bg-red-800 transition-all duration-300 shadow-md transform hover:scale-105">
+                        Logout
+                    </button>
+                </div>
+                <div id="ugcTestListContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Test links will be dynamically loaded here by the script -->
+                    <p class="text-center col-span-full text-[var(--color-text-muted)]" id="ugcLoadingMessage">Loading tests...</p>
+                </div>
+            </div>
+        </section>
+
         <!-- About Us Section -->
         <section id="aboutUsSection" class="card-bg p-8 md:p-10 max-w-6xl mx-auto rounded-3xl shadow-xl" data-aos="fade-up">
             <h2 class="text-4xl font-bold text-white mb-8 text-center border-b-2 border-primary/20 pb-4">About Pijus Sir's Academy</h2>
             <div class="prose max-w-none text-[var(--color-text-muted)] leading-relaxed text-lg mx-auto">
-                <p class="mb-4">Welcome to Pijus Sir's Academy, your premier destination for comprehensive math mock test preparation. We specialize in preparing students for competitive exams like **IIT JAM, WBJEE, CSIR NET, CUET PG, UP LT Grade, and BPSC.**</p>
+                <p class="mb-4">Welcome to Pijus Sir's Academy, your premier destination for comprehensive math mock test preparation. We specialize in preparing students for competitive exams like **IIT JAM, WBJEE, CSIR NET, CUET PG, UP LT Grade, BPSC, Bihar STET, and UGC NET.**</p>
                 <p class="mb-4">Our platform is meticulously designed to provide you with a realistic exam environment, helping you build confidence and master the necessary skills. With a wide range of mock tests, detailed solutions, and performance analytics, we help you identify your strengths and weaknesses to optimize your study strategy.</p>
                 <p>At Pijus Sir's Academy, we believe in a student-centric approach. Our team of experienced educators is dedicated to guiding you through every step of your preparation journey. We are committed to making quality education accessible and empowering you to achieve your academic goals. Join us today and take the first step towards a successful future!</p>
             </div>
@@ -718,6 +832,18 @@
                     <div class="testimonial-card">
                         <p class="text-xl italic text-gray-300 mb-4">"The WB SLST dedicated practice tests are exactly what I needed. The content is top-notch and directly relevant to the syllabus."</p>
                         <p class="font-bold text-accent text-lg">- Sangeeta D. (WB SLST)</p>
+                    </div>
+                </div>
+                <div class="testimonial-item text-center p-4">
+                    <div class="testimonial-card">
+                        <p class="text-xl italic text-gray-300 mb-4">"The Bihar STET General Paper tests helped me crack the exam in my first attempt. Thank you Pijus Sir's Academy!"</p>
+                        <p class="font-bold text-accent text-lg">- Amit K. (Bihar STET)</p>
+                    </div>
+                </div>
+                <div class="testimonial-item text-center p-4">
+                    <div class="testimonial-card">
+                        <p class="text-xl italic text-gray-300 mb-4">"UGC NET General Paper tests are comprehensive and cover all the important topics. I cleared the exam with flying colors."</p>
+                        <p class="font-bold text-accent text-lg">- Neha S. (UGC NET)</p>
                     </div>
                 </div>
             </div>
@@ -789,6 +915,10 @@
         // --- Core UI Element References ---
         const mainDashboard = document.getElementById('mainDashboard');
         const slstSection = document.getElementById('slstSection');
+        const stetSection = document.getElementById('stetSection');
+        const ugcSection = document.getElementById('ugcSection');
+        
+        // SLST Elements
         const slstLogin = document.getElementById('slstLogin');
         const mockTestList = document.getElementById('mockTestList');
         const loginErrorMessage = document.getElementById('loginErrorMessage');
@@ -798,6 +928,29 @@
         const slstLoginForm = document.getElementById('slstLoginForm');
         const backToDashboardButton = document.getElementById('backToDashboardButton');
         const slstLogoutButton = document.getElementById('slstLogoutButton');
+        
+        // STET Elements
+        const stetLogin = document.getElementById('stetLogin');
+        const stetMockTestList = document.getElementById('stetMockTestList');
+        const stetLoginErrorMessage = document.getElementById('stetLoginErrorMessage');
+        const stetTestListContainer = document.getElementById('stetTestListContainer');
+        const stetLoadingMessage = document.getElementById('stetLoadingMessage');
+        const stetButton = document.getElementById('stetButton');
+        const stetLoginForm = document.getElementById('stetLoginForm');
+        const backToDashboardFromStetButton = document.getElementById('backToDashboardFromStetButton');
+        const stetLogoutButton = document.getElementById('stetLogoutButton');
+        
+        // UGC Elements
+        const ugcLogin = document.getElementById('ugcLogin');
+        const ugcMockTestList = document.getElementById('ugcMockTestList');
+        const ugcLoginErrorMessage = document.getElementById('ugcLoginErrorMessage');
+        const ugcTestListContainer = document.getElementById('ugcTestListContainer');
+        const ugcLoadingMessage = document.getElementById('ugcLoadingMessage');
+        const ugcButton = document.getElementById('ugcButton');
+        const ugcLoginForm = document.getElementById('ugcLoginForm');
+        const backToDashboardFromUgcButton = document.getElementById('backToDashboardFromUgcButton');
+        const ugcLogoutButton = document.getElementById('ugcLogoutButton');
+        
         const successAlert = document.getElementById('successAlert');
 
         // Navigation Elements
@@ -833,6 +986,8 @@
          */
         function showSlstSection() {
             mainDashboard.classList.add('hidden');
+            stetSection.classList.add('hidden');
+            ugcSection.classList.add('hidden');
             slstSection.classList.remove('hidden');
 
             // Hide/Show correct sub-section based on login status
@@ -845,19 +1000,63 @@
                 mockTestList.classList.add('hidden');
             }
         }
+        
+        /**
+         * @function showStetSection
+         * Hides the main dashboard and shows the Bihar STET section.
+         */
+        function showStetSection() {
+            mainDashboard.classList.add('hidden');
+            slstSection.classList.add('hidden');
+            ugcSection.classList.add('hidden');
+            stetSection.classList.remove('hidden');
+
+            // Hide/Show correct sub-section based on login status
+            if (isLoggedIn) {
+                stetLogin.classList.add('hidden');
+                stetMockTestList.classList.remove('hidden');
+                loadStetMockTests();
+            } else {
+                stetLogin.classList.remove('hidden');
+                stetMockTestList.classList.add('hidden');
+            }
+        }
+        
+        /**
+         * @function showUgcSection
+         * Hides the main dashboard and shows the UGC NET section.
+         */
+        function showUgcSection() {
+            mainDashboard.classList.add('hidden');
+            slstSection.classList.add('hidden');
+            stetSection.classList.add('hidden');
+            ugcSection.classList.remove('hidden');
+
+            // Hide/Show correct sub-section based on login status
+            if (isLoggedIn) {
+                ugcLogin.classList.add('hidden');
+                ugcMockTestList.classList.remove('hidden');
+                loadUgcMockTests();
+            } else {
+                ugcLogin.classList.remove('hidden');
+                ugcMockTestList.classList.add('hidden');
+            }
+        }
 
         /**
          * @function showMainDashboard
-         * Hides the WB SLST section and shows the main dashboard.
+         * Hides all exam sections and shows the main dashboard.
          */
         function showMainDashboard() {
             slstSection.classList.add('hidden');
+            stetSection.classList.add('hidden');
+            ugcSection.classList.add('hidden');
             mainDashboard.classList.remove('hidden');
         }
 
         /**
          * @function loadMockTests
-         * Dynamically generates a list of hardcoded mock tests.
+         * Dynamically generates a list of WB SLST mock tests.
          */
         function loadMockTests() {
             // Remove the loading message and clear previous tests
@@ -924,6 +1123,122 @@
         }
         
         /**
+         * @function loadStetMockTests
+         * Dynamically generates a list of Bihar STET mock tests.
+         */
+        function loadStetMockTests() {
+            // Remove the loading message and clear previous tests
+            stetLoadingMessage.classList.add('hidden');
+            stetTestListContainer.innerHTML = '';
+
+            const tests = [
+                { title: 'Bihar STET Test 1', url: 'stet_1.html', status: 'Available' },
+                { title: 'Bihar STET Test 2', url: 'stet_2.html', status: 'Available' },
+                { title: 'Bihar STET Test 3', url: 'stet_3.html', status: 'Available' },
+                { title: 'Bihar STET Test 4', url: 'stet_4.html', status: 'Available' },
+                { title: 'Bihar STET Test 5', url: 'stet_5.html', status: 'Available' },
+                { title: 'Bihar STET Test 6', url: 'stet_6.html', status: 'Available' },
+                { title: 'Bihar STET Test 7', url: 'stet_7.html', status: 'Available' },
+                { title: 'Bihar STET Test 8', url: 'stet_8.html', status: 'Available' },
+                { title: 'Bihar STET Test 9', url: 'stet_9.html', status: 'Available' },
+                { title: 'Bihar STET Test 10', url: 'stet_10.html', status: 'Available' },
+            ];
+
+            tests.forEach(test => {
+                let badgeClass = '';
+                let icon = '';
+                let linkTarget = '';
+
+                switch (test.status) {
+                    case 'Available':
+                        badgeClass = 'bg-[var(--color-primary)] text-[var(--color-bg-deep)]';
+                        icon = '<i class="fas fa-play-circle mr-2"></i>';
+                        linkTarget = `href="${test.url}"`;
+                        break;
+                    case 'In Progress':
+                        badgeClass = 'bg-yellow-600 text-white';
+                        icon = '<i class="fas fa-hourglass-half mr-2"></i>';
+                        linkTarget = `href="${test.url}"`;
+                        break;
+                    case 'Locked':
+                    default:
+                        badgeClass = 'bg-red-700 text-white';
+                        icon = '<i class="fas fa-lock mr-2"></i>';
+                        linkTarget = `href="#" onclick="showSuccessAlert('This test is not yet available.', true)"`; // Use true for error
+                }
+
+                const testItem = `
+                    <a ${linkTarget} class="block p-5 card-bg rounded-lg text-left text-lg font-medium hover:bg-[#24242C] transition duration-300 shadow-sm border border-[#3A3A45] transform hover:scale-[1.02]">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-white">${icon} ${test.title}</span>
+                            <span class="text-xs font-bold px-2 py-1 rounded-full ${badgeClass}">${test.status.toUpperCase()}</span>
+                        </div>
+                        <p class="text-sm text-[var(--color-text-muted)]">Duration: 150 mins | Marks: 150</p>
+                    </a>
+                `;
+                stetTestListContainer.innerHTML += testItem;
+            });
+        }
+        
+        /**
+         * @function loadUgcMockTests
+         * Dynamically generates a list of UGC NET mock tests.
+         */
+        function loadUgcMockTests() {
+            // Remove the loading message and clear previous tests
+            ugcLoadingMessage.classList.add('hidden');
+            ugcTestListContainer.innerHTML = '';
+
+            const tests = [
+                { title: 'UGC NET Test 1', url: 'ugc_1.html', status: 'Available' },
+                { title: 'UGC NET Test 2', url: 'ugc_2.html', status: 'Available' },
+                { title: 'UGC NET Test 3', url: 'ugc_3.html', status: 'Available' },
+                { title: 'UGC NET Test 4', url: 'ugc_4.html', status: 'Available' },
+                { title: 'UGC NET Test 5', url: 'ugc_5.html', status: 'Available' },
+                { title: 'UGC NET Test 6', url: 'ugc_6.html', status: 'Available' },
+                { title: 'UGC NET Test 7', url: 'ugc_7.html', status: 'Available' },
+                { title: 'UGC NET Test 8', url: 'ugc_8.html', status: 'Available' },
+                { title: 'UGC NET Test 9', url: 'ugc_9.html', status: 'Available' },
+                { title: 'UGC NET Test 10', url: 'ugc_10.html', status: 'Available' },
+            ];
+
+            tests.forEach(test => {
+                let badgeClass = '';
+                let icon = '';
+                let linkTarget = '';
+
+                switch (test.status) {
+                    case 'Available':
+                        badgeClass = 'bg-[var(--color-primary)] text-[var(--color-bg-deep)]';
+                        icon = '<i class="fas fa-play-circle mr-2"></i>';
+                        linkTarget = `href="${test.url}"`;
+                        break;
+                    case 'In Progress':
+                        badgeClass = 'bg-yellow-600 text-white';
+                        icon = '<i class="fas fa-hourglass-half mr-2"></i>';
+                        linkTarget = `href="${test.url}"`;
+                        break;
+                    case 'Locked':
+                    default:
+                        badgeClass = 'bg-red-700 text-white';
+                        icon = '<i class="fas fa-lock mr-2"></i>';
+                        linkTarget = `href="#" onclick="showSuccessAlert('This test is not yet available.', true)"`; // Use true for error
+                }
+
+                const testItem = `
+                    <a ${linkTarget} class="block p-5 card-bg rounded-lg text-left text-lg font-medium hover:bg-[#24242C] transition duration-300 shadow-sm border border-[#3A3A45] transform hover:scale-[1.02]">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-white">${icon} ${test.title}</span>
+                            <span class="text-xs font-bold px-2 py-1 rounded-full ${badgeClass}">${test.status.toUpperCase()}</span>
+                        </div>
+                        <p class="text-sm text-[var(--color-text-muted)]">Duration: 180 mins | Marks: 100</p>
+                    </a>
+                `;
+                ugcTestListContainer.innerHTML += testItem;
+            });
+        }
+        
+        /**
          * @function showSuccessAlert
          * Displays a success message box for a short duration.
          */
@@ -982,6 +1297,96 @@
                 showSuccessAlert("Login failed. Check your credentials.", true);
             }
         }
+        
+        /**
+         * @function handleStetLogin
+         * Handles the Bihar STET login form submission.
+         */
+        async function handleStetLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('stetEmail').value;
+            const password = document.getElementById('stetPassword').value;
+
+            // Ensure USERS_DATA is loaded before attempting login
+            if (USERS_DATA.length === 0) {
+                 try {
+                     const response = await fetch('students.json');
+                     if (!response.ok) {
+                         throw new Error(`HTTP error! status: ${response.status}`);
+                     }
+                     USERS_DATA = await response.json();
+                     console.log("Successfully re-loaded student data from students.json for login attempt.");
+                 } catch (error) {
+                     console.error('Could not load student data during login:', error);
+                     stetLoginErrorMessage.textContent = "Error: Could not load user data. Please check console for details.";
+                     stetLoginErrorMessage.classList.remove('hidden');
+                     return; // Exit if data can't be loaded
+                 }
+            }
+            
+            // Check credentials
+            const user = USERS_DATA.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                // Login successful
+                isLoggedIn = true;
+                stetLoginErrorMessage.classList.add('hidden');
+                stetLogin.classList.add('hidden');
+                stetMockTestList.classList.remove('hidden');
+                loadStetMockTests();
+                showSuccessAlert(`Login successful! Welcome, ${user.email}.`);
+            } else {
+                // Login failed
+                stetLoginErrorMessage.textContent = "Invalid email or password. Please check the demo credentials.";
+                stetLoginErrorMessage.classList.remove('hidden');
+                showSuccessAlert("Login failed. Check your credentials.", true);
+            }
+        }
+        
+        /**
+         * @function handleUgcLogin
+         * Handles the UGC NET login form submission.
+         */
+        async function handleUgcLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('ugcEmail').value;
+            const password = document.getElementById('ugcPassword').value;
+
+            // Ensure USERS_DATA is loaded before attempting login
+            if (USERS_DATA.length === 0) {
+                 try {
+                     const response = await fetch('students.json');
+                     if (!response.ok) {
+                         throw new Error(`HTTP error! status: ${response.status}`);
+                     }
+                     USERS_DATA = await response.json();
+                     console.log("Successfully re-loaded student data from students.json for login attempt.");
+                 } catch (error) {
+                     console.error('Could not load student data during login:', error);
+                     ugcLoginErrorMessage.textContent = "Error: Could not load user data. Please check console for details.";
+                     ugcLoginErrorMessage.classList.remove('hidden');
+                     return; // Exit if data can't be loaded
+                 }
+            }
+            
+            // Check credentials
+            const user = USERS_DATA.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                // Login successful
+                isLoggedIn = true;
+                ugcLoginErrorMessage.classList.add('hidden');
+                ugcLogin.classList.add('hidden');
+                ugcMockTestList.classList.remove('hidden');
+                loadUgcMockTests();
+                showSuccessAlert(`Login successful! Welcome, ${user.email}.`);
+            } else {
+                // Login failed
+                ugcLoginErrorMessage.textContent = "Invalid email or password. Please check the demo credentials.";
+                ugcLoginErrorMessage.classList.remove('hidden');
+                showSuccessAlert("Login failed. Check your credentials.", true);
+            }
+        }
 
         /**
          * @function handleSlstLogout
@@ -994,6 +1399,38 @@
             loginErrorMessage.classList.add('hidden'); // Clear any previous error messages
             document.getElementById('slstEmail').value = ''; // Clear email field
             document.getElementById('slstPassword').value = ''; // Clear password field
+            
+            showSuccessAlert("Logged out successfully.");
+            showMainDashboard(); // Go back to the main dashboard
+        }
+        
+        /**
+         * @function handleStetLogout
+         * Handles Bihar STET logout by resetting the state and UI.
+         */
+        function handleStetLogout() {
+            isLoggedIn = false;
+            stetLogin.classList.remove('hidden');
+            stetMockTestList.classList.add('hidden');
+            stetLoginErrorMessage.classList.add('hidden'); // Clear any previous error messages
+            document.getElementById('stetEmail').value = ''; // Clear email field
+            document.getElementById('stetPassword').value = ''; // Clear password field
+            
+            showSuccessAlert("Logged out successfully.");
+            showMainDashboard(); // Go back to the main dashboard
+        }
+        
+        /**
+         * @function handleUgcLogout
+         * Handles UGC NET logout by resetting the state and UI.
+         */
+        function handleUgcLogout() {
+            isLoggedIn = false;
+            ugcLogin.classList.remove('hidden');
+            ugcMockTestList.classList.add('hidden');
+            ugcLoginErrorMessage.classList.add('hidden'); // Clear any previous error messages
+            document.getElementById('ugcEmail').value = ''; // Clear email field
+            document.getElementById('ugcPassword').value = ''; // Clear password field
             
             showSuccessAlert("Logged out successfully.");
             showMainDashboard(); // Go back to the main dashboard
@@ -1160,17 +1597,29 @@
 
             // 1. SLST Card Button: Triggers the special login/test section view
             slstButton.addEventListener('click', showSlstSection);
-
-            // 2. Back Button: Returns to the main dashboard
-            backToDashboardButton.addEventListener('click', showMainDashboard);
-
-            // 3. Login Form Submission: Attempts authentication
-            slstLoginForm.addEventListener('submit', handleSlstLogin);
-
-            // 4. Logout Button: Resets session and view
-            slstLogoutButton.addEventListener('click', handleSlstLogout);
             
-            // 5. Start Testimonial Carousel
+            // 2. STET Card Button: Triggers the special login/test section view
+            stetButton.addEventListener('click', showStetSection);
+            
+            // 3. UGC Card Button: Triggers the special login/test section view
+            ugcButton.addEventListener('click', showUgcSection);
+
+            // 4. Back Buttons: Returns to the main dashboard
+            backToDashboardButton.addEventListener('click', showMainDashboard);
+            backToDashboardFromStetButton.addEventListener('click', showMainDashboard);
+            backToDashboardFromUgcButton.addEventListener('click', showMainDashboard);
+
+            // 5. Login Form Submissions: Attempts authentication
+            slstLoginForm.addEventListener('submit', handleSlstLogin);
+            stetLoginForm.addEventListener('submit', handleStetLogin);
+            ugcLoginForm.addEventListener('submit', handleUgcLogin);
+
+            // 6. Logout Buttons: Resets session and view
+            slstLogoutButton.addEventListener('click', handleSlstLogout);
+            stetLogoutButton.addEventListener('click', handleStetLogout);
+            ugcLogoutButton.addEventListener('click', handleUgcLogout);
+            
+            // 7. Start Testimonial Carousel
             startTestimonialCarousel();
 
             // Optional: Load users data immediately on page load to speed up first login attempt
