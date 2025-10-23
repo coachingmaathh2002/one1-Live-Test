@@ -647,14 +647,14 @@
                     </div>
                     <div>
                         <label for="slstPassword" class="block mb-2 text-sm font-medium text-gray-400">Password</label>
-                        <input type="password" id="slstPassword" class="w-full" placeholder="••••••••" required>
+                        <input type="password" id="slstPassword" class="w-full" placeholder="•••••••••" required>
                     </div>
                     <p id="loginErrorMessage" class="text-red-500 text-center text-sm hidden"></p>
                     <button type="submit" class="w-full btn-primary btn-hover-effect py-3 rounded-lg text-lg">
                         Login
                     </button>
                 </form>
-                <p class="text-center text-xs text-gray-500 mt-4">Demo credentials: Email: <strong>slst@student.com</strong> | Pass: <strong>test1234</strong></p>
+                <p class="text-center text-xs text-gray-500 mt-4" id="slstDemoCredentials">Demo credentials: Email: <strong>slst@student.com</strong> | Pass: <strong>test1998</strong></p>
                 <button id="backToDashboardButton" class="w-full mt-6 btn-secondary btn-hover-effect py-3 rounded-lg text-lg">
                     Back to Dashboard
                 </button>
@@ -695,14 +695,14 @@
                     </div>
                     <div>
                         <label for="stetPassword" class="block mb-2 text-sm font-medium text-gray-400">Password</label>
-                        <input type="password" id="stetPassword" class="w-full" placeholder="••••••••" required>
+                        <input type="password" id="stetPassword" class="w-full" placeholder="•••••••••" required>
                     </div>
                     <p id="stetLoginErrorMessage" class="text-red-500 text-center text-sm hidden"></p>
                     <button type="submit" class="w-full btn-primary btn-hover-effect py-3 rounded-lg text-lg">
                         Login
                     </button>
                 </form>
-                <p class="text-center text-xs text-gray-500 mt-4">Demo credentials: Email: <strong>stet@student.com</strong> | Pass: <strong>test1234</strong></p>
+                <p class="text-center text-xs text-gray-500 mt-4" id="stetDemoCredentials">Demo credentials: Email: <strong>student11@example.com</strong> | Pass: <strong>password</strong></p>
                 <button id="backToDashboardFromStetButton" class="w-full mt-6 btn-secondary btn-hover-effect py-3 rounded-lg text-lg">
                     Back to Dashboard
                 </button>
@@ -743,14 +743,14 @@
                     </div>
                     <div>
                         <label for="ugcPassword" class="block mb-2 text-sm font-medium text-gray-400">Password</label>
-                        <input type="password" id="ugcPassword" class="w-full" placeholder="••••••••" required>
+                        <input type="password" id="ugcPassword" class="w-full" placeholder="•••••••••" required>
                     </div>
                     <p id="ugcLoginErrorMessage" class="text-red-500 text-center text-sm hidden"></p>
                     <button type="submit" class="w-full btn-primary btn-hover-effect py-3 rounded-lg text-lg">
                         Login
                     </button>
                 </form>
-                <p class="text-center text-xs text-gray-500 mt-4">Demo credentials: Email: <strong>ugc@student.com</strong> | Pass: <strong>test1234</strong></p>
+                <p class="text-center text-xs text-gray-500 mt-4" id="ugcDemoCredentials">Demo credentials: Email: <strong>student26@example.com</strong> | Pass: <strong>password</strong></p>
                 <button id="backToDashboardFromUgcButton" class="w-full mt-6 btn-secondary btn-hover-effect py-3 rounded-lg text-lg">
                     Back to Dashboard
                 </button>
@@ -909,161 +909,353 @@
     
     <!-- Script to handle UI logic, API interaction, and JSON data login -->
     <script type="module">
-        // --- Global variable to hold user data (will be fetched from students.json) ---
-        let USERS_DATA = [];
+        // Application State
+        const appState = {
+            users: null, // Will store the loaded user data
+            isLoggedIn: false,
+            currentSection: 'dashboard',
+            currentUser: null
+        };
 
-        // --- Core UI Element References ---
-        const mainDashboard = document.getElementById('mainDashboard');
-        const slstSection = document.getElementById('slstSection');
-        const stetSection = document.getElementById('stetSection');
-        const ugcSection = document.getElementById('ugcSection');
-        
-        // SLST Elements
-        const slstLogin = document.getElementById('slstLogin');
-        const mockTestList = document.getElementById('mockTestList');
-        const loginErrorMessage = document.getElementById('loginErrorMessage');
-        const testListContainer = document.getElementById('testListContainer');
-        const loadingMessage = document.getElementById('loadingMessage');
-        const slstButton = document.getElementById('slstButton');
-        const slstLoginForm = document.getElementById('slstLoginForm');
-        const backToDashboardButton = document.getElementById('backToDashboardButton');
-        const slstLogoutButton = document.getElementById('slstLogoutButton');
-        
-        // STET Elements
-        const stetLogin = document.getElementById('stetLogin');
-        const stetMockTestList = document.getElementById('stetMockTestList');
-        const stetLoginErrorMessage = document.getElementById('stetLoginErrorMessage');
-        const stetTestListContainer = document.getElementById('stetTestListContainer');
-        const stetLoadingMessage = document.getElementById('stetLoadingMessage');
-        const stetButton = document.getElementById('stetButton');
-        const stetLoginForm = document.getElementById('stetLoginForm');
-        const backToDashboardFromStetButton = document.getElementById('backToDashboardFromStetButton');
-        const stetLogoutButton = document.getElementById('stetLogoutButton');
-        
-        // UGC Elements
-        const ugcLogin = document.getElementById('ugcLogin');
-        const ugcMockTestList = document.getElementById('ugcMockTestList');
-        const ugcLoginErrorMessage = document.getElementById('ugcLoginErrorMessage');
-        const ugcTestListContainer = document.getElementById('ugcTestListContainer');
-        const ugcLoadingMessage = document.getElementById('ugcLoadingMessage');
-        const ugcButton = document.getElementById('ugcButton');
-        const ugcLoginForm = document.getElementById('ugcLoginForm');
-        const backToDashboardFromUgcButton = document.getElementById('backToDashboardFromUgcButton');
-        const ugcLogoutButton = document.getElementById('ugcLogoutButton');
-        
-        const successAlert = document.getElementById('successAlert');
+        // DOM Element References
+        const elements = {
+            // Main sections
+            mainDashboard: document.getElementById('mainDashboard'),
+            slstSection: document.getElementById('slstSection'),
+            stetSection: document.getElementById('stetSection'),
+            ugcSection: document.getElementById('ugcSection'),
+            
+            // SLST elements
+            slstLogin: document.getElementById('slstLogin'),
+            mockTestList: document.getElementById('mockTestList'),
+            loginErrorMessage: document.getElementById('loginErrorMessage'),
+            testListContainer: document.getElementById('testListContainer'),
+            loadingMessage: document.getElementById('loadingMessage'),
+            slstButton: document.getElementById('slstButton'),
+            slstLoginForm: document.getElementById('slstLoginForm'),
+            backToDashboardButton: document.getElementById('backToDashboardButton'),
+            slstLogoutButton: document.getElementById('slstLogoutButton'),
+            
+            // STET elements
+            stetLogin: document.getElementById('stetLogin'),
+            stetMockTestList: document.getElementById('stetMockTestList'),
+            stetLoginErrorMessage: document.getElementById('stetLoginErrorMessage'),
+            stetTestListContainer: document.getElementById('stetTestListContainer'),
+            stetLoadingMessage: document.getElementById('stetLoadingMessage'),
+            stetButton: document.getElementById('stetButton'),
+            stetLoginForm: document.getElementById('stetLoginForm'),
+            backToDashboardFromStetButton: document.getElementById('backToDashboardFromStetButton'),
+            stetLogoutButton: document.getElementById('stetLogoutButton'),
+            
+            // UGC elements
+            ugcLogin: document.getElementById('ugcLogin'),
+            ugcMockTestList: document.getElementById('ugcMockTestList'),
+            ugcLoginErrorMessage: document.getElementById('ugcLoginErrorMessage'),
+            ugcTestListContainer: document.getElementById('ugcTestListContainer'),
+            ugcLoadingMessage: document.getElementById('ugcLoadingMessage'),
+            ugcButton: document.getElementById('ugcButton'),
+            ugcLoginForm: document.getElementById('ugcLoginForm'),
+            backToDashboardFromUgcButton: document.getElementById('backToDashboardFromUgcButton'),
+            ugcLogoutButton: document.getElementById('ugcLogoutButton'),
+            
+            // Common elements
+            successAlert: document.getElementById('successAlert'),
+            particlesContainer: document.getElementById('particles'),
+            
+            // Navigation elements
+            mobileMenuButton: document.getElementById('mobileMenuButton'),
+            closeMenuButton: document.getElementById('closeMenuButton'),
+            navMenu: document.getElementById('navMenu'),
+            
+            // Demo credentials elements
+            slstDemoCredentials: document.getElementById('slstDemoCredentials'),
+            stetDemoCredentials: document.getElementById('stetDemoCredentials'),
+            ugcDemoCredentials: document.getElementById('ugcDemoCredentials')
+        };
 
-        // Navigation Elements
-        const mobileMenuButton = document.getElementById('mobileMenuButton');
-        const closeMenuButton = document.getElementById('closeMenuButton');
-        const navMenu = document.getElementById('navMenu');
-
-        // A simple flag to track login status
-        let isLoggedIn = false;
-
-        // --- Core UI Navigation Functions ---
-        
-        /**
-         * Toggles the visibility of the mobile navigation menu.
-         */
+        // Navigation Functions
         function toggleMobileMenu() {
-            navMenu.classList.toggle('nav-menu-closed');
-            navMenu.classList.toggle('nav-menu-open');
+            elements.navMenu.classList.toggle('nav-menu-closed');
+            elements.navMenu.classList.toggle('nav-menu-open');
         }
 
-        /**
-         * Closes the mobile navigation menu. Called by links.
-         */
         function closeMobileMenu() {
-            if (navMenu.classList.contains('nav-menu-open')) {
+            if (elements.navMenu.classList.contains('nav-menu-open')) {
                 toggleMobileMenu();
             }
         }
 
-        /**
-         * @function showSlstSection
-         * Hides the main dashboard and shows the WB SLST section.
-         */
-        function showSlstSection() {
-            mainDashboard.classList.add('hidden');
-            stetSection.classList.add('hidden');
-            ugcSection.classList.add('hidden');
-            slstSection.classList.remove('hidden');
+        // Section Display Functions
+        function showSection(sectionName) {
+            // Hide all sections
+            elements.mainDashboard.classList.add('hidden');
+            elements.slstSection.classList.add('hidden');
+            elements.stetSection.classList.add('hidden');
+            elements.ugcSection.classList.add('hidden');
+            
+            // Show the requested section
+            switch(sectionName) {
+                case 'slst':
+                    elements.slstSection.classList.remove('hidden');
+                    if (appState.isLoggedIn) {
+                        elements.slstLogin.classList.add('hidden');
+                        elements.mockTestList.classList.remove('hidden');
+                        loadMockTests('slst');
+                    } else {
+                        elements.slstLogin.classList.remove('hidden');
+                        elements.mockTestList.classList.add('hidden');
+                    }
+                    break;
+                case 'stet':
+                    elements.stetSection.classList.remove('hidden');
+                    if (appState.isLoggedIn) {
+                        elements.stetLogin.classList.add('hidden');
+                        elements.stetMockTestList.classList.remove('hidden');
+                        loadMockTests('stet');
+                    } else {
+                        elements.stetLogin.classList.remove('hidden');
+                        elements.stetMockTestList.classList.add('hidden');
+                    }
+                    break;
+                case 'ugc':
+                    elements.ugcSection.classList.remove('hidden');
+                    if (appState.isLoggedIn) {
+                        elements.ugcLogin.classList.add('hidden');
+                        elements.ugcMockTestList.classList.remove('hidden');
+                        loadMockTests('ugc');
+                    } else {
+                        elements.ugcLogin.classList.remove('hidden');
+                        elements.ugcMockTestList.classList.add('hidden');
+                    }
+                    break;
+                case 'dashboard':
+                default:
+                    elements.mainDashboard.classList.remove('hidden');
+                    break;
+            }
+            
+            appState.currentSection = sectionName;
+        }
 
-            // Hide/Show correct sub-section based on login status
-            if (isLoggedIn) {
-                slstLogin.classList.add('hidden');
-                mockTestList.classList.remove('hidden');
-                loadMockTests();
-            } else {
-                slstLogin.classList.remove('hidden');
-                mockTestList.classList.add('hidden');
+        // Authentication Functions
+        async function loadUserCredentials() {
+            try {
+                const response = await fetch('students.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                appState.users = await response.json();
+                console.log("User credentials loaded successfully");
+                return true;
+            } catch (error) {
+                console.error('Could not load user credentials:', error);
+                return false;
             }
         }
-        
-        /**
-         * @function showStetSection
-         * Hides the main dashboard and shows the Bihar STET section.
-         */
-        function showStetSection() {
-            mainDashboard.classList.add('hidden');
-            slstSection.classList.add('hidden');
-            ugcSection.classList.add('hidden');
-            stetSection.classList.remove('hidden');
 
-            // Hide/Show correct sub-section based on login status
-            if (isLoggedIn) {
-                stetLogin.classList.add('hidden');
-                stetMockTestList.classList.remove('hidden');
-                loadStetMockTests();
-            } else {
-                stetLogin.classList.remove('hidden');
-                stetMockTestList.classList.add('hidden');
+        function validateCredentials(email, password, examType) {
+            if (!appState.users || !appState.users.exams || !appState.users.exams[examType]) {
+                return { valid: false, message: "Invalid exam type or user data not loaded" };
             }
-        }
-        
-        /**
-         * @function showUgcSection
-         * Hides the main dashboard and shows the UGC NET section.
-         */
-        function showUgcSection() {
-            mainDashboard.classList.add('hidden');
-            slstSection.classList.add('hidden');
-            stetSection.classList.add('hidden');
-            ugcSection.classList.remove('hidden');
-
-            // Hide/Show correct sub-section based on login status
-            if (isLoggedIn) {
-                ugcLogin.classList.add('hidden');
-                ugcMockTestList.classList.remove('hidden');
-                loadUgcMockTests();
+            
+            const examCredentials = appState.users.exams[examType].credentials;
+            const user = examCredentials.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                return { valid: true, user: { ...user, name: extractNameFromEmail(email) } };
             } else {
-                ugcLogin.classList.remove('hidden');
-                ugcMockTestList.classList.add('hidden');
+                return { valid: false, message: "Invalid email or password" };
             }
         }
 
-        /**
-         * @function showMainDashboard
-         * Hides all exam sections and shows the main dashboard.
-         */
-        function showMainDashboard() {
-            slstSection.classList.add('hidden');
-            stetSection.classList.add('hidden');
-            ugcSection.classList.add('hidden');
-            mainDashboard.classList.remove('hidden');
+        function getExamDisplayName(examType) {
+            const examNames = {
+                'slst': 'WB SLST',
+                'stet': 'Bihar STET',
+                'ugc': 'UGC NET',
+                'iit-jam': 'IIT JAM',
+                'wbjee': 'WBJEE',
+                'csir-net': 'CSIR NET',
+                'cuet-pg': 'CUET PG',
+                'up-lt-grade': 'UP LT Grade',
+                'bpsc': 'BPSC'
+            };
+            return examNames[examType] || examType;
         }
 
-        /**
-         * @function loadMockTests
-         * Dynamically generates a list of WB SLST mock tests.
-         */
-        function loadMockTests() {
-            // Remove the loading message and clear previous tests
+        function extractNameFromEmail(email) {
+            // Extract name from email (e.g., "student1" from "student1@example.com")
+            const localPart = email.split('@')[0];
+            return localPart.charAt(0).toUpperCase() + localPart.slice(1);
+        }
+
+        async function handleLogin(examType, emailElement, passwordElement, errorElement) {
+            const email = emailElement.value.trim();
+            const password = passwordElement.value;
+            
+            // Basic validation
+            if (!email || !password) {
+                errorElement.textContent = "Please enter both email and password";
+                errorElement.classList.remove('hidden');
+                return false;
+            }
+            
+            // Ensure user data is loaded
+            if (!appState.users) {
+                const loaded = await loadUserCredentials();
+                if (!loaded) {
+                    errorElement.textContent = "Error: Could not load user data. Please try again later.";
+                    errorElement.classList.remove('hidden');
+                    return false;
+                }
+            }
+            
+            // Validate credentials
+            const validation = validateCredentials(email, password, examType);
+            
+            if (validation.valid) {
+                appState.isLoggedIn = true;
+                appState.currentUser = validation.user;
+                errorElement.classList.add('hidden');
+                showAlert(`Login successful! Welcome, ${validation.user.name}.`);
+                return true;
+            } else {
+                errorElement.textContent = validation.message;
+                errorElement.classList.remove('hidden');
+                showAlert("Login failed. Check your credentials.", true);
+                return false;
+            }
+        }
+
+        // Helper function to show demo credentials for each exam
+        function getDemoCredentials(examType) {
+            if (!appState.users || !appState.users.exams || !appState.users.exams[examType]) {
+                return { email: 'student@example.com', password: 'password' };
+            }
+            
+            const credentials = appState.users.exams[examType].credentials;
+            return credentials[0] || { email: 'student@example.com', password: 'password' };
+        }
+
+        // Updated Login Handlers
+        async function handleStetLogin(event) {
+            event.preventDefault();
+            const success = await handleLogin(
+                'stet',
+                document.getElementById('stetEmail'),
+                document.getElementById('stetPassword'),
+                elements.stetLoginErrorMessage
+            );
+            
+            if (success) {
+                elements.stetLogin.classList.add('hidden');
+                elements.stetMockTestList.classList.remove('hidden');
+                loadMockTests('stet');
+            }
+        }
+
+        async function handleUgcLogin(event) {
+            event.preventDefault();
+            const success = await handleLogin(
+                'ugc',
+                document.getElementById('ugcEmail'),
+                document.getElementById('ugcPassword'),
+                elements.ugcLoginErrorMessage
+            );
+            
+            if (success) {
+                elements.ugcLogin.classList.add('hidden');
+                elements.ugcMockTestList.classList.remove('hidden');
+                loadMockTests('ugc');
+            }
+        }
+
+        async function handleSlstLogin(event) {
+            event.preventDefault();
+            const success = await handleLogin(
+                'slst',
+                document.getElementById('slstEmail'),
+                document.getElementById('slstPassword'),
+                elements.loginErrorMessage
+            );
+            
+            if (success) {
+                elements.slstLogin.classList.add('hidden');
+                elements.mockTestList.classList.remove('hidden');
+                loadMockTests('slst');
+            }
+        }
+
+        // Logout Functions
+        function handleLogout(examType) {
+            appState.isLoggedIn = false;
+            appState.currentUser = null;
+            
+            switch(examType) {
+                case 'stet':
+                    elements.stetLogin.classList.remove('hidden');
+                    elements.stetMockTestList.classList.add('hidden');
+                    elements.stetLoginErrorMessage.classList.add('hidden');
+                    document.getElementById('stetEmail').value = '';
+                    document.getElementById('stetPassword').value = '';
+                    break;
+                case 'ugc':
+                    elements.ugcLogin.classList.remove('hidden');
+                    elements.ugcMockTestList.classList.add('hidden');
+                    elements.ugcLoginErrorMessage.classList.add('hidden');
+                    document.getElementById('ugcEmail').value = '';
+                    document.getElementById('ugcPassword').value = '';
+                    break;
+                case 'slst':
+                    elements.slstLogin.classList.remove('hidden');
+                    elements.mockTestList.classList.add('hidden');
+                    elements.loginErrorMessage.classList.add('hidden');
+                    document.getElementById('slstEmail').value = '';
+                    document.getElementById('slstPassword').value = '';
+                    break;
+            }
+            
+            showAlert("Logged out successfully.");
+            showSection('dashboard');
+        }
+
+        // Mock Test Loading Functions
+        function loadMockTests(examType) {
+            let container, loadingMessage, tests;
+            
+            switch(examType) {
+                case 'slst':
+                    container = elements.testListContainer;
+                    loadingMessage = elements.loadingMessage;
+                    tests = getSlstTests();
+                    break;
+                case 'stet':
+                    container = elements.stetTestListContainer;
+                    loadingMessage = elements.stetLoadingMessage;
+                    tests = getStetTests();
+                    break;
+                case 'ugc':
+                    container = elements.ugcTestListContainer;
+                    loadingMessage = elements.ugcLoadingMessage;
+                    tests = getUgcTests();
+                    break;
+                default:
+                    return;
+            }
+            
+            // Remove loading message and clear previous tests
             loadingMessage.classList.add('hidden');
-            testListContainer.innerHTML = '';
+            container.innerHTML = '';
+            
+            // Add test items
+            tests.forEach(test => {
+                const testItem = createTestItem(test);
+                container.innerHTML += testItem;
+            });
+        }
 
-            const tests = [
+        function getSlstTests() {
+            return [
                 { title: 'WB SLST Test 1', url: 'slst-test-1.html', status: 'Available' },
                 { title: 'WB SLST Test 2', url: 'slst-test-2.html', status: 'Available' },
                 { title: 'WB SLST Test 3', url: 'slst-test-3.html', status: 'Available' },
@@ -1085,53 +1277,10 @@
                 { title: 'WB SLST Test 19', url: 'slst-test-19.html', status: 'Locked' },
                 { title: 'WB SLST Test 20', url: 'slst-test-20.html', status: 'Locked' },
             ];
-
-            tests.forEach(test => {
-                let badgeClass = '';
-                let icon = '';
-                let linkTarget = '';
-
-                switch (test.status) {
-                    case 'Available':
-                        badgeClass = 'bg-[var(--color-primary)] text-[var(--color-bg-deep)]';
-                        icon = '<i class="fas fa-play-circle mr-2"></i>';
-                        linkTarget = `href="${test.url}"`;
-                        break;
-                    case 'In Progress':
-                        badgeClass = 'bg-yellow-600 text-white';
-                        icon = '<i class="fas fa-hourglass-half mr-2"></i>';
-                        linkTarget = `href="${test.url}"`;
-                        break;
-                    case 'Locked':
-                    default:
-                        badgeClass = 'bg-red-700 text-white';
-                        icon = '<i class="fas fa-lock mr-2"></i>';
-                        linkTarget = `href="#" onclick="showSuccessAlert('This test is not yet available.', true)"`; // Use true for error
-                }
-
-                const testItem = `
-                    <a ${linkTarget} class="block p-5 card-bg rounded-lg text-left text-lg font-medium hover:bg-[#24242C] transition duration-300 shadow-sm border border-[#3A3A45] transform hover:scale-[1.02]">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-white">${icon} ${test.title}</span>
-                            <span class="text-xs font-bold px-2 py-1 rounded-full ${badgeClass}">${test.status.toUpperCase()}</span>
-                        </div>
-                        <p class="text-sm text-[var(--color-text-muted)]">Duration: 90 mins | Marks: 100</p>
-                    </a>
-                `;
-                testListContainer.innerHTML += testItem;
-            });
         }
-        
-        /**
-         * @function loadStetMockTests
-         * Dynamically generates a list of Bihar STET mock tests.
-         */
-        function loadStetMockTests() {
-            // Remove the loading message and clear previous tests
-            stetLoadingMessage.classList.add('hidden');
-            stetTestListContainer.innerHTML = '';
 
-            const tests = [
+        function getStetTests() {
+            return [
                 { title: 'Bihar STET Test 1', url: 'stet_1.html', status: 'Available' },
                 { title: 'Bihar STET Test 2', url: 'stet_2.html', status: 'Available' },
                 { title: 'Bihar STET Test 3', url: 'stet_3.html', status: 'Available' },
@@ -1143,53 +1292,10 @@
                 { title: 'Bihar STET Test 9', url: 'stet_9.html', status: 'Available' },
                 { title: 'Bihar STET Test 10', url: 'stet_10.html', status: 'Available' },
             ];
-
-            tests.forEach(test => {
-                let badgeClass = '';
-                let icon = '';
-                let linkTarget = '';
-
-                switch (test.status) {
-                    case 'Available':
-                        badgeClass = 'bg-[var(--color-primary)] text-[var(--color-bg-deep)]';
-                        icon = '<i class="fas fa-play-circle mr-2"></i>';
-                        linkTarget = `href="${test.url}"`;
-                        break;
-                    case 'In Progress':
-                        badgeClass = 'bg-yellow-600 text-white';
-                        icon = '<i class="fas fa-hourglass-half mr-2"></i>';
-                        linkTarget = `href="${test.url}"`;
-                        break;
-                    case 'Locked':
-                    default:
-                        badgeClass = 'bg-red-700 text-white';
-                        icon = '<i class="fas fa-lock mr-2"></i>';
-                        linkTarget = `href="#" onclick="showSuccessAlert('This test is not yet available.', true)"`; // Use true for error
-                }
-
-                const testItem = `
-                    <a ${linkTarget} class="block p-5 card-bg rounded-lg text-left text-lg font-medium hover:bg-[#24242C] transition duration-300 shadow-sm border border-[#3A3A45] transform hover:scale-[1.02]">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-white">${icon} ${test.title}</span>
-                            <span class="text-xs font-bold px-2 py-1 rounded-full ${badgeClass}">${test.status.toUpperCase()}</span>
-                        </div>
-                        <p class="text-sm text-[var(--color-text-muted)]">Duration: 150 mins | Marks: 150</p>
-                    </a>
-                `;
-                stetTestListContainer.innerHTML += testItem;
-            });
         }
-        
-        /**
-         * @function loadUgcMockTests
-         * Dynamically generates a list of UGC NET mock tests.
-         */
-        function loadUgcMockTests() {
-            // Remove the loading message and clear previous tests
-            ugcLoadingMessage.classList.add('hidden');
-            ugcTestListContainer.innerHTML = '';
 
-            const tests = [
+        function getUgcTests() {
+            return [
                 { title: 'UGC NET Test 1', url: 'ugc_1.html', status: 'Available' },
                 { title: 'UGC NET Test 2', url: 'ugc_2.html', status: 'Available' },
                 { title: 'UGC NET Test 3', url: 'ugc_3.html', status: 'Available' },
@@ -1201,245 +1307,65 @@
                 { title: 'UGC NET Test 9', url: 'ugc_9.html', status: 'Available' },
                 { title: 'UGC NET Test 10', url: 'ugc_10.html', status: 'Available' },
             ];
-
-            tests.forEach(test => {
-                let badgeClass = '';
-                let icon = '';
-                let linkTarget = '';
-
-                switch (test.status) {
-                    case 'Available':
-                        badgeClass = 'bg-[var(--color-primary)] text-[var(--color-bg-deep)]';
-                        icon = '<i class="fas fa-play-circle mr-2"></i>';
-                        linkTarget = `href="${test.url}"`;
-                        break;
-                    case 'In Progress':
-                        badgeClass = 'bg-yellow-600 text-white';
-                        icon = '<i class="fas fa-hourglass-half mr-2"></i>';
-                        linkTarget = `href="${test.url}"`;
-                        break;
-                    case 'Locked':
-                    default:
-                        badgeClass = 'bg-red-700 text-white';
-                        icon = '<i class="fas fa-lock mr-2"></i>';
-                        linkTarget = `href="#" onclick="showSuccessAlert('This test is not yet available.', true)"`; // Use true for error
-                }
-
-                const testItem = `
-                    <a ${linkTarget} class="block p-5 card-bg rounded-lg text-left text-lg font-medium hover:bg-[#24242C] transition duration-300 shadow-sm border border-[#3A3A45] transform hover:scale-[1.02]">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-white">${icon} ${test.title}</span>
-                            <span class="text-xs font-bold px-2 py-1 rounded-full ${badgeClass}">${test.status.toUpperCase()}</span>
-                        </div>
-                        <p class="text-sm text-[var(--color-text-muted)]">Duration: 180 mins | Marks: 100</p>
-                    </a>
-                `;
-                ugcTestListContainer.innerHTML += testItem;
-            });
         }
-        
-        /**
-         * @function showSuccessAlert
-         * Displays a success message box for a short duration.
-         */
-        function showSuccessAlert(message, isError = false) {
-            successAlert.textContent = message;
-            successAlert.classList.remove('alert-success', 'alert-error');
-            successAlert.classList.add(isError ? 'alert-error' : 'alert-success');
-            successAlert.classList.add('show');
+
+        function createTestItem(test) {
+            let badgeClass = '';
+            let icon = '';
+            let linkTarget = '';
+            let duration = '90 mins';
+            let marks = '100';
+
+            switch (test.status) {
+                case 'Available':
+                    badgeClass = 'bg-[var(--color-primary)] text-[var(--color-bg-deep)]';
+                    icon = '<i class="fas fa-play-circle mr-2"></i>';
+                    linkTarget = `href="${test.url}"`;
+                    break;
+                case 'In Progress':
+                    badgeClass = 'bg-yellow-600 text-white';
+                    icon = '<i class="fas fa-hourglass-half mr-2"></i>';
+                    linkTarget = `href="${test.url}"`;
+                    break;
+                case 'Locked':
+                default:
+                    badgeClass = 'bg-red-700 text-white';
+                    icon = '<i class="fas fa-lock mr-2"></i>';
+                    linkTarget = `href="#" onclick="showAlert('This test is not yet available.', true)"`;
+            }
+
+            // Adjust duration and marks based on test type
+            if (test.title.includes('STET')) {
+                duration = '150 mins';
+                marks = '150';
+            } else if (test.title.includes('UGC')) {
+                duration = '180 mins';
+            }
+
+            return `
+                <a ${linkTarget} class="block p-5 card-bg rounded-lg text-left text-lg font-medium hover:bg-[#24242C] transition duration-300 shadow-sm border border-[#3A3A45] transform hover:scale-[1.02]">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-white">${icon} ${test.title}</span>
+                        <span class="text-xs font-bold px-2 py-1 rounded-full ${badgeClass}">${test.status.toUpperCase()}</span>
+                    </div>
+                    <p class="text-sm text-[var(--color-text-muted)]">Duration: ${duration} | Marks: ${marks}</p>
+                </a>
+            `;
+        }
+
+        // Alert Functions
+        function showAlert(message, isError = false) {
+            elements.successAlert.textContent = message;
+            elements.successAlert.classList.remove('alert-success', 'alert-error');
+            elements.successAlert.classList.add(isError ? 'alert-error' : 'alert-success');
+            elements.successAlert.classList.add('show');
+            
             setTimeout(() => {
-                successAlert.classList.remove('show');
-            }, 3000); // Hide after 3 seconds
+                elements.successAlert.classList.remove('show');
+            }, 3000);
         }
 
-        /**
-         * @function handleSlstLogin
-         * Handles the login form submission by checking credentials against the USERS_DATA array.
-         */
-        async function handleSlstLogin(event) {
-            event.preventDefault();
-            const email = document.getElementById('slstEmail').value;
-            const password = document.getElementById('slstPassword').value;
-
-            // Ensure USERS_DATA is loaded before attempting login
-            if (USERS_DATA.length === 0) {
-                 try {
-                     // Note: We are attempting to fetch a local file 'students.json'
-                     const response = await fetch('students.json');
-                     if (!response.ok) {
-                         throw new Error(`HTTP error! status: ${response.status}`);
-                     }
-                     USERS_DATA = await response.json();
-                     console.log("Successfully re-loaded student data from students.json for login attempt.");
-                 } catch (error) {
-                     console.error('Could not load student data during login:', error);
-                     loginErrorMessage.textContent = "Error: Could not load user data. Please check console for details.";
-                     loginErrorMessage.classList.remove('hidden');
-                     return; // Exit if data can't be loaded
-                 }
-            }
-            
-            // Check credentials
-            const user = USERS_DATA.find(u => u.email === email && u.password === password);
-
-            if (user) {
-                // Login successful
-                isLoggedIn = true;
-                loginErrorMessage.classList.add('hidden');
-                slstLogin.classList.add('hidden');
-                mockTestList.classList.remove('hidden');
-                loadMockTests();
-                showSuccessAlert(`Login successful! Welcome, ${user.email}.`);
-            } else {
-                // Login failed
-                loginErrorMessage.textContent = "Invalid email or password. Please check the demo credentials.";
-                loginErrorMessage.classList.remove('hidden');
-                showSuccessAlert("Login failed. Check your credentials.", true);
-            }
-        }
-        
-        /**
-         * @function handleStetLogin
-         * Handles the Bihar STET login form submission.
-         */
-        async function handleStetLogin(event) {
-            event.preventDefault();
-            const email = document.getElementById('stetEmail').value;
-            const password = document.getElementById('stetPassword').value;
-
-            // Ensure USERS_DATA is loaded before attempting login
-            if (USERS_DATA.length === 0) {
-                 try {
-                     const response = await fetch('students.json');
-                     if (!response.ok) {
-                         throw new Error(`HTTP error! status: ${response.status}`);
-                     }
-                     USERS_DATA = await response.json();
-                     console.log("Successfully re-loaded student data from students.json for login attempt.");
-                 } catch (error) {
-                     console.error('Could not load student data during login:', error);
-                     stetLoginErrorMessage.textContent = "Error: Could not load user data. Please check console for details.";
-                     stetLoginErrorMessage.classList.remove('hidden');
-                     return; // Exit if data can't be loaded
-                 }
-            }
-            
-            // Check credentials
-            const user = USERS_DATA.find(u => u.email === email && u.password === password);
-
-            if (user) {
-                // Login successful
-                isLoggedIn = true;
-                stetLoginErrorMessage.classList.add('hidden');
-                stetLogin.classList.add('hidden');
-                stetMockTestList.classList.remove('hidden');
-                loadStetMockTests();
-                showSuccessAlert(`Login successful! Welcome, ${user.email}.`);
-            } else {
-                // Login failed
-                stetLoginErrorMessage.textContent = "Invalid email or password. Please check the demo credentials.";
-                stetLoginErrorMessage.classList.remove('hidden');
-                showSuccessAlert("Login failed. Check your credentials.", true);
-            }
-        }
-        
-        /**
-         * @function handleUgcLogin
-         * Handles the UGC NET login form submission.
-         */
-        async function handleUgcLogin(event) {
-            event.preventDefault();
-            const email = document.getElementById('ugcEmail').value;
-            const password = document.getElementById('ugcPassword').value;
-
-            // Ensure USERS_DATA is loaded before attempting login
-            if (USERS_DATA.length === 0) {
-                 try {
-                     const response = await fetch('students.json');
-                     if (!response.ok) {
-                         throw new Error(`HTTP error! status: ${response.status}`);
-                     }
-                     USERS_DATA = await response.json();
-                     console.log("Successfully re-loaded student data from students.json for login attempt.");
-                 } catch (error) {
-                     console.error('Could not load student data during login:', error);
-                     ugcLoginErrorMessage.textContent = "Error: Could not load user data. Please check console for details.";
-                     ugcLoginErrorMessage.classList.remove('hidden');
-                     return; // Exit if data can't be loaded
-                 }
-            }
-            
-            // Check credentials
-            const user = USERS_DATA.find(u => u.email === email && u.password === password);
-
-            if (user) {
-                // Login successful
-                isLoggedIn = true;
-                ugcLoginErrorMessage.classList.add('hidden');
-                ugcLogin.classList.add('hidden');
-                ugcMockTestList.classList.remove('hidden');
-                loadUgcMockTests();
-                showSuccessAlert(`Login successful! Welcome, ${user.email}.`);
-            } else {
-                // Login failed
-                ugcLoginErrorMessage.textContent = "Invalid email or password. Please check the demo credentials.";
-                ugcLoginErrorMessage.classList.remove('hidden');
-                showSuccessAlert("Login failed. Check your credentials.", true);
-            }
-        }
-
-        /**
-         * @function handleSlstLogout
-         * Handles logout by resetting the state and UI.
-         */
-        function handleSlstLogout() {
-            isLoggedIn = false;
-            slstLogin.classList.remove('hidden');
-            mockTestList.classList.add('hidden');
-            loginErrorMessage.classList.add('hidden'); // Clear any previous error messages
-            document.getElementById('slstEmail').value = ''; // Clear email field
-            document.getElementById('slstPassword').value = ''; // Clear password field
-            
-            showSuccessAlert("Logged out successfully.");
-            showMainDashboard(); // Go back to the main dashboard
-        }
-        
-        /**
-         * @function handleStetLogout
-         * Handles Bihar STET logout by resetting the state and UI.
-         */
-        function handleStetLogout() {
-            isLoggedIn = false;
-            stetLogin.classList.remove('hidden');
-            stetMockTestList.classList.add('hidden');
-            stetLoginErrorMessage.classList.add('hidden'); // Clear any previous error messages
-            document.getElementById('stetEmail').value = ''; // Clear email field
-            document.getElementById('stetPassword').value = ''; // Clear password field
-            
-            showSuccessAlert("Logged out successfully.");
-            showMainDashboard(); // Go back to the main dashboard
-        }
-        
-        /**
-         * @function handleUgcLogout
-         * Handles UGC NET logout by resetting the state and UI.
-         */
-        function handleUgcLogout() {
-            isLoggedIn = false;
-            ugcLogin.classList.remove('hidden');
-            ugcMockTestList.classList.add('hidden');
-            ugcLoginErrorMessage.classList.add('hidden'); // Clear any previous error messages
-            document.getElementById('ugcEmail').value = ''; // Clear email field
-            document.getElementById('ugcPassword').value = ''; // Clear password field
-            
-            showSuccessAlert("Logged out successfully.");
-            showMainDashboard(); // Go back to the main dashboard
-        }
-
-        /**
-         * @function startTestimonialCarousel
-         * Rotates testimonials automatically every few seconds.
-         */
+        // Testimonial Carousel
         function startTestimonialCarousel() {
             const testimonials = document.querySelectorAll('.testimonial-item');
             let currentIndex = 0;
@@ -1462,13 +1388,9 @@
             showTestimonial(currentIndex);
             setInterval(nextTestimonial, 6000); // Change testimonial every 6 seconds
         }
-        
-        /**
-         * @function createParticles
-         * Creates floating particles for the background
-         */
+
+        // Particles Background
         function createParticles() {
-            const particlesContainer = document.getElementById('particles');
             const particleCount = 50;
             
             for (let i = 0; i < particleCount; i++) {
@@ -1499,14 +1421,11 @@
                 const delay = Math.random() * 5;
                 particle.style.animation = `float ${duration}s ${delay}s infinite ease-in-out`;
                 
-                particlesContainer.appendChild(particle);
+                elements.particlesContainer.appendChild(particle);
             }
         }
-        
-        /**
-         * @function animateCounters
-         * Animates the stats counters
-         */
+
+        // Stats Counter Animation
         function animateCounters() {
             const counters = document.querySelectorAll('.stats-counter');
             const speed = 200;
@@ -1538,11 +1457,8 @@
                 observer.observe(counter);
             });
         }
-        
-        /**
-         * @function addFloatAnimation
-         * Adds the float animation keyframes to the document
-         */
+
+        // Add Float Animation
         function addFloatAnimation() {
             const style = document.createElement('style');
             style.textContent = `
@@ -1572,7 +1488,7 @@
             document.head.appendChild(style);
         }
 
-        // --- Event Listeners Initialization ---
+        // Event Listeners
         document.addEventListener('DOMContentLoaded', () => {
             // Initialize AOS
             AOS.init({
@@ -1591,52 +1507,52 @@
             // Animate counters
             animateCounters();
             
-            // Mobile menu event listeners
-            mobileMenuButton.addEventListener('click', toggleMobileMenu);
-            closeMenuButton.addEventListener('click', toggleMobileMenu);
-
-            // 1. SLST Card Button: Triggers the special login/test section view
-            slstButton.addEventListener('click', showSlstSection);
-            
-            // 2. STET Card Button: Triggers the special login/test section view
-            stetButton.addEventListener('click', showStetSection);
-            
-            // 3. UGC Card Button: Triggers the special login/test section view
-            ugcButton.addEventListener('click', showUgcSection);
-
-            // 4. Back Buttons: Returns to the main dashboard
-            backToDashboardButton.addEventListener('click', showMainDashboard);
-            backToDashboardFromStetButton.addEventListener('click', showMainDashboard);
-            backToDashboardFromUgcButton.addEventListener('click', showMainDashboard);
-
-            // 5. Login Form Submissions: Attempts authentication
-            slstLoginForm.addEventListener('submit', handleSlstLogin);
-            stetLoginForm.addEventListener('submit', handleStetLogin);
-            ugcLoginForm.addEventListener('submit', handleUgcLogin);
-
-            // 6. Logout Buttons: Resets session and view
-            slstLogoutButton.addEventListener('click', handleSlstLogout);
-            stetLogoutButton.addEventListener('click', handleStetLogout);
-            ugcLogoutButton.addEventListener('click', handleUgcLogout);
-            
-            // 7. Start Testimonial Carousel
+            // Start testimonial carousel
             startTestimonialCarousel();
-
-            // Optional: Load users data immediately on page load to speed up first login attempt
-            async function preLoadUsers() {
-                try {
-                    const response = await fetch('students.json');
-                    if (response.ok) {
-                        USERS_DATA = await response.json();
-                        console.log("Student data pre-loaded successfully.");
-                    }
-                } catch (e) {
-                    console.warn("Could not pre-load students.json. Will attempt loading on first login.", e);
+            
+            // Preload users data
+            loadUserCredentials();
+            
+            // Mobile menu event listeners
+            elements.mobileMenuButton.addEventListener('click', toggleMobileMenu);
+            elements.closeMenuButton.addEventListener('click', toggleMobileMenu);
+            
+            // Exam section buttons
+            elements.slstButton.addEventListener('click', () => showSection('slst'));
+            elements.stetButton.addEventListener('click', () => showSection('stet'));
+            elements.ugcButton.addEventListener('click', () => showSection('ugc'));
+            
+            // Back to dashboard buttons
+            elements.backToDashboardButton.addEventListener('click', () => showSection('dashboard'));
+            elements.backToDashboardFromStetButton.addEventListener('click', () => showSection('dashboard'));
+            elements.backToDashboardFromUgcButton.addEventListener('click', () => showSection('dashboard'));
+            
+            // Login forms
+            elements.slstLoginForm.addEventListener('submit', handleSlstLogin);
+            elements.stetLoginForm.addEventListener('submit', handleStetLogin);
+            elements.ugcLoginForm.addEventListener('submit', handleUgcLogin);
+            
+            // Logout buttons
+            elements.slstLogoutButton.addEventListener('click', () => handleLogout('slst'));
+            elements.stetLogoutButton.addEventListener('click', () => handleLogout('stet'));
+            elements.ugcLogoutButton.addEventListener('click', () => handleLogout('ugc'));
+            
+            // Update demo credentials display after data is loaded
+            setTimeout(() => {
+                if (elements.slstDemoCredentials) {
+                    const slstDemo = getDemoCredentials('slst');
+                    elements.slstDemoCredentials.innerHTML = `Demo credentials: Email: <strong>${slstDemo.email}</strong> | Pass: <strong>${slstDemo.password}</strong>`;
                 }
-            }
-            preLoadUsers();
+                if (elements.stetDemoCredentials) {
+                    const stetDemo = getDemoCredentials('stet');
+                    elements.stetDemoCredentials.innerHTML = `Demo credentials: Email: <strong>${stetDemo.email}</strong> | Pass: <strong>${stetDemo.password}</strong>`;
+                }
+                if (elements.ugcDemoCredentials) {
+                    const ugcDemo = getDemoCredentials('ugc');
+                    elements.ugcDemoCredentials.innerHTML = `Demo credentials: Email: <strong>${ugcDemo.email}</strong> | Pass: <strong>${ugcDemo.password}</strong>`;
+                }
+            }, 1000);
         });
-
     </script>
 </body>
 </html>
