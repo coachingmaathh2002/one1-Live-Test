@@ -1179,10 +1179,31 @@
             return card;
         }
 
-        // Open book
+        // Open book - Updated to handle Google Drive links properly
         function openBook(bookId) {
             const book = books.find(b => b.id === bookId);
             if (book) {
+                // Convert Google Drive link to direct PDF link if needed
+                let pdfLink = book.driveLink;
+                
+                // If it's a Google Drive link, ensure it opens in preview mode
+                if (pdfLink.includes('drive.google.com')) {
+                    // Check if it's already in preview format
+                    if (!pdfLink.includes('/preview') && !pdfLink.includes('/view')) {
+                        // Extract file ID and create preview link
+                        const fileIdMatch = pdfLink.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+                        if (fileIdMatch) {
+                            const fileId = fileIdMatch[1];
+                            pdfLink = `https://drive.google.com/file/d/${fileId}/preview`;
+                        }
+                    } else if (pdfLink.includes('/view')) {
+                        // Convert view link to preview link
+                        pdfLink = pdfLink.replace('/view', '/preview');
+                    }
+                }
+                
+                // Open the link in a new tab
+                window.open(pdfLink, '_blank');
                 showToast(`Opening "${book.title}"...`, 'success');
             }
         }
