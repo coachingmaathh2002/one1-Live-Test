@@ -67,14 +67,6 @@
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
         }
-        
-        /* Login Card */
-        .login-card-bg {
-            background: linear-gradient(135deg, rgba(26, 26, 36, 0.9) 0%, rgba(26, 26, 36, 0.7) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-        }
 
         /* Primary Button */
         .btn-primary {
@@ -138,7 +130,7 @@
         }
 
         /* Input fields */
-        input[type="email"], input[type="password"], input[type="text"] {
+        input[type="text"] {
             background-color: rgba(15, 15, 20, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--color-text-light);
@@ -148,7 +140,7 @@
             backdrop-filter: blur(5px);
         }
         
-        input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focus {
+        input[type="text"]:focus {
             border-color: var(--color-primary);
             box-shadow: 0 0 0 3px rgba(91, 95, 255, 0.2);
             outline: none;
@@ -174,33 +166,6 @@
             }
         }
         
-        /* Custom alert box styling */
-        .custom-alert-box {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-100px); 
-            padding: 1rem 2rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            opacity: 0;
-            transition: all 0.5s ease-in-out;
-            backdrop-filter: blur(10px);
-        }
-        .custom-alert-box.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0); 
-        }
-        .alert-success {
-            background: linear-gradient(135deg, var(--color-accent) 0%, #C5B422 100%);
-            color: var(--color-bg-deep);
-        }
-        .alert-error {
-            background: linear-gradient(135deg, #E53E3E 0%, #C53030 100%);
-            color: var(--color-text-light);
-        }
-
         /* Mobile Menu specific styles */
         .nav-menu-open {
             transform: translateX(0) !important;
@@ -243,13 +208,6 @@
             display: block;
             pointer-events: none;
             opacity: 0.2;
-        }
-        
-        /* Glass morphism effect */
-        .glass {
-            background: rgba(26, 26, 36, 0.25);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         /* Premium badge */
@@ -339,40 +297,12 @@
             height: 300px;
         }
         
-        /* Premium loading animation */
-        .premium-loader {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(91, 95, 255, 0.2);
-            border-top: 3px solid var(--color-primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
         /* Premium stats counter */
         .stats-counter {
             font-family: 'Poppins', sans-serif;
             font-weight: 700;
             font-size: 2.5rem;
             color: var(--color-accent);
-        }
-        
-        /* Premium feature card */
-        .feature-card {
-            background: linear-gradient(135deg, rgba(26, 26, 36, 0.8) 0%, rgba(26, 26, 36, 0.6) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
         
         /* Book specific styles */
@@ -518,113 +448,6 @@
             gap: 0.5rem;
         }
         
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(5px);
-        }
-        
-        .modal.active {
-            display: flex;
-        }
-        
-        .modal-content {
-            background: var(--color-card-dark);
-            border-radius: 1rem;
-            padding: 3rem;
-            max-width: 500px;
-            width: 90%;
-            position: relative;
-            animation: slideIn 0.3s ease;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        @keyframes slideIn {
-            from {
-                transform: translateY(-50px) scale(0.9);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-        }
-        
-        .modal-header {
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-        
-        .modal-header h2 {
-            font-size: 2rem;
-            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-weight: 800;
-        }
-        
-        .close-modal {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            background: none;
-            border: none;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: var(--color-text-light);
-            transition: all 0.3s ease;
-        }
-        
-        .close-modal:hover {
-            color: var(--color-accent);
-            transform: rotate(90deg);
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--color-text-light);
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background-color: rgba(15, 15, 20, 0.6);
-        }
-        
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 4px rgba(91, 95, 255, 0.1);
-            background-color: rgba(15, 15, 20, 0.8);
-        }
-        
-        .form-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-end;
-        }
-        
         /* Search and Filter Section */
         .search-filter {
             background: linear-gradient(135deg, rgba(26, 26, 36, 0.8) 0%, rgba(26, 26, 36, 0.6) 100%);
@@ -730,65 +553,6 @@
             color: var(--color-primary);
         }
         
-        /* Reading Progress */
-        .reading-progress {
-            background: linear-gradient(135deg, rgba(26, 26, 36, 0.8) 0%, rgba(26, 26, 36, 0.6) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            margin-bottom: 3rem;
-            backdrop-filter: blur(10px);
-        }
-        
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        
-        .progress-header h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .progress-bar {
-            height: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
-            border-radius: 10px;
-            transition: width 0.5s ease;
-            position: relative;
-        }
-        
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            animation: shimmer 2s infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        
         /* Special Section for Pijus Sir */
         .pijus-section {
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(91, 95, 255, 0.1));
@@ -824,22 +588,6 @@
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
-        }
-        
-        /* Loading Spinner */
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 4px solid white;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-            display: inline-block;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
         
         /* Toast Notification */
@@ -959,17 +707,6 @@
             <p>Exclusive mathematics books curated and authored by Pijus Sir with decades of teaching experience</p>
         </section>
 
-        <!-- Reading Progress -->
-        <section class="reading-progress" data-aos="fade-up">
-            <div class="progress-header">
-                <h3>Your Learning Journey</h3>
-                <span id="progressText">0% Complete</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-            </div>
-        </section>
-
         <!-- Search and Filter -->
         <section class="search-filter" data-aos="fade-up">
             <div class="search-box">
@@ -1007,34 +744,6 @@
         </div>
     </footer>
 
-    <!-- Login Modal -->
-    <div class="modal" id="loginModal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeModal()">&times;</button>
-            <div class="modal-header">
-                <h2>Login to MathVault</h2>
-                <p>Access Pijus Sir's Premium Collection</p>
-            </div>
-            <form id="loginForm" onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" required placeholder="Enter your email">
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" required placeholder="Enter your password">
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">
-                        <span id="loginBtnText">Login</span>
-                        <span class="spinner" style="display: none;"></span>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
 
@@ -1054,7 +763,7 @@
                 pages: 1200,
                 rating: 4.9,
                 badge: "Bestseller",
-                driveLink: "https://drive.google.com/file/d/1pijus1/view",
+                driveLink: "https://drive.google.com/file/d/1ABC123XYZ/view", // Replace with actual Google Drive link
                 isPijus: true
             },
             {
@@ -1066,7 +775,7 @@
                 pages: 800,
                 rating: 4.8,
                 badge: "Pijus Special",
-                driveLink: "https://drive.google.com/file/d/1pijus2/view",
+                driveLink: "https://drive.google.com/file/d/1DEF456ABC/view", // Replace with actual Google Drive link
                 isPijus: true
             },
             {
@@ -1078,7 +787,7 @@
                 pages: 750,
                 rating: 4.9,
                 badge: "Pijus Special",
-                driveLink: "https://drive.google.com/file/d/1pijus3/view",
+                driveLink: "https://drive.google.com/file/d/1GHI789DEF/view", // Replace with actual Google Drive link
                 isPijus: true
             },
             {
@@ -1090,7 +799,7 @@
                 pages: 600,
                 rating: 4.7,
                 badge: "Pijus Special",
-                driveLink: "https://drive.google.com/file/d/1pijus4/view",
+                driveLink: "https://drive.google.com/file/d/1JKL012GHI/view", // Replace with actual Google Drive link
                 isPijus: true
             },
             {
@@ -1102,7 +811,7 @@
                 pages: 450,
                 rating: 4.8,
                 badge: "Pijus Special",
-                driveLink: "https://drive.google.com/file/d/1pijus5/view",
+                driveLink: "https://drive.google.com/file/d/1MNO345JKL/view", // Replace with actual Google Drive link
                 isPijus: true
             },
             {
@@ -1114,7 +823,7 @@
                 pages: 400,
                 rating: 4.6,
                 badge: "Pijus Special",
-                driveLink: "https://drive.google.com/file/d/1pijus6/view",
+                driveLink: "https://drive.google.com/file/d/1PQR678MNO/view", // Replace with actual Google Drive link
                 isPijus: true
             },
             {
@@ -1126,7 +835,7 @@
                 pages: 900,
                 rating: 4.9,
                 badge: "Teaching Pro",
-                driveLink: "https://drive.google.com/file/d/1pijus7/view",
+                driveLink: "https://drive.google.com/file/d/1STU901PQR/view", // Replace with actual Google Drive link
                 isPijus: true
             },
             {
@@ -1138,7 +847,7 @@
                 pages: 850,
                 rating: 4.8,
                 badge: "WBJEE Pro",
-                driveLink: "https://drive.google.com/file/d/1pijus8/view",
+                driveLink: "https://drive.google.com/file/d/1SOPDQUQPnHjeQMdQ4pkuwTHFB8mHqrAS/view?usp=drive_link", // Replace with actual Google Drive link
                 isPijus: true
             },
             {
@@ -1150,7 +859,7 @@
                 pages: 1000,
                 rating: 4.9,
                 badge: "Teaching Pro",
-                driveLink: "https://drive.google.com/file/d/1pijus9/view",
+                driveLink: "https://drive.google.com/file/d/1YZA567VWX/view", // Replace with actual Google Drive link
                 isPijus: true
             },
             {
@@ -1162,7 +871,7 @@
                 pages: 700,
                 rating: 4.8,
                 badge: "Advanced",
-                driveLink: "https://drive.google.com/file/d/1pijus10/view",
+                driveLink: "https://drive.google.com/file/d/1BCD890YZA/view", // Replace with actual Google Drive link
                 isPijus: true
             },
             {
@@ -1174,7 +883,7 @@
                 pages: 650,
                 rating: 4.7,
                 badge: "Foundation",
-                driveLink: "https://drive.google.com/file/d/1pijus11/view",
+                driveLink: "https://drive.google.com/file/d/1EFG901BCD/view", // Replace with actual Google Drive link
                 isPijus: true
             },
             {
@@ -1186,7 +895,7 @@
                 pages: 350,
                 rating: 4.6,
                 badge: "Quick Tips",
-                driveLink: "https://drive.google.com/file/d/1pijus12/view",
+                driveLink: "https://drive.google.com/file/d/1HIJ012EFG/view", // Replace with actual Google Drive link
                 isPijus: true
             },
             {
@@ -1198,7 +907,7 @@
                 pages: 800,
                 rating: 4.9,
                 badge: "Olympiad",
-                driveLink: "https://drive.google.com/file/d/1pijus13/view",
+                driveLink: "https://drive.google.com/file/d/1KLM345HIJ/view", // Replace with actual Google Drive link
                 isPijus: true
             },
             {
@@ -1210,7 +919,7 @@
                 pages: 550,
                 rating: 4.7,
                 badge: "Statistics",
-                driveLink: "https://drive.google.com/file/d/1pijus14/view",
+                driveLink: "https://drive.google.com/file/d/1NOP678KLM/view", // Replace with actual Google Drive link
                 isPijus: true
             },
             {
@@ -1222,7 +931,7 @@
                 pages: 600,
                 rating: 4.8,
                 badge: "Linear Algebra",
-                driveLink: "https://drive.google.com/file/d/1pijus15/view",
+                driveLink: "https://drive.google.com/file/d/1QRS901NOP/view", // Replace with actual Google Drive link
                 isPijus: true
             },
             // Other Mathematics Books
@@ -1235,7 +944,7 @@
                 pages: 1200,
                 rating: 4.8,
                 badge: "JEE Mains",
-                driveLink: "https://drive.google.com/file/d/1rdsharma1/view",
+                driveLink: "https://drive.google.com/file/d/1STU234QRS/view", // Replace with actual Google Drive link
                 isPijus: false
             },
             {
@@ -1247,7 +956,7 @@
                 pages: 1500,
                 rating: 4.7,
                 badge: "JEE Advanced",
-                driveLink: "https://drive.google.com/file/d/1arihant1/view",
+                driveLink: "https://drive.google.com/file/d/1VWX567STU/view", // Replace with actual Google Drive link
                 isPijus: false
             },
             {
@@ -1259,7 +968,7 @@
                 pages: 450,
                 rating: 4.6,
                 badge: "Geometry",
-                driveLink: "https://drive.google.com/file/d/1sloney1/view",
+                driveLink: "https://drive.google.com/file/d/1YZA890VWX/view", // Replace with actual Google Drive link
                 isPijus: false
             },
             {
@@ -1271,7 +980,7 @@
                 pages: 650,
                 rating: 4.3,
                 badge: "KVS PGT",
-                driveLink: "https://drive.google.com/file/d/1rph1/view",
+                driveLink: "https://drive.google.com/file/d/1BCD123YZA/view", // Replace with actual Google Drive link
                 isPijus: false
             },
             {
@@ -1283,7 +992,7 @@
                 pages: 500,
                 rating: 4.2,
                 badge: "NVS PRT",
-                driveLink: "https://drive.google.com/file/d/1arihant2/view",
+                driveLink: "https://drive.google.com/file/d/1EFG456BCD/view", // Replace with actual Google Drive link
                 isPijus: false
             },
             {
@@ -1295,7 +1004,7 @@
                 pages: 900,
                 rating: 4.6,
                 badge: "WBJEE Pro",
-                driveLink: "https://drive.google.com/file/d/1mit1/view",
+                driveLink: "https://drive.google.com/file/d/1HIJ789EFG/view", // Replace with actual Google Drive link
                 isPijus: false
             },
             {
@@ -1307,7 +1016,7 @@
                 pages: 350,
                 rating: 4.5,
                 badge: "Pedagogy",
-                driveLink: "https://drive.google.com/file/d/1mangal1/view",
+                driveLink: "https://drive.google.com/file/d/1KLM012HIJ/view", // Replace with actual Google Drive link
                 isPijus: false
             },
             {
@@ -1319,7 +1028,7 @@
                 pages: 450,
                 rating: 4.3,
                 badge: "CTET",
-                driveLink: "https://drive.google.com/file/d/1pearson1/view",
+                driveLink: "https://drive.google.com/file/d/1NOP345KLM/view", // Replace with actual Google Drive link
                 isPijus: false
             },
             {
@@ -1331,7 +1040,7 @@
                 pages: 580,
                 rating: 4.7,
                 badge: "UG Classic",
-                driveLink: "https://drive.google.com/file/d/1hallknight1/view",
+                driveLink: "https://drive.google.com/file/d/1QRS678NOP/view", // Replace with actual Google Drive link
                 isPijus: false
             },
             {
@@ -1343,7 +1052,7 @@
                 pages: 650,
                 rating: 4.5,
                 badge: "Calculus",
-                driveLink: "https://drive.google.com/file/d/1arihant3/view",
+                driveLink: "https://drive.google.com/file/d/1STU901QRS/view", // Replace with actual Google Drive link
                 isPijus: false
             },
             {
@@ -1355,7 +1064,7 @@
                 pages: 600,
                 rating: 4.4,
                 badge: "Calculus",
-                driveLink: "https://drive.google.com/file/d/1arihant4/view",
+                driveLink: "https://drive.google.com/file/d/1VWX234STU/view", // Replace with actual Google Drive link
                 isPijus: false
             },
             {
@@ -1367,7 +1076,7 @@
                 pages: 450,
                 rating: 4.6,
                 badge: "Linear Algebra",
-                driveLink: "https://drive.google.com/file/d/1schaum1/view",
+                driveLink: "https://drive.google.com/file/d/1YZA567VWX/view", // Replace with actual Google Drive link
                 isPijus: false
             },
             {
@@ -1379,7 +1088,7 @@
                 pages: 400,
                 rating: 4.5,
                 badge: "Analysis",
-                driveLink: "https://drive.google.com/file/d/1bartle1/view",
+                driveLink: "https://drive.google.com/file/d/1BCD890YZA/view", // Replace with actual Google Drive link
                 isPijus: false
             },
             {
@@ -1391,7 +1100,7 @@
                 pages: 380,
                 rating: 4.4,
                 badge: "Complex Analysis",
-                driveLink: "https://drive.google.com/file/d/1schaum2/view",
+                driveLink: "https://drive.google.com/file/d/1EFG901BCD/view", // Replace with actual Google Drive link
                 isPijus: false
             },
             {
@@ -1403,14 +1112,12 @@
                 pages: 1200,
                 rating: 4.7,
                 badge: "Mathematical Methods",
-                driveLink: "https://drive.google.com/file/d/1grewal1/view",
+                driveLink: "https://drive.google.com/file/d/1HIJ012EFG/view", // Replace with actual Google Drive link
                 isPijus: false
             }
         ];
 
         // Initialize the app
-        let currentUser = null;
-        let readingProgress = 0;
         let filteredBooks = [...books];
 
         // DOM Element References
@@ -1421,20 +1128,13 @@
             navMenu: document.getElementById('navMenu'),
             
             // Common elements
-            successAlert: document.getElementById('toast'),
+            toast: document.getElementById('toast'),
             particlesContainer: document.getElementById('particles'),
             
             // Book elements
             booksGrid: document.getElementById('booksGrid'),
             searchInput: document.getElementById('searchInput'),
-            filterMenu: document.getElementById('filterMenu'),
-            progressFill: document.getElementById('progressFill'),
-            progressText: document.getElementById('progressText'),
-            
-            // Modal elements
-            loginModal: document.getElementById('loginModal'),
-            loginForm: document.getElementById('loginForm'),
-            loginBtnText: document.getElementById('loginBtnText')
+            filterMenu: document.getElementById('filterMenu')
         };
 
         // Navigation Functions
@@ -1447,67 +1147,6 @@
             if (elements.navMenu.classList.contains('nav-menu-open')) {
                 toggleMobileMenu();
             }
-        }
-
-        // Check if user is logged in
-        function checkAuth() {
-            const user = localStorage.getItem('currentUser');
-            if (!user) {
-                showModal();
-            } else {
-                currentUser = JSON.parse(user);
-                loadBooks();
-                updateReadingProgress();
-            }
-        }
-
-        // Show login modal
-        function showModal() {
-            elements.loginModal.classList.add('active');
-        }
-
-        // Close modal
-        function closeModal() {
-            elements.loginModal.classList.remove('active');
-        }
-
-        // Handle login
-        function handleLogin(event) {
-            event.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            // Show loading state
-            const loginBtn = event.target.querySelector('.btn-primary');
-            const spinner = loginBtn.querySelector('.spinner');
-            
-            elements.loginBtnText.textContent = 'Logging in...';
-            spinner.style.display = 'inline-block';
-            loginBtn.disabled = true;
-            
-            // Simulate authentication
-            setTimeout(() => {
-                if (email && password.length >= 6) {
-                    currentUser = {
-                        email: email,
-                        name: email.split('@')[0],
-                        avatar: email[0].toUpperCase()
-                    };
-                    
-                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                    loadBooks();
-                    closeModal();
-                    showToast('Welcome to MathVault! Learn from the best with Pijus Sir.', 'success');
-                } else {
-                    showToast('Invalid email or password. Please try again.', 'error');
-                }
-                
-                // Reset button state
-                elements.loginBtnText.textContent = 'Login';
-                spinner.style.display = 'none';
-                loginBtn.disabled = false;
-            }, 1500);
         }
 
         // Load books
@@ -1546,9 +1185,6 @@
                         <a href="${book.driveLink}" target="_blank" class="btn btn-primary" onclick="openBook(${book.id})">
                             <i class="fas fa-book-reader"></i> Read Now
                         </a>
-                        <button class="btn btn-secondary" onclick="addToFavorites(${book.id})">
-                            <i class="fas fa-heart"></i>
-                        </button>
                     </div>
                 </div>
             `;
@@ -1559,40 +1195,8 @@
         function openBook(bookId) {
             const book = books.find(b => b.id === bookId);
             if (book) {
-                // Update reading progress
-                const readBooks = JSON.parse(localStorage.getItem('readBooks') || '[]');
-                if (!readBooks.includes(bookId)) {
-                    readBooks.push(bookId);
-                    localStorage.setItem('readBooks', JSON.stringify(readBooks));
-                    updateReadingProgress();
-                }
-                
                 showToast(`Opening "${book.title}"...`, 'success');
             }
-        }
-
-        // Add to favorites
-        function addToFavorites(bookId) {
-            const book = books.find(b => b.id === bookId);
-            if (book) {
-                const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-                if (!favorites.includes(bookId)) {
-                    favorites.push(bookId);
-                    localStorage.setItem('favorites', JSON.stringify(favorites));
-                    showToast(`"${book.title}" added to favorites!`, 'success');
-                } else {
-                    showToast(`"${book.title}" is already in favorites.`, 'error');
-                }
-            }
-        }
-
-        // Update reading progress
-        function updateReadingProgress() {
-            const readBooks = JSON.parse(localStorage.getItem('readBooks') || '[]');
-            const progress = Math.round((readBooks.length / books.length) * 100);
-            
-            elements.progressFill.style.width = `${progress}%`;
-            elements.progressText.textContent = `${progress}% Complete`;
         }
 
         // Toggle filter menu
@@ -1632,13 +1236,13 @@
 
         // Show toast notification
         function showToast(message, type = 'success') {
-            elements.successAlert.textContent = message;
-            elements.successAlert.classList.remove('alert-success', 'alert-error');
-            elements.successAlert.classList.add(type === 'success' ? 'alert-success' : 'alert-error');
-            elements.successAlert.classList.add('show');
+            elements.toast.textContent = message;
+            elements.toast.classList.remove('alert-success', 'alert-error');
+            elements.toast.classList.add(type === 'success' ? 'alert-success' : 'alert-error');
+            elements.toast.classList.add('show');
             
             setTimeout(() => {
-                elements.successAlert.classList.remove('show');
+                elements.toast.classList.remove('show');
             }, 3000);
         }
 
@@ -1773,11 +1377,8 @@
             elements.mobileMenuButton.addEventListener('click', toggleMobileMenu);
             elements.closeMenuButton.addEventListener('click', toggleMobileMenu);
             
-            // Login form
-            elements.loginForm.addEventListener('submit', handleLogin);
-            
-            // Check authentication
-            checkAuth();
+            // Load books
+            loadBooks();
         });
     </script>
 </body>
