@@ -818,6 +818,14 @@
             min-width: 3rem;
             text-align: center;
         }
+        
+        /* Fallback iframe styles */
+        .pdf-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 0.5rem;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -962,6 +970,7 @@
                     <p>Loading book...</p>
                 </div>
                 <canvas id="pdf-canvas" style="display: none;"></canvas>
+                <iframe id="pdfIframe" style="display: none;" class="pdf-iframe"></iframe>
             </div>
             <div class="pdf-navigation">
                 <button class="nav-btn" id="prevPageBtn" onclick="previousPage()">
@@ -1357,6 +1366,7 @@
         let pageRendering = false;
         let pageNumPending = null;
         let scale = 1.0;
+        let useIframe = false; // Flag to determine if we should use iframe fallback
 
         // DOM Element References
         const elements = {
@@ -1378,6 +1388,7 @@
             pdfModal: document.getElementById('pdfModal'),
             pdfTitle: document.getElementById('pdfTitle'),
             pdfCanvas: document.getElementById('pdf-canvas'),
+            pdfIframe: document.getElementById('pdfIframe'),
             pdfLoading: document.getElementById('pdfLoading'),
             currentPage: document.getElementById('currentPage'),
             totalPages: document.getElementById('totalPages'),
@@ -1456,11 +1467,19 @@
             currentPdfDoc = null;
             currentPageNum = 1;
             scale = 1.0;
+            useIframe = false;
+            
+            // Reset viewer state
+            elements.pdfCanvas.style.display = 'none';
+            elements.pdfIframe.style.display = 'none';
+            elements.pdfLoading.style.display = 'flex';
         }
 
         async function loadPdf(url) {
             elements.pdfLoading.style.display = 'flex';
             elements.pdfCanvas.style.display = 'none';
+            elements.pdfIframe.style.display = 'none';
+            useIframe = false;
             
             try {
                 // Convert Google Drive URL to direct download URL
@@ -1473,6 +1492,9 @@
                     }
                 }
                 
+                console.log('Attempting to load PDF from:', pdfUrl);
+                
+                // Try to load with PDF.js first
                 const loadingTask = pdfjsLib.getDocument(pdfUrl);
                 currentPdfDoc = await loadingTask;
                 
@@ -1484,19 +1506,43 @@
                 
                 renderPage(currentPageNum);
                 updateNavigationButtons();
+                
             } catch (error) {
-                console.error('Error loading PDF:', error);
-                elements.pdfLoading.innerHTML = `
-                    <div style="text-align: center; color: #ef4444;">
-                        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-                        <p>Failed to load PDF</p>
-                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Please try again later</p>
-                    </div>
-                `;
+                console.error('PDF.js failed to load PDF:', error);
+                console.log('Falling back to iframe viewer');
+                
+                // Fallback to iframe if PDF.js fails
+                useIframe = true;
+                loadPdfWithIframe(url);
             }
         }
 
+        function loadPdfWithIframe(url) {
+            elements.pdfLoading.style.display = 'flex';
+            
+            // Convert Google Drive URL to embed URL
+            let embedUrl = url;
+            if (url.includes('drive.google.com')) {
+                const fileIdMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+                if (fileIdMatch) {
+                    const fileId = fileIdMatch[1];
+                    embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+                }
+            }
+            
+            elements.pdfIframe.src = embedUrl;
+            elements.pdfLoading.style.display = 'none';
+            elements.pdfIframe.style.display = 'block';
+            
+            // Hide navigation controls for iframe
+            document.querySelector('.pdf-navigation').style.display = 'none';
+            
+            showToast('PDF loaded in viewer mode', 'success');
+        }
+
         function renderPage(num) {
+            if (useIframe) return; // Skip if using iframe
+            
             pageRendering = true;
             
             currentPdfDoc.getPage(num).then(function(page) {
@@ -1548,6 +1594,8 @@
         }
 
         function updateNavigationButtons() {
+            if (useIframe) return; // Skip if using iframe
+            
             elements.prevPageBtn.disabled = currentPageNum <= 1;
             elements.nextPageBtn.disabled = currentPageNum >= currentPdfDoc.numPages;
         }
@@ -1568,7 +1616,7 @@
 
         function updateZoom() {
             elements.zoomLevel.textContent = Math.round(scale * 100) + '%';
-            if (currentPdfDoc) {
+            if (currentPdfDoc && !useIframe) {
                 renderPage(currentPageNum);
             }
         }
