@@ -3,514 +3,476 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MathVault by Pijus Sir - Premium Mathematics Library</title>
+    <title>My Written Books - Pijus Sir's Academy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter & Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* --- PREMIUM INDIGO/GOLD THEME STYLES --- */
+        
+        /* Define color variables for easy maintenance */
         :root {
-            --primary-color: #6366f1;
-            --secondary-color: #8b5cf6;
-            --accent-color: #ec4899;
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
-            --dark-color: #1e293b;
-            --light-color: #f8fafc;
-            --text-color: #475569;
-            --border-radius: 16px;
-            --shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --color-bg-deep: #0F0F14; /* Very dark background */
+            --color-card-dark: #1A1A24; /* Slightly lifted card background */
+            --color-primary: #5B5FFF; /* Electric Blue for primary actions/focus */
+            --color-accent: #D4AF37; /* Rich Gold for highlights/titles */
+            --color-text-light: #E8E8F0;
+            --color-text-muted: #A0A0B8;
+            --color-gradient-start: #1A1A24;
+            --color-gradient-end: #0F0F14;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #fda085 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            color: var(--text-color);
-            line-height: 1.6;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg-deep); 
+            color: var(--color-text-light);
             overflow-x: hidden;
         }
 
-        /* Animated Background */
-        body::before {
+        /* Header/Hero Section Gradient */
+        .header-gradient-bg {
+            background: linear-gradient(135deg, var(--color-gradient-start) 0%, var(--color-gradient-end) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-gradient-bg::before {
             content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(91, 95, 255, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        /* Card Backgrounds */
+        .card-bg {
+            background-color: var(--color-card-dark);
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .card-bg:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        }
+        
+        /* Login Card */
+        .login-card-bg {
+            background: linear-gradient(135deg, rgba(26, 26, 36, 0.9) 0%, rgba(26, 26, 36, 0.7) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Primary Button */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #4A4AFF 100%);
+            color: var(--color-bg-deep);
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(91, 95, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(91, 95, 255, 0.6);
+        }
+        
+        /* Secondary Button */
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--color-accent);
+            color: var(--color-accent);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: rgba(212, 175, 55, 0.2);
+            transition: width 0.3s ease;
+        }
+        
+        .btn-secondary:hover::before {
+            width: 100%;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Input fields */
+        input[type="email"], input[type="password"], input[type="text"] {
+            background-color: rgba(15, 15, 20, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--color-text-light);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(91, 95, 255, 0.2);
+            outline: none;
+            background-color: rgba(15, 15, 20, 0.8);
+        }
+
+        /* Accent class */
+        .text-accent {
+            color: var(--color-accent);
+        }
+
+        /* Subtle animation for the hero heading */
+        .wavy {
+            display: inline-block;
+            animation: wavy 2s ease-in-out infinite;
+        }
+        @keyframes wavy {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+        
+        /* Custom alert box styling */
+        .custom-alert-box {
             position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px); 
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.5s ease-in-out;
+            backdrop-filter: blur(10px);
+        }
+        .custom-alert-box.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0); 
+        }
+        .alert-success {
+            background: linear-gradient(135deg, var(--color-accent) 0%, #C5B422 100%);
+            color: var(--color-bg-deep);
+        }
+        .alert-error {
+            background: linear-gradient(135deg, #E53E3E 0%, #C53030 100%);
+            color: var(--color-text-light);
+        }
+
+        /* Mobile Menu specific styles */
+        .nav-menu-open {
+            transform: translateX(0) !important;
+            opacity: 1;
+        }
+
+        .nav-menu-closed {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        @media (min-width: 1024px) {
+            .nav-menu-closed {
+                transform: none; 
+                opacity: 1;
+                display: flex !important;
+            }
+        }
+        
+        /* Premium section divider */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent);
+            margin: 3rem 0;
+        }
+        
+        /* Floating particles background */
+        .particles {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.05" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,138.7C960,139,1056,117,1152,106.7C1248,96,1344,96,1392,96L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
-            background-size: cover;
-            z-index: -1;
+            overflow: hidden;
+            z-index: 0;
         }
-
-        /* Header Styles */
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            transition: var(--transition);
-            border-bottom: 2px solid transparent;
-            background-clip: padding-box;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 5%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            animation: glow 3s ease-in-out infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.2); }
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: var(--text-color);
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-            position: relative;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary-color);
-            background: rgba(99, 102, 241, 0.1);
-        }
-
-        .nav-links a::after {
-            content: '';
+        
+        .particle {
             position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-            transition: var(--transition);
-            transform: translateX(-50%);
+            display: block;
+            pointer-events: none;
+            opacity: 0.2;
         }
-
-        .nav-links a:hover::after {
-            width: 80%;
+        
+        /* Glass morphism effect */
+        .glass {
+            background: rgba(26, 26, 36, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+        
+        /* Premium badge */
+        .premium-badge {
+            background: linear-gradient(135deg, var(--color-accent) 0%, #C5B422 100%);
+            color: var(--color-bg-deep);
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
         }
-
-        .user-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1.2rem;
-            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
-            transition: var(--transition);
-        }
-
-        .user-avatar:hover {
-            transform: scale(1.1);
-        }
-
-        /* Main Content */
-        main {
-            margin-top: 80px;
-            padding: 2rem 5%;
-            max-width: 1400px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
-            border-radius: var(--border-radius);
-            padding: 4rem;
-            box-shadow: var(--shadow);
-            margin-bottom: 3rem;
-            text-align: center;
+        
+        /* Premium card hover effect */
+        .premium-card {
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(10px);
         }
-
-        .hero::before {
+        
+        .premium-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(91, 95, 255, 0.1) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .premium-card:hover::before {
+            opacity: 1;
+        }
+        
+        /* Animated gradient text */
+        .gradient-text {
+            background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% auto;
             animation: gradient 3s ease infinite;
         }
-
+        
         @keyframes gradient {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(10px); }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 800;
+        
+        /* Premium footer */
+        .premium-footer {
+            background: linear-gradient(135deg, var(--color-card-dark) 0%, var(--color-bg-deep) 100%);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        .hero .subtitle {
-            font-size: 1.5rem;
-            color: var(--text-color);
-            margin-bottom: 2rem;
-            font-weight: 500;
-        }
-
-        .hero .author-highlight {
-            background: linear-gradient(135deg, var(--accent-color), var(--warning-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
-        }
-
-        /* Stats Section */
-        .stats-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8));
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            text-align: center;
-            transition: var(--transition);
-            border: 2px solid transparent;
+        
+        /* Premium navigation */
+        .premium-nav {
             backdrop-filter: blur(10px);
+            background: rgba(15, 15, 20, 0.7);
         }
-
-        .stat-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
-            border-color: var(--primary-color);
-        }
-
-        .stat-icon {
-            font-size: 3rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-        }
-
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--dark-color), var(--primary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .stat-label {
-            color: var(--text-color);
-            font-weight: 600;
-            margin-top: 0.5rem;
-        }
-
-        /* Search and Filter Section */
-        .search-filter {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            margin-bottom: 3rem;
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            align-items: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .search-box {
-            flex: 1;
-            min-width: 300px;
+        
+        /* Premium button hover effect */
+        .btn-hover-effect {
             position: relative;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 1rem 1rem 1rem 3.5rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: var(--transition);
-            background: rgba(255, 255, 255, 0.8);
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
-            background: white;
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 1.2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary-color);
-            font-size: 1.2rem;
-        }
-
-        .filter-dropdown {
-            position: relative;
-        }
-
-        .filter-btn {
-            padding: 1rem 2rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
-        }
-
-        .filter-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
-        }
-
-        .filter-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: white;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            padding: 1rem;
-            min-width: 220px;
-            display: none;
-            z-index: 100;
-            margin-top: 0.5rem;
-        }
-
-        .filter-menu.active {
-            display: block;
-        }
-
-        .filter-option {
-            padding: 0.8rem;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: var(--transition);
-            font-weight: 500;
-        }
-
-        .filter-option:hover {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
-            color: var(--primary-color);
-        }
-
-        /* Special Section for Pijus Sir */
-        .pijus-section {
-            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(99, 102, 241, 0.1));
-            border-radius: var(--border-radius);
-            padding: 3rem;
-            margin-bottom: 3rem;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(236, 72, 153, 0.2);
-        }
-
-        .pijus-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 800;
-        }
-
-        .pijus-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--accent-color), var(--warning-color));
-            color: white;
-            padding: 0.5rem 1.5rem;
-            border-radius: 25px;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        /* Book Grid */
-        .books-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .book-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
-            border-radius: var(--border-radius);
             overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            cursor: pointer;
-            position: relative;
+        }
+        
+        .btn-hover-effect::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn-hover-effect:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+        
+        /* Premium loading animation */
+        .premium-loader {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(91, 95, 255, 0.2);
+            border-top: 3px solid var(--color-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Premium stats counter */
+        .stats-counter {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+            color: var(--color-accent);
+        }
+        
+        /* Premium feature card */
+        .feature-card {
+            background: linear-gradient(135deg, rgba(26, 26, 36, 0.8) 0%, rgba(26, 26, 36, 0.6) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border: 2px solid transparent;
+            transition: all 0.3s ease;
         }
-
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Book specific styles */
+        .book-card {
+            background: linear-gradient(135deg, rgba(26, 26, 36, 0.8) 0%, rgba(26, 26, 36, 0.6) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
         .book-card:hover {
-            transform: translateY(-15px) scale(1.02);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
-            border-color: var(--primary-color);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
-
+        
         .book-card.pijus-special {
-            border: 2px solid var(--accent-color);
+            border: 2px solid var(--color-accent);
         }
-
+        
         .book-card.pijus-special::before {
             content: '⭐ Pijus Sir Special';
             position: absolute;
             top: 10px;
             left: 10px;
-            background: linear-gradient(135deg, var(--accent-color), var(--warning-color));
-            color: white;
+            background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
+            color: var(--color-bg-deep);
             padding: 0.3rem 0.8rem;
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 700;
             z-index: 10;
         }
-
+        
         .book-cover {
             height: 220px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
         }
-
+        
         .book-cover.pijus-cover {
-            background: linear-gradient(135deg, var(--accent-color), var(--warning-color));
+            background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
         }
-
-        .book-cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .book-cover .book-icon {
+        
+        .book-icon {
             font-size: 4rem;
-            color: white;
+            color: var(--color-bg-deep);
             animation: float 3s ease-in-out infinite;
         }
-
+        
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
-
+        
         .book-badge {
             position: absolute;
             top: 10px;
             right: 10px;
-            background: linear-gradient(135deg, var(--success-color), var(--primary-color));
-            color: white;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            color: var(--color-bg-deep);
             padding: 0.4rem 1rem;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 700;
-            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 5px 15px rgba(91, 95, 255, 0.3);
         }
-
+        
         .book-info {
-            padding: 2rem;
+            padding: 1.5rem;
         }
-
+        
         .book-title {
             font-size: 1.3rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
-            color: var(--dark-color);
+            color: var(--color-text-light);
             line-height: 1.3;
         }
-
+        
         .book-author {
-            color: var(--text-color);
+            color: var(--color-text-muted);
             margin-bottom: 0.5rem;
             font-weight: 500;
         }
-
+        
         .book-author.pijus-author {
-            color: var(--accent-color);
+            color: var(--color-accent);
             font-weight: 700;
         }
-
+        
         .book-description {
             font-size: 0.9rem;
-            color: var(--text-color);
+            color: var(--color-text-muted);
             margin-bottom: 1rem;
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -518,30 +480,30 @@
             overflow: hidden;
             line-height: 1.5;
         }
-
+        
         .book-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
         }
-
+        
         .book-rating {
-            color: var(--warning-color);
+            color: var(--color-accent);
             font-weight: 600;
         }
-
+        
         .book-pages {
-            color: var(--text-color);
+            color: var(--color-text-muted);
             font-size: 0.9rem;
             font-weight: 500;
         }
-
+        
         .book-actions {
             display: flex;
             gap: 0.8rem;
         }
-
+        
         .btn {
             padding: 0.8rem 1.5rem;
             border: none;
@@ -549,91 +511,13 @@
             cursor: pointer;
             font-size: 0.9rem;
             font-weight: 600;
-            transition: var(--transition);
+            transition: all 0.3s ease;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
         }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
-        }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, var(--light-color), #e5e7eb);
-            color: var(--text-color);
-        }
-
-        .btn-secondary:hover {
-            background: linear-gradient(135deg, #e5e7eb, #d1d5db);
-            transform: translateY(-2px);
-        }
-
-        /* Reading Progress */
-        .reading-progress {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            margin-bottom: 3rem;
-            backdrop-filter: blur(10px);
-        }
-
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .progress-header h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .progress-bar {
-            height: 12px;
-            background: #e5e7eb;
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
-            border-radius: 10px;
-            transition: width 0.5s ease;
-            position: relative;
-        }
-
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
+        
         /* Modal Styles */
         .modal {
             display: none;
@@ -648,22 +532,23 @@
             justify-content: center;
             backdrop-filter: blur(5px);
         }
-
+        
         .modal.active {
             display: flex;
         }
-
+        
         .modal-content {
-            background: white;
-            border-radius: var(--border-radius);
+            background: var(--color-card-dark);
+            border-radius: 1rem;
             padding: 3rem;
             max-width: 500px;
             width: 90%;
             position: relative;
             animation: slideIn 0.3s ease;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
+        
         @keyframes slideIn {
             from {
                 transform: translateY(-50px) scale(0.9);
@@ -674,20 +559,21 @@
                 opacity: 1;
             }
         }
-
+        
         .modal-header {
             margin-bottom: 2rem;
             text-align: center;
         }
-
+        
         .modal-header h2 {
             font-size: 2rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
             font-weight: 800;
         }
-
+        
         .close-modal {
             position: absolute;
             top: 1.5rem;
@@ -696,134 +582,250 @@
             border: none;
             font-size: 1.8rem;
             cursor: pointer;
-            color: var(--text-color);
-            transition: var(--transition);
+            color: var(--color-text-light);
+            transition: all 0.3s ease;
         }
-
+        
         .close-modal:hover {
-            color: var(--accent-color);
+            color: var(--color-accent);
             transform: rotate(90deg);
         }
-
+        
         .form-group {
             margin-bottom: 1.5rem;
         }
-
+        
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
-            color: var(--dark-color);
+            color: var(--color-text-light);
         }
-
+        
         .form-group input {
             width: 100%;
             padding: 1rem;
-            border: 2px solid #e5e7eb;
+            border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             font-size: 1rem;
-            transition: var(--transition);
+            transition: all 0.3s ease;
+            background-color: rgba(15, 15, 20, 0.6);
         }
-
+        
         .form-group input:focus {
             outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 4px rgba(91, 95, 255, 0.1);
+            background-color: rgba(15, 15, 20, 0.8);
         }
-
+        
         .form-actions {
             display: flex;
             gap: 1rem;
             justify-content: flex-end;
         }
-
-        /* Footer */
-        footer {
-            background: linear-gradient(135deg, var(--dark-color), #334155);
-            color: white;
-            padding: 3rem 5%;
-            margin-top: 4rem;
-            position: relative;
-            overflow: hidden;
+        
+        /* Search and Filter Section */
+        .search-filter {
+            background: linear-gradient(135deg, rgba(26, 26, 36, 0.8) 0%, rgba(26, 26, 36, 0.6) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 3rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+            backdrop-filter: blur(10px);
         }
-
-        footer::before {
+        
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: rgba(15, 15, 20, 0.6);
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 4px rgba(91, 95, 255, 0.1);
+            background-color: rgba(15, 15, 20, 0.8);
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-primary);
+            font-size: 1.2rem;
+        }
+        
+        .filter-dropdown {
+            position: relative;
+        }
+        
+        .filter-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            color: var(--color-bg-deep);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(91, 95, 255, 0.3);
+        }
+        
+        .filter-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(91, 95, 255, 0.4);
+        }
+        
+        .filter-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--color-card-dark);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            padding: 1rem;
+            min-width: 220px;
+            display: none;
+            z-index: 100;
+            margin-top: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .filter-menu.active {
+            display: block;
+        }
+        
+        .filter-option {
+            padding: 0.8rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: var(--color-text-light);
+        }
+        
+        .filter-option:hover {
+            background: linear-gradient(135deg, rgba(91, 95, 255, 0.1), rgba(212, 175, 55, 0.1));
+            color: var(--color-primary);
+        }
+        
+        /* Reading Progress */
+        .reading-progress {
+            background: linear-gradient(135deg, rgba(26, 26, 36, 0.8) 0%, rgba(26, 26, 36, 0.6) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+        
+        .progress-fill::after {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
         }
-
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
-
-        .footer-section h3 {
-            margin-bottom: 1rem;
-            color: var(--accent-color);
-            font-weight: 700;
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section ul li {
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-section a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        .footer-section a:hover {
-            color: var(--accent-color);
-        }
-
-        .footer-bottom {
+        
+        /* Special Section for Pijus Sir */
+        .pijus-section {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(91, 95, 255, 0.1));
+            border-radius: 1rem;
+            padding: 3rem;
+            margin-bottom: 3rem;
             text-align: center;
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(212, 175, 55, 0.2);
         }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero .subtitle {
-                font-size: 1.2rem;
-            }
-
-            .books-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 1.5rem;
-            }
-
-            .search-filter {
-                flex-direction: column;
-            }
-
-            .search-box {
-                width: 100%;
-            }
+        
+        .pijus-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
         }
-
+        
+        .pijus-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
+            color: var(--color-bg-deep);
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
         /* Loading Spinner */
         .spinner {
             border: 4px solid rgba(255, 255, 255, 0.3);
@@ -834,101 +836,131 @@
             animation: spin 1s linear infinite;
             display: inline-block;
         }
-
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
+        
         /* Toast Notification */
         .toast {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: var(--dark-color);
-            color: white;
+            background: var(--color-card-dark);
+            color: var(--color-text-light);
             padding: 1rem 2rem;
             border-radius: 12px;
-            box-shadow: var(--shadow);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             transform: translateX(400px);
             transition: transform 0.3s ease;
             z-index: 3000;
             font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
+        
         .toast.show {
             transform: translateX(0);
         }
-
+        
         .toast.success {
-            background: linear-gradient(135deg, var(--success-color), #059669);
+            background: linear-gradient(135deg, var(--color-accent), #C5B422);
+            color: var(--color-bg-deep);
         }
-
+        
         .toast.error {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
+            background: linear-gradient(135deg, #E53E3E, #C53030);
+            color: var(--color-text-light);
         }
     </style>
 </head>
-<body>
-    <!-- Header -->
-    <header>
-        <nav>
-            <div class="logo">
-                <i class="fas fa-square-root-alt"></i>
-                MathVault by Pijus Sir
-            </div>
-            <div class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#pijus">Pijus Sir</a>
-                <a href="#library">Library</a>
-                <a href="#categories">Categories</a>
-                <a href="#about">About</a>
-            </div>
-            <div class="user-info">
-                <span id="userEmail">student@mathvault.com</span>
-                <div class="user-avatar" id="userAvatar">S</div>
-                <button class="btn btn-secondary" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i> Logout
+<body class="min-h-screen flex flex-col">
+    <!-- Floating Particles Background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Header (Navigation and Hero) -->
+    <header class="header-gradient-bg p-6 lg:p-10 text-center shadow-2xl relative">
+        <!-- Navigation Bar -->
+        <nav class="premium-nav absolute top-0 left-0 right-0 p-4 flex justify-between items-start z-10">
+            <!-- Logo/Title -->
+            <h2 class="text-2xl font-extrabold text-white z-20 flex items-center">
+                <span class="text-accent mr-2">P</span>ijus Sir's Academy
+            </h2>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobileMenuButton" class="lg:hidden text-white focus:outline-none z-20 p-2">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+
+            <!-- Desktop Menu / Mobile Overlay -->
+            <ul id="navMenu" class="nav-menu-closed lg:flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:space-x-8 text-lg font-medium 
+                fixed lg:static top-0 right-0 w-full h-screen lg:h-auto bg-[var(--color-bg-deep)]/95 lg:bg-transparent p-10 lg:p-0 
+                items-center justify-center transition-all duration-300">
+                
+                <!-- Close button for mobile -->
+                <button id="closeMenuButton" class="lg:hidden absolute top-6 right-6 text-white text-3xl">
+                    <i class="fas fa-times"></i>
                 </button>
-            </div>
+                
+                <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors duration-200 text-3xl lg:text-lg block lg:inline-block" onclick="closeMobileMenu()">Home</a></li>
+                <li><a href="#pijus" class="text-gray-400 hover:text-white transition-colors duration-200 text-3xl lg:text-lg block lg:inline-block" onclick="closeMobileMenu()">Pijus Sir</a></li>
+                <li><a href="#library" class="text-gray-400 hover:text-white transition-colors duration-200 text-3xl lg:text-lg block lg:inline-block" onclick="closeMobileMenu()">Library</a></li>
+                <li><a href="#categories" class="text-gray-400 hover:text-white transition-colors duration-200 text-3xl lg:text-lg block lg:inline-block" onclick="closeMobileMenu()">Categories</a></li>
+                <li><a href="index.html#contactDetails" class="text-gray-400 hover:text-white transition-colors duration-200 text-3xl lg:text-lg block lg:inline-block" onclick="closeMobileMenu()">Contact</a></li>
+            </ul>
         </nav>
+
+        <!-- Hero Content -->
+        <div class="pt-20 pb-12 relative z-1">
+            <h1 class="text-4xl sm:text-6xl font-extrabold text-white mb-4 drop-shadow-lg leading-tight" data-aos="fade-up">
+                <span role="img" aria-label="book" class="inline-block align-middle mr-3 text-5xl sm:text-7xl wavy text-accent">📖</span> My <span class="gradient-text">Written Books</span>
+            </h1>
+            <p class="text-lg sm:text-2xl text-[var(--color-text-muted)] font-medium max-w-4xl mx-auto mb-10" data-aos="fade-up" data-aos-delay="100">
+                Explore my comprehensive collection of mathematics books for competitive exams and teaching preparation.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="200">
+                <a href="#pijus" class="btn-primary btn-hover-effect inline-flex items-center px-10 py-4 rounded-full text-lg font-bold shadow-xl">
+                    Explore Collection <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+                <a href="index.html" class="btn-secondary btn-hover-effect inline-flex items-center px-10 py-4 rounded-full text-lg font-bold shadow-xl">
+                    Back to Home <i class="fas fa-home ml-2"></i>
+                </a>
+            </div>
+        </div>
     </header>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <h1>Welcome to MathVault by Pijus Sir</h1>
-            <p class="subtitle">Master Mathematics with <span class="author-highlight">Pijus Sir's</span> Expert Guidance</p>
-            <p>Access our comprehensive collection of mathematics books for JEE Mains, KVS/NVS, WBJEE, and teaching exam preparation. Learn from the best!</p>
-            <div class="stats-section">
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-calculator"></i></div>
-                    <div class="stat-value">30+</div>
-                    <div class="stat-label">Expert Math Books</div>
+    <main class="flex-grow container mx-auto px-4 py-16 space-y-20">
+        <!-- Stats Section -->
+        <section class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="text-center" data-aos="fade-up">
+                    <div class="stats-counter" data-count="30">0</div>
+                    <p class="text-[var(--color-text-muted)]">Expert Math Books</p>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-star"></i></div>
-                    <div class="stat-value">15</div>
-                    <div class="stat-label">Pijus Sir Specials</div>
+                <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+                    <div class="stats-counter" data-count="15">0</div>
+                    <p class="text-[var(--color-text-muted)]">Pijus Sir Specials</p>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-graduation-cap"></i></div>
-                    <div class="stat-value">5000+</div>
-                    <div class="stat-label">Success Stories</div>
+                <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="stats-counter" data-count="5000">0</div>
+                    <p class="text-[var(--color-text-muted)]">Success Stories</p>
+                </div>
+                <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+                    <div class="stats-counter" data-count="18">0</div>
+                    <p class="text-[var(--color-text-muted)]">Years Experience</p>
                 </div>
             </div>
         </section>
 
         <!-- Pijus Sir Special Section -->
-        <section class="pijus-section" id="pijus">
+        <section class="pijus-section" id="pijus" data-aos="fade-up">
             <div class="pijus-badge">⭐ Featured Author</div>
             <h2>Pijus Sir's Collection</h2>
             <p>Exclusive mathematics books curated and authored by Pijus Sir with decades of teaching experience</p>
         </section>
 
         <!-- Reading Progress -->
-        <section class="reading-progress">
+        <section class="reading-progress" data-aos="fade-up">
             <div class="progress-header">
                 <h3>Your Learning Journey</h3>
                 <span id="progressText">0% Complete</span>
@@ -939,7 +971,7 @@
         </section>
 
         <!-- Search and Filter -->
-        <section class="search-filter">
+        <section class="search-filter" data-aos="fade-up">
             <div class="search-box">
                 <i class="fas fa-search"></i>
                 <input type="text" id="searchInput" placeholder="Search Pijus Sir's math books...">
@@ -961,48 +993,17 @@
         </section>
 
         <!-- Books Grid -->
-        <section class="books-grid" id="booksGrid">
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="booksGrid">
             <!-- Books will be dynamically loaded here -->
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>About MathVault</h3>
-                <p>Premium mathematics library by Pijus Sir, offering comprehensive collection for competitive exams and teaching preparation. Excel in mathematics with expert guidance.</p>
-            </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#pijus">Pijus Sir</a></li>
-                    <li><a href="#library">Library</a></li>
-                    <li><a href="#categories">Categories</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Support</h3>
-                <ul>
-                    <li><a href="#help">Help Center</a></li>
-                    <li><a href="#contact">Contact Pijus Sir</a></li>
-                    <li><a href="#privacy">Privacy Policy</a></li>
-                    <li><a href="#terms">Terms of Service</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Connect</h3>
-                <div style="display: flex; gap: 1rem; font-size: 1.8rem;">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-telegram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2023 MathVault by Pijus Sir. All rights reserved. | Empowering Students Since 2005</p>
+    <footer class="premium-footer text-center p-6 text-sm text-[var(--color-text-muted)] mt-16">
+        <p>© 2025 Pijus Sir's Academy. All rights reserved. | Designed for student success.</p>
+        <div class="flex justify-center space-x-6 mt-4">
+            <a href="#" class="text-[var(--color-text-muted)] hover:text-accent transition-colors duration-200">Privacy Policy</a>
+            <a href="#" class="text-[var(--color-text-muted)] hover:text-accent transition-colors duration-200">Terms of Service</a>
+            <a href="#" class="text-[var(--color-text-muted)] hover:text-accent transition-colors duration-200">FAQ</a>
         </div>
     </footer>
 
@@ -1037,6 +1038,9 @@
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
 
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
     <script>
         // Mathematics books by Pijus Sir and other authors
         const books = [
@@ -1409,6 +1413,42 @@
         let readingProgress = 0;
         let filteredBooks = [...books];
 
+        // DOM Element References
+        const elements = {
+            // Navigation elements
+            mobileMenuButton: document.getElementById('mobileMenuButton'),
+            closeMenuButton: document.getElementById('closeMenuButton'),
+            navMenu: document.getElementById('navMenu'),
+            
+            // Common elements
+            successAlert: document.getElementById('toast'),
+            particlesContainer: document.getElementById('particles'),
+            
+            // Book elements
+            booksGrid: document.getElementById('booksGrid'),
+            searchInput: document.getElementById('searchInput'),
+            filterMenu: document.getElementById('filterMenu'),
+            progressFill: document.getElementById('progressFill'),
+            progressText: document.getElementById('progressText'),
+            
+            // Modal elements
+            loginModal: document.getElementById('loginModal'),
+            loginForm: document.getElementById('loginForm'),
+            loginBtnText: document.getElementById('loginBtnText')
+        };
+
+        // Navigation Functions
+        function toggleMobileMenu() {
+            elements.navMenu.classList.toggle('nav-menu-closed');
+            elements.navMenu.classList.toggle('nav-menu-open');
+        }
+
+        function closeMobileMenu() {
+            if (elements.navMenu.classList.contains('nav-menu-open')) {
+                toggleMobileMenu();
+            }
+        }
+
         // Check if user is logged in
         function checkAuth() {
             const user = localStorage.getItem('currentUser');
@@ -1416,7 +1456,6 @@
                 showModal();
             } else {
                 currentUser = JSON.parse(user);
-                updateUserInterface();
                 loadBooks();
                 updateReadingProgress();
             }
@@ -1424,12 +1463,12 @@
 
         // Show login modal
         function showModal() {
-            document.getElementById('loginModal').classList.add('active');
+            elements.loginModal.classList.add('active');
         }
 
         // Close modal
         function closeModal() {
-            document.getElementById('loginModal').classList.remove('active');
+            elements.loginModal.classList.remove('active');
         }
 
         // Handle login
@@ -1441,10 +1480,9 @@
             
             // Show loading state
             const loginBtn = event.target.querySelector('.btn-primary');
-            const loginBtnText = document.getElementById('loginBtnText');
             const spinner = loginBtn.querySelector('.spinner');
             
-            loginBtnText.textContent = 'Logging in...';
+            elements.loginBtnText.textContent = 'Logging in...';
             spinner.style.display = 'inline-block';
             loginBtn.disabled = true;
             
@@ -1458,7 +1496,6 @@
                     };
                     
                     localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                    updateUserInterface();
                     loadBooks();
                     closeModal();
                     showToast('Welcome to MathVault! Learn from the best with Pijus Sir.', 'success');
@@ -1467,44 +1504,29 @@
                 }
                 
                 // Reset button state
-                loginBtnText.textContent = 'Login';
+                elements.loginBtnText.textContent = 'Login';
                 spinner.style.display = 'none';
                 loginBtn.disabled = false;
             }, 1500);
         }
 
-        // Update user interface
-        function updateUserInterface() {
-            if (currentUser) {
-                document.getElementById('userEmail').textContent = currentUser.email;
-                document.getElementById('userAvatar').textContent = currentUser.avatar;
-            }
-        }
-
-        // Logout
-        function logout() {
-            localStorage.removeItem('currentUser');
-            currentUser = null;
-            document.getElementById('booksGrid').innerHTML = '';
-            showModal();
-            showToast('You have been logged out successfully.', 'success');
-        }
-
         // Load books
         function loadBooks() {
-            const booksGrid = document.getElementById('booksGrid');
-            booksGrid.innerHTML = '';
+            elements.booksGrid.innerHTML = '';
             
-            filteredBooks.forEach(book => {
-                const bookCard = createBookCard(book);
-                booksGrid.appendChild(bookCard);
+            filteredBooks.forEach((book, index) => {
+                const bookCard = createBookCard(book, index);
+                elements.booksGrid.appendChild(bookCard);
             });
         }
 
         // Create book card
-        function createBookCard(book) {
+        function createBookCard(book, index) {
             const card = document.createElement('div');
-            card.className = `book-card ${book.isPijus ? 'pijus-special' : ''}`;
+            card.className = `book-card ${book.isPijus ? 'pijus-special' : ''} premium-card`;
+            card.setAttribute('data-aos', 'fade-up');
+            card.setAttribute('data-aos-delay', `${index * 100}`);
+            
             card.innerHTML = `
                 <div class="book-cover ${book.isPijus ? 'pijus-cover' : ''}">
                     <i class="fas fa-square-root-alt book-icon"></i>
@@ -1569,14 +1591,13 @@
             const readBooks = JSON.parse(localStorage.getItem('readBooks') || '[]');
             const progress = Math.round((readBooks.length / books.length) * 100);
             
-            document.getElementById('progressFill').style.width = `${progress}%`;
-            document.getElementById('progressText').textContent = `${progress}% Complete`;
+            elements.progressFill.style.width = `${progress}%`;
+            elements.progressText.textContent = `${progress}% Complete`;
         }
 
         // Toggle filter menu
         function toggleFilter() {
-            const filterMenu = document.getElementById('filterMenu');
-            filterMenu.classList.toggle('active');
+            elements.filterMenu.classList.toggle('active');
         }
 
         // Filter books
@@ -1593,7 +1614,7 @@
         }
 
         // Search books
-        document.getElementById('searchInput').addEventListener('input', function(e) {
+        elements.searchInput.addEventListener('input', function(e) {
             const searchTerm = e.target.value.toLowerCase();
             
             if (searchTerm === '') {
@@ -1611,28 +1632,151 @@
 
         // Show toast notification
         function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = `toast ${type}`;
-            toast.classList.add('show');
+            elements.successAlert.textContent = message;
+            elements.successAlert.classList.remove('alert-success', 'alert-error');
+            elements.successAlert.classList.add(type === 'success' ? 'alert-success' : 'alert-error');
+            elements.successAlert.classList.add('show');
             
             setTimeout(() => {
-                toast.classList.remove('show');
+                elements.successAlert.classList.remove('show');
             }, 3000);
         }
 
         // Close filter menu when clicking outside
         document.addEventListener('click', function(e) {
             const filterDropdown = document.querySelector('.filter-dropdown');
-            const filterMenu = document.getElementById('filterMenu');
             
             if (!filterDropdown.contains(e.target)) {
-                filterMenu.classList.remove('active');
+                elements.filterMenu.classList.remove('active');
             }
         });
 
-        // Initialize app on page load
-        document.addEventListener('DOMContentLoaded', function() {
+        // Particles Background
+        function createParticles() {
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('span');
+                particle.classList.add('particle');
+                
+                // Random size between 5px and 15px
+                const size = Math.random() * 10 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                
+                // Random color between primary and accent
+                const color = Math.random() > 0.5 ? 'var(--color-primary)' : 'var(--color-accent)';
+                particle.style.backgroundColor = color;
+                
+                // Random border radius for variety
+                const borderRadius = Math.random() * 50;
+                particle.style.borderRadius = `${borderRadius}%`;
+                
+                // Random animation duration and delay
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+                particle.style.animation = `float ${duration}s ${delay}s infinite ease-in-out`;
+                
+                elements.particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Add Float Animation
+        function addFloatAnimation() {
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0% {
+                        transform: translateY(0) translateX(0);
+                        opacity: 0.2;
+                    }
+                    25% {
+                        transform: translateY(-20px) translateX(10px);
+                        opacity: 0.4;
+                    }
+                    50% {
+                        transform: translateY(0) translateX(20px);
+                        opacity: 0.2;
+                    }
+                    75% {
+                        transform: translateY(20px) translateX(10px);
+                        opacity: 0.4;
+                    }
+                    100% {
+                        transform: translateY(0) translateX(0);
+                        opacity: 0.2;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Stats Counter Animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stats-counter');
+            const speed = 200;
+            
+            counters.forEach(counter => {
+                const animate = () => {
+                    const value = +counter.getAttribute('data-count');
+                    const data = +counter.innerText;
+                    const time = value / speed;
+                    
+                    if (data < value) {
+                        counter.innerText = Math.ceil(data + time);
+                        setTimeout(animate, 1);
+                    } else {
+                        counter.innerText = value;
+                    }
+                }
+                
+                // Use Intersection Observer to trigger animation when element is in view
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            animate();
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                });
+                
+                observer.observe(counter);
+            });
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize AOS
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true,
+                mirror: false
+            });
+            
+            // Add float animation
+            addFloatAnimation();
+            
+            // Create particles
+            createParticles();
+            
+            // Animate counters
+            animateCounters();
+            
+            // Mobile menu event listeners
+            elements.mobileMenuButton.addEventListener('click', toggleMobileMenu);
+            elements.closeMenuButton.addEventListener('click', toggleMobileMenu);
+            
+            // Login form
+            elements.loginForm.addEventListener('submit', handleLogin);
+            
+            // Check authentication
             checkAuth();
         });
     </script>
