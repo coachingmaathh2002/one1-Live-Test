@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathVault by Pijus Sir - Premium Mathematics Library</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --accent-color: #ec4899;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+            --text-color: #475569;
+            --border-radius: 16px;
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #fda085 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.05" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,138.7C960,139,1056,117,1152,106.7C1248,96,1344,96,1392,96L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+            z-index: -1;
+        }
+
+        /* Header Styles */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+            border-bottom: 2px solid transparent;
+            background-clip: padding-box;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            transition: var(--transition);
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover::after {
+            width: 80%;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+            transition: var(--transition);
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.1);
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            padding: 2rem 5%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
+            border-radius: var(--border-radius);
+            padding: 4rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            animation: gradient 3s ease infinite;
+        }
+
+        @keyframes gradient {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-color);
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .hero .author-highlight {
+            background: linear-gradient(135deg, var(--accent-color), var(--warning-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8));
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary-color);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--dark-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: var(--text-color);
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        /* Search and Filter Section */
+        .search-filter {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            background: white;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .filter-dropdown {
+            position: relative;
+        }
+
+        .filter-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .filter-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 1rem;
+            min-width: 220px;
+            display: none;
+            z-index: 100;
+            margin-top: 0.5rem;
+        }
+
+        .filter-menu.active {
+            display: block;
+        }
+
+        .filter-option {
+            padding: 0.8rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .filter-option:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+            color: var(--primary-color);
+        }
+
+        /* Special Section for Pijus Sir */
+        .pijus-section {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(99, 102, 241, 0.1));
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(236, 72, 153, 0.2);
+        }
+
+        .pijus-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .pijus-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-color), var(--warning-color));
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Book Grid */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .book-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            backdrop-filter: blur(10px);
+            border: 2px solid transparent;
+        }
+
+        .book-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        .book-card.pijus-special {
+            border: 2px solid var(--accent-color);
+        }
+
+        .book-card.pijus-special::before {
+            content: '⭐ Pijus Sir Special';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: linear-gradient(135deg, var(--accent-color), var(--warning-color));
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            z-index: 10;
+        }
+
+        .book-cover {
+            height: 220px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-cover.pijus-cover {
+            background: linear-gradient(135deg, var(--accent-color), var(--warning-color));
+        }
+
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .book-cover .book-icon {
+            font-size: 4rem;
+            color: white;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .book-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, var(--success-color), var(--primary-color));
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .book-info {
+            padding: 2rem;
+        }
+
+        .book-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+            line-height: 1.3;
+        }
+
+        .book-author {
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .book-author.pijus-author {
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+
+        .book-description {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.5;
+        }
+
+        .book-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .book-rating {
+            color: var(--warning-color);
+            font-weight: 600;
+        }
+
+        .book-pages {
+            color: var(--text-color);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .book-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--light-color), #e5e7eb);
+            color: var(--text-color);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #e5e7eb, #d1d5db);
+            transform: translateY(-2px);
+        }
+
+        /* Reading Progress */
+        .reading-progress {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .progress-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px) scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .modal-header h2 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--accent-color);
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--dark-color), #334155);
+            color: white;
+            padding: 3rem 5%;
+            margin-top: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .books-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .search-filter {
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid white;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--dark-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 3000;
+            font-weight: 500;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+        }
+
+        .toast.error {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fas fa-square-root-alt"></i>
+                MathVault by Pijus Sir
+            </div>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#pijus">Pijus Sir</a>
+                <a href="#library">Library</a>
+                <a href="#categories">Categories</a>
+                <a href="#about">About</a>
+            </div>
+            <div class="user-info">
+                <span id="userEmail">student@mathvault.com</span>
+                <div class="user-avatar" id="userAvatar">S</div>
+                <button class="btn btn-secondary" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Welcome to MathVault by Pijus Sir</h1>
+            <p class="subtitle">Master Mathematics with <span class="author-highlight">Pijus Sir's</span> Expert Guidance</p>
+            <p>Access our comprehensive collection of mathematics books for JEE Mains, KVS/NVS, WBJEE, and teaching exam preparation. Learn from the best!</p>
+            <div class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-calculator"></i></div>
+                    <div class="stat-value">30+</div>
+                    <div class="stat-label">Expert Math Books</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-star"></i></div>
+                    <div class="stat-value">15</div>
+                    <div class="stat-label">Pijus Sir Specials</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="stat-value">5000+</div>
+                    <div class="stat-label">Success Stories</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pijus Sir Special Section -->
+        <section class="pijus-section" id="pijus">
+            <div class="pijus-badge">⭐ Featured Author</div>
+            <h2>Pijus Sir's Collection</h2>
+            <p>Exclusive mathematics books curated and authored by Pijus Sir with decades of teaching experience</p>
+        </section>
+
+        <!-- Reading Progress -->
+        <section class="reading-progress">
+            <div class="progress-header">
+                <h3>Your Learning Journey</h3>
+                <span id="progressText">0% Complete</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+        </section>
+
+        <!-- Search and Filter -->
+        <section class="search-filter">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search Pijus Sir's math books...">
+            </div>
+            <div class="filter-dropdown">
+                <button class="filter-btn" onclick="toggleFilter()">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+                <div class="filter-menu" id="filterMenu">
+                    <div class="filter-option" onclick="filterBooks('all')">All Books</div>
+                    <div class="filter-option" onclick="filterBooks('pijus')">Pijus Sir Special</div>
+                    <div class="filter-option" onclick="filterBooks('jee')">JEE Mains</div>
+                    <div class="filter-option" onclick="filterBooks('kvs')">KVS/NVS</div>
+                    <div class="filter-option" onclick="filterBooks('wbjee')">WBJEE</div>
+                    <div class="filter-option" onclick="filterBooks('teaching')">Teaching Exams</div>
+                    <div class="filter-option" onclick="filterBooks('ug')">UG Mathematics</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Books Grid -->
+        <section class="books-grid" id="booksGrid">
+            <!-- Books will be dynamically loaded here -->
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About MathVault</h3>
+                <p>Premium mathematics library by Pijus Sir, offering comprehensive collection for competitive exams and teaching preparation. Excel in mathematics with expert guidance.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#pijus">Pijus Sir</a></li>
+                    <li><a href="#library">Library</a></li>
+                    <li><a href="#categories">Categories</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#help">Help Center</a></li>
+                    <li><a href="#contact">Contact Pijus Sir</a></li>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <div style="display: flex; gap: 1rem; font-size: 1.8rem;">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 MathVault by Pijus Sir. All rights reserved. | Empowering Students Since 2005</p>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <div class="modal-header">
+                <h2>Login to MathVault</h2>
+                <p>Access Pijus Sir's Premium Collection</p>
+            </div>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="Enter your password">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <span id="loginBtnText">Login</span>
+                        <span class="spinner" style="display: none;"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Mathematics books by Pijus Sir and other authors
+        const books = [
+            // Pijus Sir Special Books
+            {
+                id: 1,
+                title: "JEE Mains Mathematics Mastery by Pijus Sir",
+                author: "Pijus Sir",
+                description: "Complete JEE Mains mathematics guide with Pijus Sir's unique teaching methodology and shortcut techniques.",
+                category: "pijus",
+                pages: 1200,
+                rating: 4.9,
+                badge: "Bestseller",
+                driveLink: "https://drive.google.com/file/d/1pijus1/view",
+                isPijus: true
+            },
+            {
+                id: 2,
+                title: "Calculus Simplified - Pijus Sir Method",
+                author: "Pijus Sir",
+                description: "Master calculus with Pijus Sir's revolutionary approach. Includes theory, examples, and practice problems.",
+                category: "pijus",
+                pages: 800,
+                rating: 4.8,
+                badge: "Pijus Special",
+                driveLink: "https://drive.google.com/file/d/1pijus2/view",
+                isPijus: true
+            },
+            {
+                id: 3,
+                title: "Algebra Magic by Pijus Sir",
+                author: "Pijus Sir",
+                description: "Unlock the secrets of algebra with Pijus Sir's proven techniques and problem-solving strategies.",
+                category: "pijus",
+                pages: 750,
+                rating: 4.9,
+                badge: "Pijus Special",
+                driveLink: "https://drive.google.com/file/d/1pijus3/view",
+                isPijus: true
+            },
+            {
+                id: 4,
+                title: "Geometry Excellence - Pijus Sir",
+                author: "Pijus Sir",
+                description: "Complete geometry guide with visual learning methods and step-by-step problem solving.",
+                category: "pijus",
+                pages: 600,
+                rating: 4.7,
+                badge: "Pijus Special",
+                driveLink: "https://drive.google.com/file/d/1pijus4/view",
+                isPijus: true
+            },
+            {
+                id: 5,
+                title: "Trigonometry Mastery by Pijus Sir",
+                author: "Pijus Sir",
+                description: "Conquer trigonometry with Pijus Sir's easy-to-understand methods and memory techniques.",
+                category: "pijus",
+                pages: 450,
+                rating: 4.8,
+                badge: "Pijus Special",
+                driveLink: "https://drive.google.com/file/d/1pijus5/view",
+                isPijus: true
+            },
+            {
+                id: 6,
+                title: "Mathematical Reasoning by Pijus Sir",
+                author: "Pijus Sir",
+                description: "Develop logical thinking and mathematical reasoning skills with Pijus Sir's expert guidance.",
+                category: "pijus",
+                pages: 400,
+                rating: 4.6,
+                badge: "Pijus Special",
+                driveLink: "https://drive.google.com/file/d/1pijus6/view",
+                isPijus: true
+            },
+            {
+                id: 7,
+                title: "KVS PGT Mathematics by Pijus Sir",
+                author: "Pijus Sir",
+                description: "Complete KVS PGT preparation guide with previous year papers and teaching methodology.",
+                category: "pijus",
+                pages: 900,
+                rating: 4.9,
+                badge: "Teaching Pro",
+                driveLink: "https://drive.google.com/file/d/1pijus7/view",
+                isPijus: true
+            },
+            {
+                id: 8,
+                title: "WBJEE Mathematics Pro by Pijus Sir",
+                author: "Pijus Sir",
+                description: "WBJEE specific mathematics guide with pattern-based preparation and mock tests.",
+                category: "pijus",
+                pages: 850,
+                rating: 4.8,
+                badge: "WBJEE Pro",
+                driveLink: "https://drive.google.com/file/d/1pijus8/view",
+                isPijus: true
+            },
+            {
+                id: 9,
+                title: "Mathematics for Teaching Exams by Pijus Sir",
+                author: "Pijus Sir",
+                description: "Comprehensive guide for all teaching exams with pedagogy and subject expertise.",
+                category: "pijus",
+                pages: 1000,
+                rating: 4.9,
+                badge: "Teaching Pro",
+                driveLink: "https://drive.google.com/file/d/1pijus9/view",
+                isPijus: true
+            },
+            {
+                id: 10,
+                title: "Advanced Problem Solving by Pijus Sir",
+                author: "Pijus Sir",
+                description: "Master advanced problem-solving techniques with Pijus Sir's strategic approach.",
+                category: "pijus",
+                pages: 700,
+                rating: 4.8,
+                badge: "Advanced",
+                driveLink: "https://drive.google.com/file/d/1pijus10/view",
+                isPijus: true
+            },
+            {
+                id: 11,
+                title: "Mathematical Foundations by Pijus Sir",
+                author: "Pijus Sir",
+                description: "Build strong mathematical foundations with Pijus Sir's systematic approach.",
+                category: "pijus",
+                pages: 650,
+                rating: 4.7,
+                badge: "Foundation",
+                driveLink: "https://drive.google.com/file/d/1pijus11/view",
+                isPijus: true
+            },
+            {
+                id: 12,
+                title: "Quick Mathematics by Pijus Sir",
+                author: "Pijus Sir",
+                description: "Learn quick calculation methods and shortcuts for competitive exams.",
+                category: "pijus",
+                pages: 350,
+                rating: 4.6,
+                badge: "Quick Tips",
+                driveLink: "https://drive.google.com/file/d/1pijus12/view",
+                isPijus: true
+            },
+            {
+                id: 13,
+                title: "Mathematical Olympiad by Pijus Sir",
+                author: "Pijus Sir",
+                description: "Prepare for mathematical olympiads with advanced concepts and challenging problems.",
+                category: "pijus",
+                pages: 800,
+                rating: 4.9,
+                badge: "Olympiad",
+                driveLink: "https://drive.google.com/file/d/1pijus13/view",
+                isPijus: true
+            },
+            {
+                id: 14,
+                title: "Statistics and Probability by Pijus Sir",
+                author: "Pijus Sir",
+                description: "Master statistics and probability with real-world examples and applications.",
+                category: "pijus",
+                pages: 550,
+                rating: 4.7,
+                badge: "Statistics",
+                driveLink: "https://drive.google.com/file/d/1pijus14/view",
+                isPijus: true
+            },
+            {
+                id: 15,
+                title: "Linear Algebra by Pijus Sir",
+                author: "Pijus Sir",
+                description: "Complete linear algebra guide with matrix operations and vector spaces.",
+                category: "pijus",
+                pages: 600,
+                rating: 4.8,
+                badge: "Linear Algebra",
+                driveLink: "https://drive.google.com/file/d/1pijus15/view",
+                isPijus: true
+            },
+            // Other Mathematics Books
+            {
+                id: 16,
+                title: "JEE Mains Mathematics Complete Guide",
+                author: "R.D. Sharma",
+                description: "Comprehensive mathematics guide covering all topics for JEE Mains with solved examples.",
+                category: "jee",
+                pages: 1200,
+                rating: 4.8,
+                badge: "JEE Mains",
+                driveLink: "https://drive.google.com/file/d/1rdsharma1/view",
+                isPijus: false
+            },
+            {
+                id: 17,
+                title: "Mathematics for JEE Advanced",
+                author: "Arihant Publications",
+                description: "Advanced level mathematics problems and solutions for JEE Advanced preparation.",
+                category: "jee",
+                pages: 1500,
+                rating: 4.7,
+                badge: "JEE Advanced",
+                driveLink: "https://drive.google.com/file/d/1arihant1/view",
+                isPijus: false
+            },
+            {
+                id: 18,
+                title: "Coordinate Geometry for JEE",
+                author: "S.L. Loney",
+                description: "Master coordinate geometry with this classic book featuring comprehensive coverage.",
+                category: "jee",
+                pages: 450,
+                rating: 4.6,
+                badge: "Geometry",
+                driveLink: "https://drive.google.com/file/d/1sloney1/view",
+                isPijus: false
+            },
+            {
+                id: 19,
+                title: "KVS PGT Mathematics Guide",
+                author: "RPH Editorial Board",
+                description: "Complete guide for KVS PGT Mathematics exam with previous year solved papers.",
+                category: "kvs",
+                pages: 650,
+                rating: 4.3,
+                badge: "KVS PGT",
+                driveLink: "https://drive.google.com/file/d/1rph1/view",
+                isPijus: false
+            },
+            {
+                id: 20,
+                title: "NVS PRT Mathematics",
+                author: "Arihant Experts",
+                description: "Comprehensive mathematics guide for NVS PRT recruitment exam with practice sets.",
+                category: "kvs",
+                pages: 500,
+                rating: 4.2,
+                badge: "NVS PRT",
+                driveLink: "https://drive.google.com/file/d/1arihant2/view",
+                isPijus: false
+            },
+            {
+                id: 21,
+                title: "WBJEE Mathematics Pro",
+                author: "MIT Professors",
+                description: "Advanced mathematics guide specifically designed for WBJEE with solved examples.",
+                category: "wbjee",
+                pages: 900,
+                rating: 4.6,
+                badge: "WBJEE Pro",
+                driveLink: "https://drive.google.com/file/d/1mit1/view",
+                isPijus: false
+            },
+            {
+                id: 22,
+                title: "Teaching Mathematics Pedagogy",
+                author: "S.K. Mangal",
+                description: "Essential guide for mathematics teaching methodology and pedagogy for teaching exams.",
+                category: "teaching",
+                pages: 350,
+                rating: 4.5,
+                badge: "Pedagogy",
+                driveLink: "https://drive.google.com/file/d/1mangal1/view",
+                isPijus: false
+            },
+            {
+                id: 23,
+                title: "CTET Mathematics Paper",
+                author: "Pearson Experts",
+                description: "Complete mathematics preparation guide for CTET and other teaching competitive exams.",
+                category: "teaching",
+                pages: 450,
+                rating: 4.3,
+                badge: "CTET",
+                driveLink: "https://drive.google.com/file/d/1pearson1/view",
+                isPijus: false
+            },
+            {
+                id: 24,
+                title: "Higher Algebra",
+                author: "Hall & Knight",
+                description: "Classic textbook on higher algebra covering advanced topics essential for competitive exams.",
+                category: "ug",
+                pages: 580,
+                rating: 4.7,
+                badge: "UG Classic",
+                driveLink: "https://drive.google.com/file/d/1hallknight1/view",
+                isPijus: false
+            },
+            {
+                id: 25,
+                title: "Differential Calculus",
+                author: "Arihant Publications",
+                description: "Comprehensive guide to differential calculus with numerous examples and exercises.",
+                category: "ug",
+                pages: 650,
+                rating: 4.5,
+                badge: "Calculus",
+                driveLink: "https://drive.google.com/file/d/1arihant3/view",
+                isPijus: false
+            },
+            {
+                id: 26,
+                title: "Integral Calculus",
+                author: "Arihant Publications",
+                description: "Complete guide to integral calculus with theory, examples, and practice problems.",
+                category: "ug",
+                pages: 600,
+                rating: 4.4,
+                badge: "Calculus",
+                driveLink: "https://drive.google.com/file/d/1arihant4/view",
+                isPijus: false
+            },
+            {
+                id: 27,
+                title: "Linear Algebra",
+                author: "Schaum's Outline",
+                description: "Comprehensive linear algebra guide with solved problems and exercises.",
+                category: "ug",
+                pages: 450,
+                rating: 4.6,
+                badge: "Linear Algebra",
+                driveLink: "https://drive.google.com/file/d/1schaum1/view",
+                isPijus: false
+            },
+            {
+                id: 28,
+                title: "Real Analysis",
+                author: "R.G. Bartle",
+                description: "Introduction to real analysis with clear explanations and numerous examples.",
+                category: "ug",
+                pages: 400,
+                rating: 4.5,
+                badge: "Analysis",
+                driveLink: "https://drive.google.com/file/d/1bartle1/view",
+                isPijus: false
+            },
+            {
+                id: 29,
+                title: "Complex Analysis",
+                author: "Schaum's Outline",
+                description: "Complete guide to complex analysis with solved problems and exercises.",
+                category: "ug",
+                pages: 380,
+                rating: 4.4,
+                badge: "Complex Analysis",
+                driveLink: "https://drive.google.com/file/d/1schaum2/view",
+                isPijus: false
+            },
+            {
+                id: 30,
+                title: "Mathematical Methods",
+                author: "B.S. Grewal",
+                description: "Comprehensive mathematical methods guide for engineering and UG mathematics students.",
+                category: "ug",
+                pages: 1200,
+                rating: 4.7,
+                badge: "Mathematical Methods",
+                driveLink: "https://drive.google.com/file/d/1grewal1/view",
+                isPijus: false
+            }
+        ];
+
+        // Initialize the app
+        let currentUser = null;
+        let readingProgress = 0;
+        let filteredBooks = [...books];
+
+        // Check if user is logged in
+        function checkAuth() {
+            const user = localStorage.getItem('currentUser');
+            if (!user) {
+                showModal();
+            } else {
+                currentUser = JSON.parse(user);
+                updateUserInterface();
+                loadBooks();
+                updateReadingProgress();
+            }
+        }
+
+        // Show login modal
+        function showModal() {
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        // Handle login
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Show loading state
+            const loginBtn = event.target.querySelector('.btn-primary');
+            const loginBtnText = document.getElementById('loginBtnText');
+            const spinner = loginBtn.querySelector('.spinner');
+            
+            loginBtnText.textContent = 'Logging in...';
+            spinner.style.display = 'inline-block';
+            loginBtn.disabled = true;
+            
+            // Simulate authentication
+            setTimeout(() => {
+                if (email && password.length >= 6) {
+                    currentUser = {
+                        email: email,
+                        name: email.split('@')[0],
+                        avatar: email[0].toUpperCase()
+                    };
+                    
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    updateUserInterface();
+                    loadBooks();
+                    closeModal();
+                    showToast('Welcome to MathVault! Learn from the best with Pijus Sir.', 'success');
+                } else {
+                    showToast('Invalid email or password. Please try again.', 'error');
+                }
+                
+                // Reset button state
+                loginBtnText.textContent = 'Login';
+                spinner.style.display = 'none';
+                loginBtn.disabled = false;
+            }, 1500);
+        }
+
+        // Update user interface
+        function updateUserInterface() {
+            if (currentUser) {
+                document.getElementById('userEmail').textContent = currentUser.email;
+                document.getElementById('userAvatar').textContent = currentUser.avatar;
+            }
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('currentUser');
+            currentUser = null;
+            document.getElementById('booksGrid').innerHTML = '';
+            showModal();
+            showToast('You have been logged out successfully.', 'success');
+        }
+
+        // Load books
+        function loadBooks() {
+            const booksGrid = document.getElementById('booksGrid');
+            booksGrid.innerHTML = '';
+            
+            filteredBooks.forEach(book => {
+                const bookCard = createBookCard(book);
+                booksGrid.appendChild(bookCard);
+            });
+        }
+
+        // Create book card
+        function createBookCard(book) {
+            const card = document.createElement('div');
+            card.className = `book-card ${book.isPijus ? 'pijus-special' : ''}`;
+            card.innerHTML = `
+                <div class="book-cover ${book.isPijus ? 'pijus-cover' : ''}">
+                    <i class="fas fa-square-root-alt book-icon"></i>
+                    <span class="book-badge">${book.badge}</span>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">${book.title}</h3>
+                    <p class="book-author ${book.isPijus ? 'pijus-author' : ''}">by ${book.author}</p>
+                    <p class="book-description">${book.description}</p>
+                    <div class="book-meta">
+                        <div class="book-rating">
+                            <i class="fas fa-star"></i> ${book.rating}
+                        </div>
+                        <div class="book-pages">${book.pages} pages</div>
+                    </div>
+                    <div class="book-actions">
+                        <a href="${book.driveLink}" target="_blank" class="btn btn-primary" onclick="openBook(${book.id})">
+                            <i class="fas fa-book-reader"></i> Read Now
+                        </a>
+                        <button class="btn btn-secondary" onclick="addToFavorites(${book.id})">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        // Open book
+        function openBook(bookId) {
+            const book = books.find(b => b.id === bookId);
+            if (book) {
+                // Update reading progress
+                const readBooks = JSON.parse(localStorage.getItem('readBooks') || '[]');
+                if (!readBooks.includes(bookId)) {
+                    readBooks.push(bookId);
+                    localStorage.setItem('readBooks', JSON.stringify(readBooks));
+                    updateReadingProgress();
+                }
+                
+                showToast(`Opening "${book.title}"...`, 'success');
+            }
+        }
+
+        // Add to favorites
+        function addToFavorites(bookId) {
+            const book = books.find(b => b.id === bookId);
+            if (book) {
+                const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+                if (!favorites.includes(bookId)) {
+                    favorites.push(bookId);
+                    localStorage.setItem('favorites', JSON.stringify(favorites));
+                    showToast(`"${book.title}" added to favorites!`, 'success');
+                } else {
+                    showToast(`"${book.title}" is already in favorites.`, 'error');
+                }
+            }
+        }
+
+        // Update reading progress
+        function updateReadingProgress() {
+            const readBooks = JSON.parse(localStorage.getItem('readBooks') || '[]');
+            const progress = Math.round((readBooks.length / books.length) * 100);
+            
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            document.getElementById('progressText').textContent = `${progress}% Complete`;
+        }
+
+        // Toggle filter menu
+        function toggleFilter() {
+            const filterMenu = document.getElementById('filterMenu');
+            filterMenu.classList.toggle('active');
+        }
+
+        // Filter books
+        function filterBooks(category) {
+            if (category === 'all') {
+                filteredBooks = [...books];
+            } else {
+                filteredBooks = books.filter(book => book.category === category);
+            }
+            
+            loadBooks();
+            toggleFilter();
+            showToast(`Showing ${category} books`, 'success');
+        }
+
+        // Search books
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            if (searchTerm === '') {
+                filteredBooks = [...books];
+            } else {
+                filteredBooks = books.filter(book => 
+                    book.title.toLowerCase().includes(searchTerm) ||
+                    book.author.toLowerCase().includes(searchTerm) ||
+                    book.description.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            loadBooks();
+        });
+
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Close filter menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const filterDropdown = document.querySelector('.filter-dropdown');
+            const filterMenu = document.getElementById('filterMenu');
+            
+            if (!filterDropdown.contains(e.target)) {
+                filterMenu.classList.remove('active');
+            }
+        });
+
+        // Initialize app on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+        });
+    </script>
+</body>
+</html>
